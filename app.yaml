@@ -1,0 +1,28 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+service: "users"
+
+handlers:
+- url: /_ah/api/.*
+  script: main.api
+
+env_variables:
+  GAE_NAMESPACE: "analyticsframework"
+
+  ENDPOINTS_SERVICE_VERSION: "2018-11-20r0"
+  ENDPOINTS_SERVICE_NAME: "users.analyticsframework.appspot.com"
+
+libraries:
+- name: pycrypto
+  version: 2.6
+- name: ssl
+  version: 2.7.11
+
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^(.*/)?setuptools/script \(dev\).tmpl$
