@@ -1,0 +1,50 @@
+# https://cloud.google.com/endpoints/docs/grpc-service-config/reference/rpc/google.api#service
+
+type: google.api.Service
+config_version: 3
+
+#
+# Name of the service configuration.
+#
+name: users.endpoints.analyticsframework.cloud.goog
+
+# API title to appear in the user interface (Google Cloud Console).
+title: Datasets Users API
+
+# Should match the service as defined in api.proto
+apis:
+- name: magicleap.datasets.users.Users
+
+# https://cloud.google.com/endpoints/docs/grpc/grpc-dns-configure
+endpoints:
+- name: users.endpoints.analyticsframework.cloud.goog
+  allow_cors: true
+  target: "104.198.144.78"
+
+# Request authentication.
+authentication:
+  providers:
+  - id: google_id_token
+    issuer: https://accounts.google.com
+    # audiences: "YOUR-CLIENT-ID"
+
+  - id: datasets_auth_provider
+
+    # JWT issuer (Users API)
+    issuer: https://users.datasets.magicleap.com
+
+    # This is the public key endpoint for the Service Account used to sign the JWT
+    # https://cloud.google.com/iam/docs/creating-managing-service-account-keys/
+    jwks_uri: https://www.googleapis.com/service_accounts/v1/metadata/x509/analyticsframework@appspot.gserviceaccount.com
+
+    # Accept only JWT with any of these audiences
+    audiences: https://metrics.datasets.magicleap.com,https://*.datasets.magicleap.com,https://datasets.magicleap.com
+
+  rules:
+  # This auth rule will apply to all methods.
+  - selector: "*"
+    requirements:
+      - provider_id: datasets_auth_provider
+  - selector: "magicleap.datasets.users.Users.CreateToken"
+    requirements:
+      - provider_id: google_id_token

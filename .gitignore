@@ -1,7 +1,6 @@
-lib/
-.v*/
+# Virtual environments
+.venv3/
 
-usersv1openapi.json
-*.pyc
-
-flake8*
+*.egg-info
+*.log
+notes.txt

@@ -1,0 +1,293 @@
+
+/*
+ * https://cloud.google.com/apis/design
+ */
+syntax = "proto3";
+
+package magicleap.datasets.users;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+
+
+// The Users API.
+service Users {
+
+  /*
+   * Tokens
+   */
+
+   // Create a token
+  rpc CreateToken(CreateTokenRequest) returns (Token) {
+    option (google.api.http) = {
+      post: "/api/v1/tokens",
+      body: "token"
+    };
+  }
+
+  // /*
+  //  * Users
+  //  */
+
+  //  // List available users
+  // rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/users"
+  //   };
+  // }
+
+  // // // Create a new project
+  // // rpc CreateUser(CreateUserRequest) returns (User) {
+  // //   option (google.api.http) = {
+  // //     post: "/api/v1/users"
+  // //     body: "project"
+  // //   };
+  // // }
+
+  // // Get a project by name
+  // rpc GetUser(GetUserRequest) returns (User) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/{name=users/*}"
+  //   };
+  // }
+
+  // // Update an existing project
+  // rpc UpdateUser(UpdateUserRequest) returns (User) {
+  //   option (google.api.http) = {
+  //     patch: "/api/v1/{user.name=users/*}"
+  //     body: "user"
+  //   };
+  // }
+
+  // rpc DisableUser(DisableUserRequest) returns (User) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{name=users/*}:disable"
+  //     body: "*"
+  //   };
+  // }
+
+  // rpc EnableUser(EnableUserRequest) returns (User) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{name=users/*}:disable"
+  //     body: "*"
+  //   };
+  // }
+
+  // // // Delete a project
+  // // rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {
+  // //   option (google.api.http) = {
+  // //     delete: "/api/v1/{name=users/*}"
+  // //   };
+  // // }
+
+  // /*
+  //  * User Roles
+  //  */
+
+  // // List available roles
+  // rpc ListRoles(ListRolesRequest) returns (ListRolesResponse) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/{parent=users/*}/roles"
+  //   };
+  // }
+
+  // // Create a new role
+  // rpc CreateRole(CreateRoleRequest) returns (Role) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{parent=users/*}/roles"
+  //     body: "role"
+  //   };
+  // }
+
+  // // // Get a role by name
+  // // rpc GetRole(GetRoleRequest) returns (Role) {
+  // //   option (google.api.http) = {
+  // //     get: "/api/v1/{name=users/*/roles/*}"
+  // //   };
+  // // }
+
+  // // // Update an existing role
+  // // rpc UpdateRole(UpdateRoleRequest) returns (Role) {
+  // //   option (google.api.http) = {
+  // //     patch: "/api/v1/{role.name=users/*/roles/*}"
+  // //     body: "role"
+  // //   };
+  // // }
+
+  // // Delete a role
+  // rpc DeleteRole(DeleteRoleRequest) returns (google.protobuf.Empty) {
+  //   option (google.api.http) = {
+  //     delete: "/api/v1/{name=users/*/roles/*}"
+  //   };
+  // }
+
+  // /*
+  //  * User Notification s
+  //  */
+
+  // // List available notifications
+  // rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/{parent=users/*}/notifications"
+  //   };
+  // }
+
+  // // Create a new notification
+  // rpc CreateNotification(CreateNotificationRequest) returns (Notification) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{parent=users/*}/notifications"
+  //     body: "notification"
+  //   };
+  // }
+
+  // // Get a notification by name
+  // rpc GetNotification(GetNotificationRequest) returns (Notification) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/{name=users/*/notifications/*}"
+  //   };
+  // }
+
+  // // // Update an existing notification
+  // // rpc UpdateNotification(UpdateNotificationRequest) returns (Notification) {
+  // //   option (google.api.http) = {
+  // //     patch: "/api/v1/{notification.name=users/*/notifications/*}"
+  // //     body: "notification"
+  // //   };
+  // // }
+
+  // // Update an existing notification
+  // rpc AcknowledgeNotification(AcknowledgeNotificationRequest) returns (Notification) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{notification.name=users/*/notifications/*}:acknowledge"
+  //     body: "*"
+  //   };
+  // }
+
+  // // Delete a notification
+  // rpc DeleteNotification(DeleteNotificationRequest) returns (google.protobuf.Empty) {
+  //   option (google.api.http) = {
+  //     delete: "/api/v1/{name=users/*/notifications/*}"
+  //   };
+  // }
+
+  // /*
+  //  * Groups
+  //  */
+
+  //  // List available groups
+  // rpc ListGroups(ListGroupsRequest) returns (ListGroupsResponse) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/groups"
+  //   };
+  // }
+
+  // // Create a new group
+  // rpc CreateGroup(CreateGroupRequest) returns (Group) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/groups"
+  //     body: "group"
+  //   };
+  // }
+
+  // // Get a group by name
+  // rpc GetGroup(GetGroupRequest) returns (Group) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/{name=groups/*}"
+  //   };
+  // }
+
+  // // Update an existing group
+  // rpc UpdateGroup(UpdateGroupRequest) returns (Group) {
+  //   option (google.api.http) = {
+  //     patch: "/api/v1/{group.name=groups/*}"
+  //     body: "group"
+  //   };
+  // }
+
+  // // // Delete a group
+  // // rpc DeleteGroup(DeleteGroupRequest) returns (google.protobuf.Empty) {
+  // //   option (google.api.http) = {
+  // //     delete: "/api/v1/{name=groups/*}"
+  // //   };
+  // // }
+
+  // // Send an email to the user group
+  // rpc EmailGroup(EmailGroupRequest) returns (TBD) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{name=groups/*}:sendEmail"
+  //     body: "*"
+  //   };
+  // }
+
+
+
+  // /*
+  //  * Members member
+  //  */
+
+  // // List available members
+  // rpc ListMembers(ListMembersRequest) returns (ListMembersResponse) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/{parent=grpups/*}/members"
+  //   };
+  // }
+
+  // // Create a new member
+  // rpc AddMember(AddMemberRequest) returns (Member) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{parent=grpups/*}/members"
+  //     body: "member"
+  //   };
+  // }
+
+  // // // Get a member by name
+  // // rpc GetMember(GetMemberRequest) returns (Member) {
+  // //   option (google.api.http) = {
+  // //     get: "/api/v1/{name=grpups/*/members/*}"
+  // //   };
+  // // }
+
+  // // // Update an existing member
+  // // rpc UpdateMember(UpdateMemberRequest) returns (Member) {
+  // //   option (google.api.http) = {
+  // //     patch: "/api/v1/{member.name=grpups/*/members/*}"
+  // //     body: "member"
+  // //   };
+  // // }
+
+  // // Remove a member
+  // rpc RemoveMember(RemoveMemberRequest) returns (google.protobuf.Empty) {
+  //   option (google.api.http) = {
+  //     delete: "/api/v1/{name=grpups/*/members/*}"
+  //   };
+  // }
+}
+
+// A message describing a project
+message Token {
+  // The type of token
+  enum TokenType {
+    // The token type has not been provided.
+    TOKEN_TYPE_UNSPECIFIED = 0;
+    // A google-issued access token
+    ACCESS_TOKEN = 1;
+    // A google-issued ID token
+    ID_TOKEN = 2;
+    // A JWT token issued by datasets.
+    DATASETS_TOKEN = 3;
+  }
+
+  // The token contents
+  string token = 1;
+  // Token Type
+  TokenType type = 2;
+  // The expiration time of the token
+  google.protobuf.Timestamp expiration_time = 3;
+}
+
+message CreateTokenRequest {
+  // User's ID token issued by Google.
+  Token token = 1;
+}

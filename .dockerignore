@@ -1,0 +1,12 @@
+.venv3/
+ci/
+googleapis/
+proto/
+
+.*
+*.egg-info
+*.txt
+*.cfg
+Dockerfile
+Jenkinsfile
+docker-compose.yaml
