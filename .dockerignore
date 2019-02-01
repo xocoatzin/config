@@ -2,6 +2,7 @@
 ci/
 googleapis/
 proto/
+.git/
 
 .*
 *.egg-info
@@ -10,3 +11,4 @@ proto/
 Dockerfile
 Jenkinsfile
 docker-compose.yaml
+__pycache__

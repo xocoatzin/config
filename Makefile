@@ -76,7 +76,7 @@ run-dev: ## Run the development server
 # 		$(HOST)$(REPOSITORY):$(TAG)  users-server
 
 .PHONY: container
-container:  # Build the docker container with the applciation.
+container:  ## Build the docker container with the applciation.
 	@docker build \
 		-t $(HOST)$(REPOSITORY):$(TAG) \
 		.
@@ -84,7 +84,7 @@ container:  # Build the docker container with the applciation.
 .PHONY: push
 push: MESSAGE="The application 'Users gRPC server' will be deployed to production."
 push: prompt_y_n
-push:  # Push docker image to remote registry
+push:  ## Push docker image to remote registry
 	@docker push $(HOST)$(REPOSITORY):$(TAG)
 
 .PHONY: deploy-service
