@@ -15,6 +15,7 @@ import logging
 
 import UsersAPI.api_pb2_grpc as pb2_grpc
 from UsersAPI.servicer.mixin.tokens import TokensMixin
+from google.cloud import datastore
 
 __all__ = [
     'UsersServicer',
@@ -32,10 +33,14 @@ class UsersServicer(
     #                                   MISC                                  #
     ###########################################################################
 
-    def __init__(self, secret):
+    def __init__(self, secret, datastore_project, datastore_namespace):
         """Constructor.
 
         Args:
             secret (str): The secret to use for JWT encoding.
         """
         self.secret = secret
+        self.dsclient = datastore.Client(
+            project=datastore_project,
+            namespace=datastore_namespace
+        )

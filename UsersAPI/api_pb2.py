@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='magicleap.datasets.users',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\tapi.proto\x12\x18magicleap.datasets.users\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\"\xe1\x01\n\x05Token\x12\r\n\x05token\x18\x01 \x01(\t\x12\x37\n\x04type\x18\x02 \x01(\x0e\x32).magicleap.datasets.users.Token.TokenType\x12\x33\n\x0f\x65xpiration_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"[\n\tTokenType\x12\x1a\n\x16TOKEN_TYPE_UNSPECIFIED\x10\x00\x12\x10\n\x0c\x41\x43\x43\x45SS_TOKEN\x10\x01\x12\x0c\n\x08ID_TOKEN\x10\x02\x12\x12\n\x0e\x44\x41TASETS_TOKEN\x10\x03\"D\n\x12\x43reateTokenRequest\x12.\n\x05token\x18\x01 \x01(\x0b\x32\x1f.magicleap.datasets.users.Token2\x84\x01\n\x05Users\x12{\n\x0b\x43reateToken\x12,.magicleap.datasets.users.CreateTokenRequest\x1a\x1f.magicleap.datasets.users.Token\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x0e/api/v1/tokens:\x05tokenb\x06proto3')
+  serialized_pb=_b('\n\tapi.proto\x12\x18magicleap.datasets.users\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\"\xe1\x01\n\x05Token\x12\r\n\x05token\x18\x01 \x01(\t\x12\x37\n\x04type\x18\x02 \x01(\x0e\x32).magicleap.datasets.users.Token.TokenType\x12\x33\n\x0f\x65xpiration_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"[\n\tTokenType\x12\x1a\n\x16TOKEN_TYPE_UNSPECIFIED\x10\x00\x12\x10\n\x0c\x41\x43\x43\x45SS_TOKEN\x10\x01\x12\x0c\n\x08ID_TOKEN\x10\x02\x12\x12\n\x0e\x44\x41TASETS_TOKEN\x10\x03\"\x14\n\x12\x43reateTokenRequest2}\n\x05Users\x12t\n\x0b\x43reateToken\x12,.magicleap.datasets.users.CreateTokenRequest\x1a\x1f.magicleap.datasets.users.Token\"\x16\x82\xd3\xe4\x93\x02\x10\"\x0e/api/v1/tokensb\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,])
 
@@ -113,13 +113,6 @@ _CREATETOKENREQUEST = _descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
-    _descriptor.FieldDescriptor(
-      name='token', full_name='magicleap.datasets.users.CreateTokenRequest.token', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -133,13 +126,12 @@ _CREATETOKENREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=393,
-  serialized_end=461,
+  serialized_end=413,
 )
 
 _TOKEN.fields_by_name['type'].enum_type = _TOKEN_TOKENTYPE
 _TOKEN.fields_by_name['expiration_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _TOKEN_TOKENTYPE.containing_type = _TOKEN
-_CREATETOKENREQUEST.fields_by_name['token'].message_type = _TOKEN
 DESCRIPTOR.message_types_by_name['Token'] = _TOKEN
 DESCRIPTOR.message_types_by_name['CreateTokenRequest'] = _CREATETOKENREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -166,8 +158,8 @@ _USERS = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=464,
-  serialized_end=596,
+  serialized_start=415,
+  serialized_end=540,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateToken',
@@ -176,7 +168,7 @@ _USERS = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_CREATETOKENREQUEST,
     output_type=_TOKEN,
-    serialized_options=_b('\202\323\344\223\002\027\"\016/api/v1/tokens:\005token'),
+    serialized_options=_b('\202\323\344\223\002\020\"\016/api/v1/tokens'),
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_USERS)

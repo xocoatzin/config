@@ -26,7 +26,25 @@ authentication:
   providers:
   - id: google_id_token
     issuer: https://accounts.google.com
-    # audiences: "YOUR-CLIENT-ID"
+    audiences: |
+      439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.googleusercontent.com,
+      763597474440-jitt7oqo7jppgg497dq4ae9uq5japai5.apps.googleusercontent.com,
+      439260306570-1hs8vdfr2p5pkffuml6rtbbm503dsphc.apps.googleusercontent.com
+
+# allowed_client_ids = [
+#     '439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.googleusercontent.com', # CLI  # noqa
+#     '763597474440-jitt7oqo7jppgg497dq4ae9uq5japai5.apps.googleusercontent.com', # datasets-frontend # noqa
+#     '439260306570-1hs8vdfr2p5pkffuml6rtbbm503dsphc.apps.googleusercontent.com', # Web UI  # noqa
+#     '141530362265-ucisfckjpadkc4v002ibkc5aeacaqstv.apps.googleusercontent.com', # eguendelman's # noqa
+#     '107918144537744202871', # analyticsframework@appspot.gserviceaccount.com --> default  # noqa
+#     '103311373514881609732', # batch-runner@analyticsframework.iam.gserviceaccount.com  # noqa
+#     '115896839819721072399', # head-pose-batch-eval@analyticsframework.iam.gserviceaccount.com  # noqa
+#     '110050846120109587941', # gaze-batch-eval@analyticsframework.iam.gserviceaccount.com  # noqa
+#     '111014016425078685290', # sipp-extractor@analyticsframework.iam.gserviceaccount.com  # noqa
+#     '116369930344624784826', # worker-sensor-ramon-sensim@analyticsframework.iam.gserviceaccount.com  # noqa
+#     '104377765709731293974', # datasets-development-environme@analyticsframework.iam.gserviceaccount.com  # noqa
+# ]
+
 
   - id: datasets_auth_provider
 

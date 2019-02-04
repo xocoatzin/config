@@ -23,7 +23,6 @@ service Users {
   rpc CreateToken(CreateTokenRequest) returns (Token) {
     option (google.api.http) = {
       post: "/api/v1/tokens",
-      body: "token"
     };
   }
 
@@ -288,6 +287,4 @@ message Token {
 }
 
 message CreateTokenRequest {
-  // User's ID token issued by Google.
-  Token token = 1;
 }

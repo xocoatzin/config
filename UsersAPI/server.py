@@ -29,7 +29,9 @@ def serve(port, shutdown_grace_duration):
 
     pb2_grpc.add_UsersServicer_to_server(
         UsersServicer(
-            secret=os.environ['API_SECRET']
+            secret=os.environ['API_SECRET'],
+            datastore_project=os.environ['API_DATASTORE_PROJECT'],
+            datastore_namespace=os.environ['API_DATASTORE_NAMESPACE'],
         ),
         server)
     server.add_insecure_port('[::]:{}'.format(port))

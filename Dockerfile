@@ -15,6 +15,6 @@ ENV PATH /env/bin:$PATH
 RUN pip install --upgrade pip
 
 ADD . /users/
-RUN pip install /users/
+RUN pip install /users/[all] -v
 
 ENTRYPOINT ["users-server"]

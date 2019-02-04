@@ -63,7 +63,11 @@ proto: # Generate protobuf definitions.
 .PHONY: run-dev
 run-dev: proto
 run-dev: export _MAPI_DEV_DISABLE_AUTH=$(shell date '+%Y-%m-%d %H:%M')
-run-dev: export API_SECRET="a-very-secret-string"
+run-dev: export API_SECRET=a-very-secret-string
+run-dev: export API_DATASTORE_PROJECT=my-project
+run-dev: export API_DATASTORE_NAMESPACE=users-namespace
+run-dev: export GOOGLE_APPLICATION_CREDENTIALS=${PWD}/.local/credentials/application_default.json
+run-dev: export DATASTORE_EMULATOR_HOST=localhost:8081
 run-dev: ## Run the development server
 	@.venv3/bin/users-server --port 18000 --text-logs
 
@@ -74,6 +78,11 @@ run-dev: ## Run the development server
 # 		-e _MAPI_DEV_DISABLE_AUTH="$(shell date '+%Y-%m-%d %H:%M')" \
 # 		-e API_SECRET="a-very-secret-string" \
 # 		$(HOST)$(REPOSITORY):$(TAG)  users-server
+
+.PHONY: db-emulator
+db-emulator:  ## Run the datastore emulator locally.
+	@mkdir -p .local/datastore/db/
+	@gcloud beta emulators datastore start --data-dir=.local/datastore/db/
 
 .PHONY: container
 container:  ## Build the docker container with the applciation.

@@ -1,9 +1,6 @@
 [submodule "googleapis"]
 	path = googleapis
 	url = https://github.com/googleapis/googleapis
-[submodule "MetricsAPI/vendor/datasets-apis-common"]
-	path = MetricsAPI/vendor/datasets-apis-common
-	url = git@github.magicleap.com:analytics-framework/datasets-apis-common.git
 [submodule "UsersAPI/vendor/datasets-apis-common"]
 	path = UsersAPI/vendor/datasets-apis-common
 	url = git@github.magicleap.com:analytics-framework/datasets-apis-common.git
