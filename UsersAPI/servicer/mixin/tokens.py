@@ -14,7 +14,6 @@ import os
 import requests
 
 from grpc import StatusCode
-# from google.protobuf import struct_pb2
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.cloud import datastore
@@ -22,8 +21,6 @@ from google.auth import crypt
 from google.auth import jwt
 
 import UsersAPI.api_pb2 as pb2
-# from MetricsAPI.servicer import helpers
-# from MetricsAPI.tools import authorize
 
 
 __all__ = [
@@ -31,21 +28,6 @@ __all__ = [
 ]
 
 log = logging.getLogger(__name__)
-
-
-# allowed_client_ids = [
-#     '439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.googleusercontent.com', # CLI  # noqa
-#     '763597474440-jitt7oqo7jppgg497dq4ae9uq5japai5.apps.googleusercontent.com', # datasets-frontend # noqa
-#     '439260306570-1hs8vdfr2p5pkffuml6rtbbm503dsphc.apps.googleusercontent.com', # Web UI  # noqa
-#     '141530362265-ucisfckjpadkc4v002ibkc5aeacaqstv.apps.googleusercontent.com', # eguendelman's # noqa
-#     '107918144537744202871', # analyticsframework@appspot.gserviceaccount.com --> default  # noqa
-#     '103311373514881609732', # batch-runner@analyticsframework.iam.gserviceaccount.com  # noqa
-#     '115896839819721072399', # head-pose-batch-eval@analyticsframework.iam.gserviceaccount.com  # noqa
-#     '110050846120109587941', # gaze-batch-eval@analyticsframework.iam.gserviceaccount.com  # noqa
-#     '111014016425078685290', # sipp-extractor@analyticsframework.iam.gserviceaccount.com  # noqa
-#     '116369930344624784826', # worker-sensor-ramon-sensim@analyticsframework.iam.gserviceaccount.com  # noqa
-#     '104377765709731293974', # datasets-development-environme@analyticsframework.iam.gserviceaccount.com  # noqa
-# ]
 
 
 class TokensMixin(object):
@@ -128,19 +110,34 @@ class TokensMixin(object):
                 'family_name': idinfo.get('family_name'),
                 'full_name': idinfo.get('name'),
                 'email': idinfo.get('email'),
-                'roles': [],
-                'groups': [],
                 'disabled': False,
             })
             self.dsclient.put(user_entity)
             log.info("Registered user: {}".format(idinfo.get('email')))
+
+        user_key = self.dsclient.key('User', idinfo.get('email'))
+        query = self.dsclient.query(kind='UserRole', ancestor=user_key)
+        query.keys_only()
+
+        roles = [
+            entity.key.name
+            for entity in query.fetch()
+        ]
+
+        query = self.dsclient.query(kind='Membership')
+        query.keys_only()
+        query.add_filter('user_key', '=', user_key)
+        groups = [
+            item.key.parent.name
+            for item in query.fetch()
+        ]
 
         now = int(time.time())
         payload = {
             # Issued at
             'iat': now,
             # Expiration, same as original ID token
-            'exp': idinfo.get('exp'),
+            'exp': int(idinfo.get('exp')),
             # Issuer
             'iss': 'https://users.datasets.magicleap.com',
             # Audience
@@ -154,18 +151,18 @@ class TokensMixin(object):
             'family_name': idinfo.get('family_name'),
             'full_name': idinfo.get('name'),
             # Roles and groups registered in the Users API
-            'roles': user_entity.get('roles', []),
-            'groups': user_entity.get('groups', []),
-            'some': 'payload',
+            'roles': roles,
+            'groups': groups,
         }
 
         signer = crypt.RSASigner.from_service_account_file(
             os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
-        encoded_token = jwt.encode(signer, payload)
+        encoded_token = jwt.encode(signer, payload).decode('UTF-8')
 
         expiration_time = Timestamp()
         expiration_time.FromDatetime(
             datetime.datetime.utcfromtimestamp(int(idinfo.get('exp'))))
+
         return pb2.Token(
             token=encoded_token,
             type=pb2.Token.DATASETS_TOKEN,

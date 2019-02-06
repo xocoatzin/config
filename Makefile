@@ -67,6 +67,7 @@ run-dev: export API_SECRET=a-very-secret-string
 run-dev: export API_DATASTORE_PROJECT=my-project
 run-dev: export API_DATASTORE_NAMESPACE=users-namespace
 run-dev: export GOOGLE_APPLICATION_CREDENTIALS=${PWD}/.local/credentials/application_default.json
+# run-dev: export GOOGLE_APPLICATION_CREDENTIALS=/ml/Users/MAGICLEAP/atorresgomez/Downloads/analyticsframework-1e0201214e90.json
 run-dev: export DATASTORE_EMULATOR_HOST=localhost:8081
 run-dev: ## Run the development server
 	@.venv3/bin/users-server --port 18000 --text-logs

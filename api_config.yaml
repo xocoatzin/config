@@ -53,7 +53,7 @@ authentication:
 
     # This is the public key endpoint for the Service Account used to sign the JWT
     # https://cloud.google.com/iam/docs/creating-managing-service-account-keys/
-    jwks_uri: https://www.googleapis.com/service_accounts/v1/metadata/x509/analyticsframework@appspot.gserviceaccount.com
+    jwks_uri: https://www.googleapis.com/service_accounts/v1/metadata/x509/datasets-users-api@analyticsframework.iam.gserviceaccount.com
 
     # Accept only JWT with any of these audiences
     audiences: https://metrics.datasets.magicleap.com,https://*.datasets.magicleap.com,https://datasets.magicleap.com
