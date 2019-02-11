@@ -270,7 +270,7 @@ service Users {
   }
 }
 
-// A message describing a project
+// A token
 message Token {
   // The type of token
   enum TokenType {
@@ -284,7 +284,7 @@ message Token {
     DATASETS_TOKEN = 3;
   }
 
-  // The token contents
+  // The contents of the token
   string token = 1;
   // Token Type
   TokenType type = 2;
@@ -292,6 +292,7 @@ message Token {
   google.protobuf.Timestamp expiration_time = 3;
 }
 
+// A message request to create a new datasets token.
 message CreateTokenRequest {
 }
 
@@ -299,7 +300,8 @@ message CreateTokenRequest {
 message Role {
   // The name of the role
   string name = 1;
-  string key = 2;
+  // The id of the role
+  string id = 2;
   // The description of the role
   string description = 3;
 }
@@ -316,9 +318,9 @@ message ListRolesRequest {
   // string page_token = 3;
 }
 
-// Response
+// Response to ListRoles
 message ListRolesResponse {
-  // The found records
+  // The resources found
   repeated Role roles = 1;
 
   // Token to retrieve the next page of results, or empty if there are no
@@ -335,34 +337,51 @@ message ListRolesResponse {
 //   // string description = 2;
 // }
 
-
+// A user account
 message User {
+  // The name of the entity (not of the user)
   string name = 1;
+  // The email account of the user
   string email = 2;
+  // The full name of the user
   string full_name = 3;
+  // The given name of the user
   string given_name = 4;
+  // The family name of the user
   string family_name = 5;
+  // A link to the user's picture, if available.
   string picture = 6;
+  // The locale code for the user, if available
   string locale = 7;
+  // If the user account is disabled, this is set to TRUE. Otherwise is FALSE or UpdateNotificationRequest
   bool disabled = 8;
+  // The time of the account creation
   google.protobuf.Timestamp creation_time = 9;
+  // A timestamp of the last time the user was issued a token.
   google.protobuf.Timestamp last_seen_time = 10;
 }
 
+// Request for getting a user
 message GetUserRequest {
   // The name of the user entity
   string name = 1;
 }
 
+// Request to add a role to a user.
 message AddUserRoleRequest {
+  // The name of the parent entity
   string parent = 1;
+  // The role to add
   Role role = 2;
 }
 
+// Request to remove a role from a user
 message RemoveUserRoleRequest {
+  // The name of the parent entity
   string name = 1;
 }
 
+// A request message
 message ListUserRolesRequest {
   // The name of the parent entity.
   string parent = 1;
@@ -374,6 +393,7 @@ message ListUserRolesRequest {
   string page_token = 3;
 }
 
+// A response message
 message ListUserRolesResponse {
   // The found roles
   repeated Role roles = 1;
@@ -383,6 +403,7 @@ message ListUserRolesResponse {
   string next_page_token = 2;
 }
 
+// A request message
 message ListUserGroupsRequest {
   // The name of the parent entity.
   string parent = 1;
@@ -394,6 +415,7 @@ message ListUserGroupsRequest {
   string page_token = 3;
 }
 
+// A response message
 message ListUserGroupsResponse {
   // The found entities
   repeated Group groups = 1;
@@ -403,22 +425,33 @@ message ListUserGroupsResponse {
   string next_page_token = 2;
 }
 
+// A request message
 message DisableUserRequest {
+  // The name of the entity
   string name = 1;
 }
 
+// A request message
 message EnableUserRequest {
+  // The name of the entity
   string name = 1;
 }
 
+// A message describing a user group
 message Group {
+  // The name of the entity
   string name = 1;
+  // The title of the group
   string title = 2;
+  // A description for the group
   string description = 3;
+  // The creation time of the group
   google.protobuf.Timestamp creation_time = 4;
+  // The user who created the group
   string created_by = 5;
 }
 
+// A request message
 message CreateGroupRequest {
   // The resource to create.
   Group group = 1;
@@ -427,6 +460,7 @@ message CreateGroupRequest {
   string group_id = 3;
 }
 
+// A request message
 message ListGroupsRequest {
   // The maximum number of items to return.
   int32 page_size = 1;
@@ -435,6 +469,7 @@ message ListGroupsRequest {
   string page_token = 2;
 }
 
+// A response message
 message ListGroupsResponse {
   // The found entities
   repeated Group groups = 1;
@@ -444,28 +479,39 @@ message ListGroupsResponse {
   string next_page_token = 2;
 }
 
+// A request message
 message GetGroupRequest {
   // The name of the entity
   string name = 1;
 }
 
+// A message describing the membership of a user into a group
 message Membership {
+  // The name of the entity
   string name = 1;
+  // The user account
   string user = 2;
+  // The user who registered the membership
   string created_by = 3;
+  // The timestamp of the membership registration
   google.protobuf.Timestamp creation_time = 4;
 }
 
+// A request message
 message AddMembershipRequest {
-  // The resource to create.
+  // The name of the parent entity
   string parent = 1;
+  // The membership to add
   Membership membership = 2;
 }
 
+// A request message
 message RemoveMembershipRequest {
+  // The name of the entity
   string name = 1;
 }
 
+// A request message
 message ListMembershipsRequest {
   // The name of the parent entity.
   string parent = 1;
@@ -477,6 +523,7 @@ message ListMembershipsRequest {
   string page_token = 3;
 }
 
+// A response message
 message ListMembershipsResponse {
   // The entities found
   repeated Membership memberships = 1;

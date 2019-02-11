@@ -6,8 +6,6 @@ Style Guide:
    http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 """
 
-import logging
-
 import UsersAPI.api_pb2 as pb2
 from UsersAPI.tools import authorize
 from UsersAPI.roles import USER_ROLES
@@ -17,19 +15,18 @@ __all__ = [
     'RolesMixin',
 ]
 
-log = logging.getLogger(__name__)
-
 
 class RolesMixin(object):
     """Implements the Users API server."""
 
     @authorize(requires=['ROLES.READ'])
-    def ListRoles(self, request, context, auth):  # noqa
+    def ListRoles(self, request, context, options):  # noqa
         """Get a list of the available roles."""
 
         roles = [
             pb2.Role(
                 name='role/{}'.format(role),
+                id=role,
                 description=USER_ROLES[role].get('description')
             )
             for role in USER_ROLES

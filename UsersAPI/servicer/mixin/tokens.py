@@ -7,9 +7,8 @@ Style Guide:
 """
 
 import datetime
-import logging
-import time
 import os
+import time
 
 import requests
 
@@ -21,19 +20,63 @@ from google.auth import crypt
 from google.auth import jwt
 
 import UsersAPI.api_pb2 as pb2
+from UsersAPI.tools import authorize
 
 
 __all__ = [
     'TokensMixin',
 ]
 
-log = logging.getLogger(__name__)
 
+# Access token:
+# {
+#     "azp": "439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.
+#         googleusercontent.com",
+#     "aud": "439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.
+#         googleusercontent.com",
+#     "sub": "116239921441103745586",
+#     "exp": "1549888861",
+#     "email": "atorresgomez@magicleap.com",
+#     "email_verified": "true",
+
+#     "scope": "https://www.googleapis.com/auth/userinfo.email
+#         https://www.googleapis.com/auth/userinfo.profile
+#         https://www.googleapis.com/auth/devstorage.read_write",
+#     "expires_in": "3542",
+#     "access_type": "offline"
+# }
+
+# ID Token:
+# {
+#     "azp": "439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.
+#         googleusercontent.com",
+#     "aud": "439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.
+#         googleusercontent.com",
+#     "sub": "116239921441103745586",
+#     "exp": "1549888861",
+#     "email": "atorresgomez@magicleap.com",
+#     "email_verified": "true",
+
+#     "iss": "https://accounts.google.com",
+#     "hd": "magicleap.com",
+#     "at_hash": "qNC2ht4Eq-OHgdw65dlnEw",
+#     "name": "Alan Torres",
+#     "picture": "https://lh4.googleusercontent.com/-E0jiKQgPthY/
+#         AAAAAAAAAAI/AAAAAAAAAVY/aQZN1tGuhpI/s96-c/photo.jpg",
+#     "given_name": "Alan",
+#     "family_name": "Torres",
+#     "locale": "en",
+#     "iat": "1549885261",
+#     "alg": "RS256",
+#     "kid": "7c309e3a1c1999cb0404ab7125ee40b7cdbcaf7d",
+#     "typ": "JWT"
+# }
 
 class TokensMixin(object):
     """Implements the Users API server."""
 
-    def CreateToken(self, request, context):  # noqa
+    @authorize(requires=[])  # Intentionally left empty
+    def CreateToken(self, request, context, options):  # noqa
         """Get a list of views for the collection."""
         request = MessageToDict(request)
         metadata = {
@@ -78,7 +121,7 @@ class TokensMixin(object):
                 raise ValueError('Wrong hosted domain.')
 
         except ValueError as e:
-            logging.info('{}: {}'.format(str(e), idinfo))
+            options.log.info('{}: {}'.format(str(e), idinfo))
             context.abort(StatusCode.INVALID_ARGUMENT, "Invalid token.")
 
         user_key = self.dsclient.key('User', idinfo.get('email'))
@@ -86,7 +129,7 @@ class TokensMixin(object):
 
         if user_entity:
             if user_entity.get('disabled', False):
-                logging.info(
+                options.log.info(
                     'User account disabled: {}'.format(idinfo))
                 context.abort(StatusCode.PERMISSION_DENIED, "Unauthorized.")
 
@@ -95,7 +138,7 @@ class TokensMixin(object):
                 'last_seen': now,
             })
             self.dsclient.put(user_entity)
-            log.info("Updated user: {}".format(idinfo.get('email')))
+            options.log.info("Updated user: {}".format(idinfo.get('email')))
 
         else:
             now = datetime.datetime.utcnow()
@@ -113,7 +156,7 @@ class TokensMixin(object):
                 'disabled': False,
             })
             self.dsclient.put(user_entity)
-            log.info("Registered user: {}".format(idinfo.get('email')))
+            options.log.info("Registered user: {}".format(idinfo.get('email')))
 
         user_key = self.dsclient.key('User', idinfo.get('email'))
         query = self.dsclient.query(kind='UserRole', ancestor=user_key)
