@@ -120,7 +120,7 @@ spec:
       - name: grpc-server
         # TODO: Resource requests
         imagePullPolicy: Always
-        image: gcr.io/analyticsframework/datasets/apis/users/grpc-server:0.2.1-alpha
+        image: gcr.io/analyticsframework/datasets/apis/users/grpc-server:0.2.2-alpha
         args: [
           "--port=8081",
         ]

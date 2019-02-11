@@ -95,11 +95,7 @@ setup(
         'requests[security]',
         'google-auth>=1.6,<2',
         'google-cloud-datastore>=1.7,<2',
-        'arrow',
-        # 'redis~=2.10',
-        # 'jsonschema~=3.0.0a3 ',
-        # 'arrow>=0.4.0,<1.0',
-        # 'PyJWT~=1.6',
+        'arrow>=0.4.0,<1.0',
     ],
     extras_require=extras_require,
     entry_points={

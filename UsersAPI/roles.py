@@ -36,42 +36,13 @@ USER_ROLES = {
     },
 }
 
-
-# WIP
-# ROLES have CREDENTIALS
-DATA_ROLES = {
-    'ROLE:PROJECT:OWNER': [
-        # 'project.read',
-        # 'project.update',
-        # 'project.delete',
-        # # 'acl.create',
-        # 'acl.read',
-        # 'acl.update',
-        # 'acl.delete',
-        # 'collection.create',
-        # 'collection.read',
-        # 'collection.update',
-        # 'collection.delete',
-        # 'view.create',
-        # 'view.read',
-        # 'view.delete',
-        # 'document.create',
-        # 'document.read',
-        # 'document.update',
-        # 'document.delete',
-    ],
-    'ROLE:PROJECT:PUBLISHER': [
-        'document.create',
-    ]
-}
-
 # WIP
 API_ROLES = {
     'users.user': [
         'ROLES.READ',
+        'USERS.READ',
     ],
-    'users.admin': [
-        # 'METRICS.ADMIN',
+    'users.groupAdm': [
         'GROUPS.CREATE',
         'GROUPS.READ',
         'GROUPS.UPDATE',
@@ -79,6 +50,18 @@ API_ROLES = {
         'GROUPS.MEMBERS.ADD',
         'GROUPS.MEMBERS.REMOVE',
         'GROUPS.MEMBERS.READ',
+
+        'USERS.GROUPS.READ',
+    ],
+    'users.admin': [
+        'GROUPS.CREATE',
+        'GROUPS.READ',
+        'GROUPS.UPDATE',
+        'GROUPS.DELETE',
+        'GROUPS.MEMBERS.ADD',
+        'GROUPS.MEMBERS.REMOVE',
+        'GROUPS.MEMBERS.READ',
+
         'USERS.READ',
         'USERS.UPDATE',
         'USERS.ENABLE',

@@ -33,7 +33,7 @@ def to_pb2_timestamp(d):
 
 
 def group_to_pb2(entity):
-        """."""
+    """."""
     return pb2.Group(
         name='groups/{}'.format(entity.key.name),
         title=entity.get('title'),

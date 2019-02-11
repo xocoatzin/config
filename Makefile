@@ -21,6 +21,8 @@ UNDERLINE = \033[4m
 
 .PHONY: devinstall
 devinstall:  ## Install the development environment.
+	@mkdir -p .local/datastore/db/
+	@mkdir -p .local/credentials/
 	@git submodule update --recursive --remote
 	@virtualenv -p python3 .venv3
 	@.venv3/bin/pip install --upgrade pip
@@ -82,7 +84,6 @@ run-dev: ## Run the development server
 
 .PHONY: db-emulator
 db-emulator:  ## Run the datastore emulator locally.
-	@mkdir -p .local/datastore/db/
 	@gcloud beta emulators datastore start --data-dir=.local/datastore/db/
 
 .PHONY: container
@@ -101,6 +102,10 @@ push:  ## Push docker image to remote registry
 deploy-service: proto
 deploy-service:  # Deploy the endpoints configuration
 	@gcloud endpoints services deploy proto/out/api_descriptor.pb api_config.yaml
+
+.PHONY: deploy-kube
+deploy-kube:  # Deploy the infrastructure configuration to kubernetes
+	@kubectl apply -f infrastructure/app.yaml
 
 .PHONY: help
 help:  ## Show help messages for make targets

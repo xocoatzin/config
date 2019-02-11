@@ -202,7 +202,7 @@ class UsersMixin(object):
 
         return struct_pb2.Value()
 
-    def _set_user_enabled(enabled, request)
+    def _set_user_enabled(self, enabled, request, context, options):
         request = MessageToDict(request)
 
         name_parts = helpers.parse_name(request.get('name'))
@@ -230,9 +230,9 @@ class UsersMixin(object):
     @authorize(requires=['USERS.ENABLE'])
     def EnableUser(self, request, context, options):  # noqa
         """Enable a user account."""
-        _set_user_enabled(False, request)
+        self._set_user_enabled(False, request, context, options)
 
     @authorize(requires=['USERS.DISABLE'])
     def DisableUser(self, request, context, options):  # noqa
         """Disable a user account."""
-        _set_user_enabled(True, request)
+        self._set_user_enabled(True, request, context, options)
