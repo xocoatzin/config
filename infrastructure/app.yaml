@@ -12,17 +12,17 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    certmanager.k8s.io/cluster-issuer: "letsencrypt-prod"
-    # certmanager.k8s.io/cluster-issuer: "letsencrypt-staging"
-    certmanager.k8s.io/acme-challenge-type: http01
+    certmanager.k8s.io/acme-challenge-type: "dns01"
+    certmanager.k8s.io/cluster-issuer: "letsencrypt-dns-prod"
+    certmanager.k8s.io/acme-dns01-provider: "cloud-dns"
 
 spec:
   tls:
   - hosts:
-    - users.endpoints.analyticsframework.cloud.goog
+    - users.datasets.pr.mysticjump.com
     secretName: users-api-tls
   rules:
-  - host: users.endpoints.analyticsframework.cloud.goog
+  - host: users.datasets.pr.mysticjump.com
     http:
       paths:
       - path: /
@@ -120,7 +120,7 @@ spec:
       - name: grpc-server
         # TODO: Resource requests
         imagePullPolicy: Always
-        image: gcr.io/analyticsframework/datasets/apis/users/grpc-server:0.2.2-alpha
+        image: gcr.io/analyticsframework/datasets/apis/users/grpc-server:0.2.3-alpha
         args: [
           "--port=8081",
         ]

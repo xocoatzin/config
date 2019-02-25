@@ -18,7 +18,7 @@ from ApiCommon.logging import config_logger
 
 import UsersAPI
 from UsersAPI import api_pb2_grpc as pb2_grpc
-from UsersAPI.servicer.servicer import UsersServicer
+from UsersAPI.servicer.servicer import UsersServicer, TokensServicer
 
 log = logging.getLogger(__name__)
 
@@ -34,6 +34,14 @@ def serve(port, shutdown_grace_duration):
             datastore_namespace=os.environ['API_DATASTORE_NAMESPACE'],
         ),
         server)
+    pb2_grpc.add_TokensServicer_to_server(
+        TokensServicer(
+            secret=os.environ['API_SECRET'],
+            datastore_project=os.environ['API_DATASTORE_PROJECT'],
+            datastore_namespace=os.environ['API_DATASTORE_NAMESPACE'],
+        ),
+        server)
+
     server.add_insecure_port('[::]:{}'.format(port))
     log.info("Starting {} v{}".format(
         UsersAPI.__title__,

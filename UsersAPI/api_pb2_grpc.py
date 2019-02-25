@@ -5,6 +5,68 @@ from UsersAPI import api_pb2 as api__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
+class TokensStub(object):
+  """The Tokens API.
+  """
+
+  def __init__(self, channel):
+    """Constructor.
+
+    Args:
+      channel: A grpc.Channel.
+    """
+    self.CreateToken = channel.unary_unary(
+        '/magicleap.datasets.users.Tokens/CreateToken',
+        request_serializer=api__pb2.CreateTokenRequest.SerializeToString,
+        response_deserializer=api__pb2.Token.FromString,
+        )
+    self.GetTokenInfo = channel.unary_unary(
+        '/magicleap.datasets.users.Tokens/GetTokenInfo',
+        request_serializer=api__pb2.TokenInfoRequest.SerializeToString,
+        response_deserializer=api__pb2.TokenInfo.FromString,
+        )
+
+
+class TokensServicer(object):
+  """The Tokens API.
+  """
+
+  def CreateToken(self, request, context):
+    """
+    Tokens
+
+    Create a token
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def GetTokenInfo(self, request, context):
+    """Create a token
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+
+def add_TokensServicer_to_server(servicer, server):
+  rpc_method_handlers = {
+      'CreateToken': grpc.unary_unary_rpc_method_handler(
+          servicer.CreateToken,
+          request_deserializer=api__pb2.CreateTokenRequest.FromString,
+          response_serializer=api__pb2.Token.SerializeToString,
+      ),
+      'GetTokenInfo': grpc.unary_unary_rpc_method_handler(
+          servicer.GetTokenInfo,
+          request_deserializer=api__pb2.TokenInfoRequest.FromString,
+          response_serializer=api__pb2.TokenInfo.SerializeToString,
+      ),
+  }
+  generic_handler = grpc.method_handlers_generic_handler(
+      'magicleap.datasets.users.Tokens', rpc_method_handlers)
+  server.add_generic_rpc_handlers((generic_handler,))
+
+
 class UsersStub(object):
   """The Users API.
   """
@@ -15,11 +77,6 @@ class UsersStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.CreateToken = channel.unary_unary(
-        '/magicleap.datasets.users.Users/CreateToken',
-        request_serializer=api__pb2.CreateTokenRequest.SerializeToString,
-        response_deserializer=api__pb2.Token.FromString,
-        )
     self.ListRoles = channel.unary_unary(
         '/magicleap.datasets.users.Users/ListRoles',
         request_serializer=api__pb2.ListRolesRequest.SerializeToString,
@@ -96,18 +153,19 @@ class UsersServicer(object):
   """The Users API.
   """
 
-  def CreateToken(self, request, context):
-    """
-    Tokens
-
-    Create a token
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
   def ListRoles(self, request, context):
-    """
+    """/*
+    * Tokens
+    */
+
+    // Create a token
+    rpc CreateToken(CreateTokenRequest) returns (Token) {
+    option (google.api.http) = {
+    post: "/api/v1/tokens",
+    };
+    }
+
+
     Roles
 
     List available roles
@@ -340,11 +398,6 @@ class UsersServicer(object):
 
 def add_UsersServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'CreateToken': grpc.unary_unary_rpc_method_handler(
-          servicer.CreateToken,
-          request_deserializer=api__pb2.CreateTokenRequest.FromString,
-          response_serializer=api__pb2.Token.SerializeToString,
-      ),
       'ListRoles': grpc.unary_unary_rpc_method_handler(
           servicer.ListRoles,
           request_deserializer=api__pb2.ListRolesRequest.FromString,

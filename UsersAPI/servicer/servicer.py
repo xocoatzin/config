@@ -18,6 +18,7 @@ from google.cloud import datastore
 
 __all__ = [
     'UsersServicer',
+    'TokensServicer',
 ]
 
 log = logging.getLogger(__name__)
@@ -25,11 +26,32 @@ log = logging.getLogger(__name__)
 
 class UsersServicer(
         RolesMixin,
-        TokensMixin,
         UsersMixin,
         GroupsMixin,
         pb2_grpc.UsersServicer):
     """Implements the Users API server."""
+
+    ###########################################################################
+    #                                   MISC                                  #
+    ###########################################################################
+
+    def __init__(self, secret, datastore_project, datastore_namespace):
+        """Constructor.
+
+        Args:
+            secret (str): The secret to use for JWT encoding.
+        """
+        self.secret = secret
+        self.dsclient = datastore.Client(
+            project=datastore_project,
+            namespace=datastore_namespace
+        )
+
+
+class TokensServicer(
+        TokensMixin,
+        pb2_grpc.TokensServicer):
+    """Implements the Tokens API server."""
 
     ###########################################################################
     #                                   MISC                                  #

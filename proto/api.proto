@@ -12,8 +12,8 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/field_mask.proto";
 
 
-// The Users API.
-service Users {
+// The Tokens API.
+service Tokens {
 
   /*
    * Tokens
@@ -25,6 +25,29 @@ service Users {
       post: "/api/v1/tokens",
     };
   }
+
+   // Create a token
+  rpc GetTokenInfo(TokenInfoRequest) returns (TokenInfo) {
+    option (google.api.http) = {
+      get: "/api/v1/tokens:info",
+    };
+  }
+
+}
+
+// The Users API.
+service Users {
+
+  // /*
+  //  * Tokens
+  //  */
+
+  //  // Create a token
+  // rpc CreateToken(CreateTokenRequest) returns (Token) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/tokens",
+  //   };
+  // }
 
   /*
    * Roles
@@ -272,28 +295,41 @@ service Users {
 
 // A token
 message Token {
-  // The type of token
-  enum TokenType {
-    // The token type has not been provided.
-    TOKEN_TYPE_UNSPECIFIED = 0;
-    // A google-issued access token
-    ACCESS_TOKEN = 1;
-    // A google-issued ID token
-    ID_TOKEN = 2;
-    // A JWT token issued by datasets.
-    DATASETS_TOKEN = 3;
+  // The expiration time of the token
+  google.protobuf.Timestamp expiration_time = 1;
+
+  oneof tokens {
+    string datasets_token = 2;
+    string access_token = 3;
+    string id_token = 4;
   }
 
-  // The contents of the token
-  string token = 1;
-  // Token Type
-  TokenType type = 2;
-  // The expiration time of the token
-  google.protobuf.Timestamp expiration_time = 3;
 }
 
 // A message request to create a new datasets token.
 message CreateTokenRequest {
+  Token token = 1;
+}
+
+// A message to request token information.
+message TokenInfoRequest {
+  Token token = 1;
+}
+
+message TokenInfo {
+  int32 iat = 1;
+  int32 exp = 2;
+  string iss = 3;
+  string aud = 4;
+  string sub = 5;
+  string email = 6;
+  string locale = 7;
+  string picture = 8;
+  string given_name = 9;
+  string family_name = 10;
+  string full_name = 11;
+  repeated string roles = 12;
+  repeated string groups = 13;
 }
 
 // A message describing a role
