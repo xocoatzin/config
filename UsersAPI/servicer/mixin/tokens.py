@@ -78,7 +78,7 @@ class TokensMixin(object):
 
     @authorize(requires=[])  # Intentionally left empty
     def CreateToken(self, request, context, options):  # noqa
-        """Get a list of views for the collection."""
+        """Create a Datasets Token from an access or ID token."""
         request = MessageToDict(request)
 
         token_type = 'access_token'
@@ -263,7 +263,7 @@ class TokensMixin(object):
 
     @authorize(requires=[])  # Intentionally left empty
     def GetTokenInfo(self, request, context, options):  # noqa
-        """Get a list of views for the collection."""
+        """Validate and get the information about the token."""
         request = MessageToDict(request)
 
         token = request.get('token', {}).get('datasetsToken')

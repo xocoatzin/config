@@ -97,8 +97,9 @@ spec:
         image: gcr.io/endpoints-release/endpoints-runtime:1
         command: ["/bin/bash"]
         args: [
-          "/home/startup.sh"
+          "/esp-config/startup.sh"
         ]
+        workingDir: /home
         # readinessProbe:
         #   tcpSocket:
         #     port: 8080
@@ -113,7 +114,7 @@ spec:
         - mountPath: /etc/nginx/ssl_ro
           name: nginx-ssl
           readOnly: true
-        - mountPath: /home
+        - mountPath: /esp-config
           name: esp-config
           readOnly: true
 

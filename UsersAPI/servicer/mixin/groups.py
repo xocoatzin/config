@@ -44,8 +44,8 @@ class GroupsMixin(object):
 
         entity = datastore.Entity(key=key)
         entity.update({
-            'title': request.get('title'),
-            'description': request.get('description'),
+            'title': request.get('group', {}).get('title'),
+            'description': request.get('group', {}).get('description'),
             'created_at': now,
             'created_by': options.auth.get('email'),
         })
@@ -78,9 +78,11 @@ class GroupsMixin(object):
 
         # At the end of the collection, the next page token is equal
         # to the original token
-        next_page_token = query_iter.next_page_token.decode("utf-8")
-        if next_page_token == page_token:
-            next_page_token = None
+        next_page_token = None
+        if query_iter.next_page_token:
+            next_page_token = query_iter.next_page_token.decode("utf-8")
+            if next_page_token == page_token:
+                next_page_token = None
 
         return pb2.ListGroupsResponse(
             groups=groups,
@@ -143,9 +145,11 @@ class GroupsMixin(object):
 
         # At the end of the collection, the next page token is equal
         # to the original token
-        next_page_token = query_iter.next_page_token.decode("utf-8")
-        if next_page_token == page_token:
-            next_page_token = None
+        next_page_token = None
+        if query_iter.next_page_token:
+            next_page_token = query_iter.next_page_token.decode("utf-8")
+            if next_page_token == page_token:
+                next_page_token = None
 
         return pb2.ListMembershipsResponse(
             memberships=memberships,
