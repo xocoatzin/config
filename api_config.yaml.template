@@ -1,0 +1,57 @@
+# https://cloud.google.com/endpoints/docs/grpc-service-config/reference/rpc/google.api#service
+
+type: google.api.Service
+config_version: 3
+
+#
+# Name of the service configuration.
+#
+name: users.endpoints.ml-${env}.cloud.goog
+
+# API title to appear in the user interface (Google Cloud Console).
+title: Datasets Users API
+
+# Should match the service as defined in api.proto
+apis:
+- name: magicleap.datasets.users.Users
+- name: magicleap.datasets.users.Tokens
+
+# https://cloud.google.com/endpoints/docs/grpc/grpc-dns-configure
+endpoints:
+- name: users.endpoints.ml-${env}.cloud.goog
+  allow_cors: true
+  target: ${ingress_ip}
+
+# usage:
+#   rules:
+#   - selector: "magicleap.datasets.users.Users.*"
+#     allow_unregistered_calls: false
+
+#   - selector: "magicleap.datasets.users.Tokens.*"
+#     allow_unregistered_calls: true
+
+# Request authentication.
+authentication:
+  providers:
+  - id: google_id_token
+    issuer: https://accounts.google.com
+    audiences: 439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.googleusercontent.com,763597474440-jitt7oqo7jppgg497dq4ae9uq5japai5.apps.googleusercontent.com,439260306570-1hs8vdfr2p5pkffuml6rtbbm503dsphc.apps.googleusercontent.com
+
+  - id: datasets_auth_provider
+
+    # JWT issuer (Users API)
+    issuer: https://users.datasets.magicleap.com
+
+    # This is the public key endpoint for the Service Account used to sign the JWT
+    # https://cloud.google.com/iam/docs/creating-managing-service-account-keys/
+    jwks_uri: https://www.googleapis.com/service_accounts/v1/metadata/x509/datasets-users-api@analyticsframework.iam.gserviceaccount.com
+
+    # Accept only JWT with any of these audiences
+    audiences: https://users.datasets.magicleap.com,https://datasets.magicleap.com
+
+  rules:
+  # This auth rule will apply to all methods.
+  - selector: "magicleap.datasets.users.Users.*"
+  # - selector: "*"
+    requirements:
+      - provider_id: datasets_auth_provider
