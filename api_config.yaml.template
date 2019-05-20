@@ -6,7 +6,7 @@ config_version: 3
 #
 # Name of the service configuration.
 #
-name: users.endpoints.ml-${env}.cloud.goog
+name: ${endpoints_service_name}
 
 # API title to appear in the user interface (Google Cloud Console).
 title: Datasets Users API
@@ -18,7 +18,7 @@ apis:
 
 # https://cloud.google.com/endpoints/docs/grpc/grpc-dns-configure
 endpoints:
-- name: users.endpoints.ml-${env}.cloud.goog
+- name: ${endpoints_service_name}
   allow_cors: true
   target: ${ingress_ip}
 
