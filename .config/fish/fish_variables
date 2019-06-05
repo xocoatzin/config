@@ -4,7 +4,7 @@ SETUVAR __fish_init_2_3_0:\x1d
 SETUVAR _fish_abbr_d:docker
 SETUVAR _fish_abbr_g:git
 SETUVAR _fish_abbr_ga:git\x20add
-SETUVAR _fish_abbr_gc:git\x20commit
+SETUVAR _fish_abbr_gc:git\x20commit\x20\x2dm
 SETUVAR _fish_abbr_gd:git\x20diff
 SETUVAR _fish_abbr_gl:git\x20log
 SETUVAR _fish_abbr_gs:git\x20status
