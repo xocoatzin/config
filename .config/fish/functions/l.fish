@@ -13,7 +13,7 @@ for opt in --color=auto -G --color -F
         function l --description "List contents of directory" -V opt
             isatty stdout
             and set -a opt -F
-            command ls -laG $opt $argv
+            command ls -lahG $opt $argv
         end
 
         if [ $opt = --color=auto ] && ! set -qx LS_COLORS && set -l cmd (command -s {g,}dircolors)[1]
