@@ -1,7 +1,4 @@
 .venv3/
-ci/
-googleapis/
-proto/
 .git/
 
 .*

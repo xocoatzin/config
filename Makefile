@@ -19,8 +19,67 @@ ENDC = \033[0m
 BOLD = \033[1m
 UNDERLINE = \033[4m
 
-.PHONY: devinstall
-devinstall:  ## Install the development environment.
+# # Config for MacOS
+# ifeq ($(UNAME_S),Darwin)
+# 	alias sed=gsed
+# endif
+
+
+# Call manually:
+# # 	@git submodule update --init
+# # 	@git submodule update --recursive --remote
+
+.PHONY: install-dev
+install-dev: PROJECT_HOME=.
+install-dev:  ## Install the development environment.
+	@echo "${OKGREEN}Installing development environment in ${OKBLUE}${PROJECT_HOME}${ENDC}"
+	@virtualenv -p python3 ${PROJECT_HOME}/.venv3
+	@${PROJECT_HOME}/.venv3/bin/pip install --upgrade pip
+	@${PROJECT_HOME}/.venv3/bin/pip install --upgrade setuptools
+	@${PROJECT_HOME}/.venv3/bin/pip install -e .[dev] -v
+	@${PROJECT_HOME}/.venv3/bin/pip install -e .[all] -v
+	@echo "${OKGREEN}Activate development environment with: ${OKBLUE}source ${PROJECT_HOME}/.venv3/bin/activate${ENDC}"
+
+
+.PHONY: test
+test:  ## Run all the available tests.
+	@echo "${OKGREEN}All the fake tests passed${ENDC}"
+
+
+.PHONY: build-image
+build-image:  ## Build a docker image containing the project.
+	@docker build \
+		-t $(HOST)$(REPOSITORY):$(TAG) \
+		.
+
+
+# .PHONY: deploy
+# deploy:  ## Deploy the whole project.
+# 	@echo "${OKGREEN}Deploying to: ... ${ENDC}"
+
+
+# Custom targets
+
+.PHONY: proto
+proto: PROJECT_HOME=.
+proto: # Generate protobuf definitions.
+	@mkdir -p proto/out/
+	@${PROJECT_HOME}/.venv3/bin/python -m grpc_tools.protoc \
+		--include_imports \
+		--include_source_info \
+		--proto_path=googleapis/ \
+		--proto_path=proto/ \
+		--descriptor_set_out=proto/out/api_descriptor.pb \
+		--python_out=proto/out/ \
+		--grpc_python_out=proto/out/ \
+		proto/api.proto
+	@cp proto/out/*.py UsersAPI/ && \
+		sed -i 's/^import api_pb2 as api__pb2$$/from UsersAPI import api_pb2 as api__pb2/' UsersAPI/api_pb2_grpc.py  # Fix Py3 imports
+	@echo "${OKGREEN}Protobuf generated in proto/out/${ENDC}"
+
+
+.PHONY: _devinstall
+_devinstall:  ## Install the development environment.
 	@mkdir -p .local/datastore/db/
 	@mkdir -p .local/credentials/
 	@git submodule update --recursive --remote
@@ -47,21 +106,6 @@ lint: ## Lint and validate code format.
 	@.venv3/bin/flake8_junit ci/lint/flake8.txt ci/lint/flake8_junit.xml > /dev/null 2>&1
 	@cat ci/lint/flake8.txt
 
-.PHONY: proto
-proto: # Generate protobuf definitions.
-	@mkdir -p proto/out/js/
-	@.venv3/bin/python -m grpc_tools.protoc \
-		--include_imports \
-		--include_source_info \
-		--proto_path=googleapis/ \
-		--proto_path=proto/ \
-		--descriptor_set_out=proto/out/api_descriptor.pb \
-		--python_out=proto/out/ \
-		--grpc_python_out=proto/out/ \
-		proto/api.proto
-	@cp proto/out/*.py UsersAPI/ && \
-		sed -i 's/^import api_pb2 as api__pb2$$/from UsersAPI import api_pb2 as api__pb2/' UsersAPI/api_pb2_grpc.py  # Fix Py3 imports
-	@echo "${OKGREEN}Protobuf generated in proto/out/${ENDC}"
 
 .PHONY: run-dev
 run-dev: proto

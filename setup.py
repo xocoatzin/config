@@ -96,6 +96,8 @@ setup(
         'google-auth>=1.6,<2',
         'google-cloud-datastore>=1.7,<2',
         'arrow>=0.4.0,<1.0',
+        'cryptography>=1.3.4',
+        'pyOpenSSL>=0.14',
     ],
     extras_require=extras_require,
     entry_points={
