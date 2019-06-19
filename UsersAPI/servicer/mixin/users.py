@@ -74,6 +74,9 @@ class UsersMixin(object):
         if not user_id:
             context.abort(StatusCode.INVALID_ARGUMENT, "Invalid user name")
 
+        if user_id in ['me']:
+            user_id = options.auth.get('email')
+
         user_key = self.dsclient.key('User', user_id)
         query = self.dsclient.query(kind='Membership')
         query.keys_only()
@@ -87,9 +90,12 @@ class UsersMixin(object):
             for item in first_page
         ]
 
+        next_page_token = None
+        if query_iter.next_page_token:
+            next_page_token = query_iter.next_page_token.decode("utf-8")
+
         # At the end of the collection, the next page token is equal
         # to the original token
-        next_page_token = query_iter.next_page_token.decode("utf-8")
         if next_page_token == page_token:
             next_page_token = None
 
@@ -117,6 +123,9 @@ class UsersMixin(object):
         if not user_id:
             context.abort(StatusCode.INVALID_ARGUMENT, "Invalid user name")
 
+        if user_id in ['me']:
+            user_id = options.auth.get('email')
+
         ancestor = self.dsclient.key('User', user_id)
         query = self.dsclient.query(kind='UserRole', ancestor=ancestor)
         query.keys_only()
@@ -133,9 +142,12 @@ class UsersMixin(object):
             for entity in first_page
         ]
 
+        next_page_token = None
+        if query_iter.next_page_token:
+            next_page_token = query_iter.next_page_token.decode("utf-8")
+
         # At the end of the collection, the next page token is equal
         # to the original token
-        next_page_token = query_iter.next_page_token.decode("utf-8")
         if next_page_token == page_token:
             next_page_token = None
 

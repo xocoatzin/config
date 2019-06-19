@@ -49,6 +49,7 @@ lint: ## Lint and validate code format.
 
 .PHONY: proto
 proto: # Generate protobuf definitions.
+	@mkdir -p proto/out/js/
 	@.venv3/bin/python -m grpc_tools.protoc \
 		--include_imports \
 		--include_source_info \

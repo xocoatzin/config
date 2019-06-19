@@ -164,5 +164,5 @@ data:
       --cors_preset=basic \
       --cors_allow_origin=* \
       --cors_allow_methods=GET,POST,OPTIONS,PUT,DELETE,PATCH \
-      --cors_allow_headers=Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range,x-api-key \
+      --cors_allow_headers=Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range,x-api-key,x-grpc-web \
       --cors_allow_credentials
