@@ -54,14 +54,12 @@ set history=500
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
+filetype on
 
 " Set to auto read when a file is changed from the outside
 set autoread
 set number
-" try
-"     set termguicolors
-" catch
-" endtry
+set termguicolors
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -75,6 +73,79 @@ nmap <leader>w :w!<cr>
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
+" Use system clipboard
+set clipboard=unnamed
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-surround'
+Plug 'nvie/vim-flake8'
+Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'kien/ctrlp.vim'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
+Plug 'flazz/vim-colorschemes'
+Plug 'vim-python/python-syntax'
+Plug 'tpope/vim-fugitive'
+Plug 'ervandew/supertab'
+Plug 'Valloric/YouCompleteMe'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" Initialize plugin system
+call plug#end()
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+" Enable folding with the spacebar
+nnoremap <space> za
+
+"ignore files in NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$'] 
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+let g:ycm_server_python_interpreter = '/usr/bin/python3'
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+let g:ultisnips_python_style='google'
+
+" Switch buffers
+nnoremap <F7> :bp<CR>
+nnoremap <F9> :bn<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Python
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let python_highlight_all=1
+autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
+let g:flake8_show_in_gutter=1
+let g:flake8_show_in_file=1
+let g:python_highlight_all=1
+"Show vertical line
+autocmd FileType python set colorcolumn=80
+
+"autocmd FileType python set listchars=eol:¬¨,tab:>¬∑,trail:~,extends:>,precedes:<,space:‚ê£
+autocmd FileType python set list
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -163,7 +234,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme desert
+    colorscheme vim-material 
 catch
 endtry
 
