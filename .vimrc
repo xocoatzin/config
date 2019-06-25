@@ -58,8 +58,6 @@ filetype on
 
 " Set to auto read when a file is changed from the outside
 set autoread
-set number
-set termguicolors
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -111,7 +109,7 @@ set foldlevel=99
 nnoremap <space> za
 
 "ignore files in NERDTree
-let NERDTreeIgnore=['\.pyc$', '\~$'] 
+let NERDTreeIgnore=['\.pyc$', '\~$']
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
@@ -233,8 +231,14 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
+if has("termguicolors")     " set true colors
+    set t_8f=[38;2;%lu;%lu;%lum
+    set t_8b=[48;2;%lu;%lu;%lum
+    set termguicolors
+endif
+
 try
-    colorscheme vim-material 
+    colorscheme vim-material
 catch
 endtry
 
