@@ -18,6 +18,8 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from google.cloud import datastore
 from google.auth import crypt
 from google.auth import jwt
+from google.oauth2 import service_account
+import google.auth.transport.requests
 
 import UsersAPI.api_pb2 as pb2
 from UsersAPI.tools import authorize
@@ -26,6 +28,55 @@ from UsersAPI.tools import authorize
 __all__ = [
     'TokensMixin',
 ]
+
+
+def load_google_groups(domain, user):
+    """Load google groups from directory API.
+
+    Args:
+        domain (str): The domain to query.
+        user (str): Return the groups that the user is member of.
+    """
+    credentials = service_account.Credentials.from_service_account_file(
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'],
+        scopes=[
+            'https://www.googleapis.com/auth/admin.directory.group.readonly'
+        ]
+    ).with_subject(os.environ.get(
+        'API_GSUITE_AUTH_SUBJECT', 'svc_srce_admin@magicleap.com'))
+    credentials.refresh(google.auth.transport.requests.Request())
+
+    # Load all the pages
+    groups_found = []
+
+    next_page_token = None
+    params = {
+        'domain': domain,
+        'userKey': user,
+    }
+    while True:
+        if next_page_token:
+            params['pageToken'] = next_page_token
+
+        response = requests.get(
+            'https://www.googleapis.com/admin/directory/v1/groups',
+            params=params,
+            headers={
+                'Authorization': 'Bearer {}'.format(credentials.token)
+            }
+        )
+        response_data = response.json()
+
+        # Load groups and aliases from response.
+        for group in response_data.get('groups', []):
+            groups_found.append(group.get('email'))
+            groups_found += group.get('aliases', [])
+
+        next_page_token = response_data.get('nextPageToken')
+        if next_page_token is None:
+            break
+
+    return groups_found
 
 
 # Access token:
@@ -216,13 +267,29 @@ class TokensMixin(object):
             for entity in query.fetch()
         ]
 
-        query = self.dsclient.query(kind='Membership')
-        query.keys_only()
-        query.add_filter('user_key', '=', user_key)
-        groups = [
-            item.key.parent.name
-            for item in query.fetch()
-        ]
+        # query = self.dsclient.query(kind='Membership')
+        # query.keys_only()
+        # query.add_filter('user_key', '=', user_key)
+        # groups = [
+        #     item.key.parent.name
+        #     for item in query.fetch()
+        # ]
+
+        ml_groups = []
+        try:
+            options.log.info("Loading Google Groups")
+            ml_groups = load_google_groups(
+                'magicleap.com', user_info.get('email'))
+        except Exception as e:
+            options.log.exception(
+                "Error loading Google Groups: {}".format(str(e)))
+
+        groups = {
+            '@magicleap.com': [
+                g.split('@')[0]  # remove the domain
+                for g in ml_groups
+            ]
+        }
 
         now = int(time.time())
         expiration = int(token_info.get('exp'))
@@ -273,14 +340,13 @@ class TokensMixin(object):
                 StatusCode.INVALID_ARGUMENT,
                 "Missing argument: datasets_token")
 
-        # TODO: Download from:
-        # https://www.googleapis.com/service_accounts/v1/metadata/x509/datasets-users-api@analyticsframework.iam.gserviceaccount.com
-
-        public_certs = {
-            "e5cb61d228893c0f8602929f3050b153f4b3b5ea": "-----BEGIN CERTIFICATE-----\nMIIDSjCCAjKgAwIBAgIIAZVDs7WMTVYwDQYJKoZIhvcNAQEFBQAwSDFGMEQGA1UE\nAxM9ZGF0YXNldHMtdXNlcnMtYXBpLmFuYWx5dGljc2ZyYW1ld29yay5pYW0uZ3Nl\ncnZpY2VhY2NvdW50LmNvbTAeFw0xOTAyMTIxMjQ3MzNaFw0xOTAzMDEwMTAyMzNa\nMEgxRjBEBgNVBAMTPWRhdGFzZXRzLXVzZXJzLWFwaS5hbmFseXRpY3NmcmFtZXdv\ncmsuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IB\nDwAwggEKAoIBAQDI0DxKjkTjiVk911ryiLyO4+bPFJ5WEyDxIcgluZSZ7ncFNpOU\n0AWee/4w2iPUALKUp+W2Qnfd6SCbwjNB82Jqb8yOtgegDq8bswE6s4k5TkMVGSOU\nCCNlPT7tAoxBJtWLggdP/OietfJA5/7Tr6rjE0zQESqi/nplhgxtlbvO1s8/ui8T\n8GAtUoeZZVgzbkGKEa3dvoJvgobktph4ja7VlElRPyONn+yQG+iR5CJqNmuE6Q0s\nRIWfbNu6n6yG+xMfHim7T0C0oJP25WatKj/lKUAyFPvHyYcvPp3/qsvClQHYh05F\nufbduA02+2Xf7IUx+6hqSwaiYpONZSTNdsrjAgMBAAGjODA2MAwGA1UdEwEB/wQC\nMAAwDgYDVR0PAQH/BAQDAgeAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMCMA0GCSqG\nSIb3DQEBBQUAA4IBAQC+IKsArY8P+dFHecqmktJhxujnBIG44cdunILXK2Rsxm8k\nzF7Zu1sX4NpH2OYFnIogV0vhbl/1r1n/EQp1b9bqA8zPBi3gvQlp/RHE499qWxT2\nTRCCwvzopvbcYWXXaxmfaS7JWPJ6WPOyp1KRugyl6kv0kAH8UMxiAcwVBvY6S90Y\ntWZDSsceQpOJZU6lsANEkMQVVS9V7nummp11RoyAeUKjazVU7DvSyhne6NrVeRKm\nBv2UKpMoziPuPsueGkGvJ1azWkg4RzrVtOefzrIBwS6qg/BItz5XPnB67V8ZI3rG\ngsG+m3kLYrUTM4ZqSzczeYJnxWR6Zj2Ix7jb5OJq\n-----END CERTIFICATE-----\n",  # noqa
-            "1e0201214e90847476850e43e5800b428e58a9f0": "-----BEGIN CERTIFICATE-----\nMIIC+jCCAeKgAwIBAgIIRppiyDdYAPwwDQYJKoZIhvcNAQEFBQAwIDEeMBwGA1UE\nAxMVMTA4MTY0Mjk5OTQ4NzQwNjY2OTI0MB4XDTE5MDIwNDEzMDM0NloXDTI5MDIw\nMTEzMDM0NlowIDEeMBwGA1UEAxMVMTA4MTY0Mjk5OTQ4NzQwNjY2OTI0MIIBIjAN\nBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqgO1iMLPRSVO/Y5I9L6sdKNjrhbC\n54o9ZaOC5jUZw1V0JHD71wJYxMe44aAKT9cOYlmXcmwWEiylbWX/6TRQHh1lFI+I\nDrPT3m92noMWabZnlNvCTDFOe/RsEz/6V+9gtyvtWXeUbWSrmmu/Zv106HDWDawq\n+dOTL6ynIRX+GWsRQftXY0vbiYwWhM8JAHcaRi7e/CC/ta1HW02aB0reSX23l0qG\nP2dtAHAJEOD+pOBhdGuJPGI3W5WxWdwpUfVvuzdykcFIU822HIwV6/Q7Lp54RPym\n4JazovCkraQTJwpWqaU44yC4HbnU2KcDR6lMfuOVMSOAoBC9SzV57hzxVQIDAQAB\nozgwNjAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIHgDAWBgNVHSUBAf8EDDAK\nBggrBgEFBQcDAjANBgkqhkiG9w0BAQUFAAOCAQEAdlMObSWd+vlvvBT6ucvlPN8U\nHSFt9PGlj2d8D7pY06Q8UM3zogsv85m8ST0bBSjsUAH0dKkI1svfvx9WsC2/N0iV\nNmT7sFc+ZKWNs8IXe0XNCn5krEGd8TVQuYp7Xwz/VxatiBRn3FbrhdShgLK7rnHW\nT4i9VUbGsm1hzQWrlfaXSSFmttgrB8tUY4pgt0m0hV9jrJivI/j7FuBwnrmoEk55\nPzosm5+ML/koDsKluyYmK4s/KFniMVsazSQqjs15m363OZxXjJhMH+kH68Ria+NY\nSuH3CT2uIrPWxMI61EGsTMhICQq1vy7RYH+0Z3lVPIl4hzXrybKKVCOxnYgilw==\n-----END CERTIFICATE-----\n",  # noqa
-            "80407c0b46aba6ec27e252a42f7c4457864f7712": "-----BEGIN CERTIFICATE-----\nMIIDSjCCAjKgAwIBAgIIT3sSbxKkNf4wDQYJKoZIhvcNAQEFBQAwSDFGMEQGA1UE\nAxM9ZGF0YXNldHMtdXNlcnMtYXBpLmFuYWx5dGljc2ZyYW1ld29yay5pYW0uZ3Nl\ncnZpY2VhY2NvdW50LmNvbTAeFw0xOTAyMjAxMjU2MjBaFw0xOTAzMDkwMTExMjBa\nMEgxRjBEBgNVBAMTPWRhdGFzZXRzLXVzZXJzLWFwaS5hbmFseXRpY3NmcmFtZXdv\ncmsuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IB\nDwAwggEKAoIBAQC2T2vPBaS/epQHD9S2Qt1b23lzOXYzhMDj6uL1nKnePRpqHNR7\nPrLB45f+7fzNPbt0T0fYW0Q4mzdUsIUPT8WIF6o4LcxNRCdLtJrjtkzoAp8seKy+\nVh1g6klmqy0K3gKrRgJu6tfyFtZ3fa1wiT3O3g+0KxFiZTbWwDYj4Fjcle1dH/aM\nJkHKYaSTIjXZTFaaY/1xN/4sM0GjTHw2r3eShp0tmzXhIGi6tImUddaz+2s9EqHq\niYOX8pqrx7aevlSxP/XwuzAlepZHLI3gZF/YaUdtKhQ2XBcbUG4nhUs7H4FQ2AJZ\nqUld6IHJMDR0blZan/G6xVKrXQbIWD9GdYO5AgMBAAGjODA2MAwGA1UdEwEB/wQC\nMAAwDgYDVR0PAQH/BAQDAgeAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMCMA0GCSqG\nSIb3DQEBBQUAA4IBAQAxRqZFD+lCCPqadmdck8c1tAk7QfKNF0aiiZl7/Auvm7UH\nsshvnhJe1tME7kZqa7rbDPg7AUUoXRyZhwgaeHtFqy8Ydm2VO+xyMQgVJD4/qlW+\nXDmXPALFG1ieRirSrCAh8w3SJptjcMCcBhAKxpFWGkmXK5gBm8sR3aKkGcgzkodv\nXn8qitEz/sB60yg5lK3i1A7SCvtdlo0W5XFfN2oJeMpnDtmK4mqCqDNJRegI2a7y\niLb7PAgJGYQGbCJ6n6huxUcxZbCqF1d9TykAf0a7H3C4TDTX4/jzsBj1RZSZ6MVU\njb37Xw3AQKkvbsQ6Le1BMKGZSiM6E2zSnnAHMu1Y\n-----END CERTIFICATE-----\n"  # noqa
-        }
+        # TODO: Load email from config
+        service_account_email = \
+            'datasets-users-api@analyticsframework.iam.gserviceaccount.com'
+        response = requests.get((
+            'https://www.googleapis.com/service_accounts/v1/metadata/x509/{}'
+        ).format(service_account_email))
+        public_certs = response.json()
 
         try:
             token_info = jwt.decode(token, certs=public_certs)

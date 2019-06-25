@@ -140,6 +140,8 @@ spec:
             value: analyticsframework
           - name: API_DATASTORE_NAMESPACE
             value: datasets-users-api
+          - name: API_GSUITE_AUTH_SUBJECT
+            value: svc_srce_admin@magicleap.com
           - name: GOOGLE_APPLICATION_CREDENTIALS
             value: /home/service-account/service-account.json
 ---
