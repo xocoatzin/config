@@ -99,6 +99,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
 
 " Initialize plugin system
 call plug#end()
@@ -112,6 +114,7 @@ nnoremap <space> za
 "ignore files in NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$'] 
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
 let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
 
@@ -125,12 +128,16 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+let g:ultisnips_python_style='google'
 
+" Switch buffers
+nnoremap <F7> :bp<CR>
+nnoremap <F9> :bn<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let python_highlight_all=1
-autocmd FileType python map <buffer> <F7> :call flake8#Flake8()<CR>
+autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
 let g:flake8_show_in_gutter=1
 let g:flake8_show_in_file=1
 let g:python_highlight_all=1
