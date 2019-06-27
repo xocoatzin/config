@@ -90,10 +90,17 @@ nmap <leader>w :w!<cr>
 
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
-command W w !sudo tee % > /dev/null
+try
+  command W w !sudo tee % > /dev/null
+catch
+endtry
 
 " Use system clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
+
+" Leader timeout
+set notimeout
+set ttimeout
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => NeoVim Configuration
@@ -109,8 +116,10 @@ if has('nvim')
   " - Avoid using standard Vim directory names like 'plugin'
   call plug#begin('~/.vim/plugged')
 
-  Plug 'tpope/vim-surround'
+  Plug 'machakann/vim-sandwich'
   Plug 'nvie/vim-flake8'
+  Plug 'scrooloose/nerdcommenter'
+  " Plug 'liuchengxu/vista.vim'
   Plug 'scrooloose/nerdtree'
   Plug 'jistr/vim-nerdtree-tabs'
   Plug 'kien/ctrlp.vim'
@@ -120,6 +129,7 @@ if has('nvim')
   Plug 'airblade/vim-gitgutter'
   Plug 'flazz/vim-colorschemes'
   Plug 'vim-python/python-syntax'
+  Plug 'tmhedberg/SimpylFold'
   Plug 'tpope/vim-fugitive'
   Plug 'ervandew/supertab'
   Plug 'Valloric/YouCompleteMe'
@@ -136,8 +146,14 @@ if has('nvim')
   " Enable folding with the spacebar
   nnoremap <space> za
 
-  "ignore files in NERDTree
+  " Ignore files in NERDTree
   let NERDTreeIgnore=['\.pyc$', '\~$']
+  " Auto start NerdTree if vim is started with a directory.
+  autocmd StdinReadPre * let s:std_in=1
+  autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+  " Toggle NerdTree
+  map <C-n> :NERDTreeToggle<CR>
+
   let g:airline_powerline_fonts = 1
   let g:airline#extensions#tabline#enabled = 1
 
@@ -427,15 +443,22 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set spelllang=en_us
+
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
 " Shortcuts using <leader>
+" Next error
 map <leader>sn ]s
+" Prev error
 map <leader>sp [s
+" Add to dictionary
 map <leader>sa zg
+" Show suggestions
 map <leader>s? z=
-
+" Correct last error
+inoremap <C-f> <c-g>u<Esc>[s1z=`]a<c-g>u
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
