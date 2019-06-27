@@ -13,7 +13,7 @@ pipeline {
     }
     stage('Report') {
       steps {
-        junit(allowEmptyResults: true, testResults: 'ci/lint/flake8_junit.xml')
+        junit(allowEmptyResults: true, testResults: 'flake8_junit.xml')
       }
     }
   }

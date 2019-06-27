@@ -1,0 +1,11 @@
+.venv3/
+.git/
+
+.*
+*.egg-info
+*.txt
+*.cfg
+Dockerfile
+Jenkinsfile
+docker-compose.yaml
+__pycache__

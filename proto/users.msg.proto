@@ -1,0 +1,416 @@
+
+// ACL subject credentials
+message AclSubjectCredentials {
+  // Credentials name
+  string name = 1;
+  // Credential or role
+  string credential = 2;
+  // Timestamp for when the credentials were granted.
+  google.protobuf.Timestamp creation_time = 3;
+  // ID of the user who granted this credentials
+  string granted_by = 4;
+}
+
+// An ACL record for a subject
+message AclRecord {
+  // Name of the record
+  string name = 1;
+  // ID of the subject for this record
+  string subject = 2;
+  // Collection of credentials for this record.
+  repeated AclSubjectCredentials credentials = 3;
+}
+
+// Request the ACL records for a project
+message ListAclRecordsRequest {
+  // The parent resource name.
+  string parent = 1;
+
+  // // The maximum number of items to return.
+  // int32 page_size = 2;
+
+  // // The next_page_token value returned from a previous List request, if any.
+  // string page_token = 3;
+}
+
+// Response
+message ListAclRecordsResponse {
+  // The found records
+  repeated AclRecord records = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+// Request to grant ACL credentials for a subject
+message AclCredentialsRequest {
+  // The subject to grant credentials.
+  string subject = 2;
+  // A list of credentials to grant.
+  repeated string credentials = 3;
+}
+
+// Request to grant ACL credentials for a subject
+message GrantAclCredentialsRequest {
+    // The parent resource name.
+  string parent = 1;
+
+  // The request.
+  AclCredentialsRequest request = 2;
+}
+
+// Request to remove a subject's credentials.
+message DeleteAclCredentialsRequest {
+  // The name of the resource to be deleted.
+  string name = 1;
+}
+
+// A message describing a project
+message Project {
+  // Project name
+  string name = 1;
+  // The title of the project
+  string title = 2;
+  // Creation timestamp
+  google.protobuf.Timestamp creation_time = 3;
+  // Created by user
+  string created_by = 4;
+  // Updated timestamp
+  google.protobuf.Timestamp update_time = 5;
+  // Updated by user
+  string updated_by = 6;
+}
+
+message CreateProjectRequest {
+  // The resource to create.
+  Project project = 1;
+  // The requested project ID
+  string project_id = 2;
+}
+
+message GetProjectRequest {
+  // The field will contain name of the resource requested.
+  string name = 1;
+}
+
+message UpdateProjectRequest {
+  // The resource which replaces the resource on the server.
+  Project project = 1;
+
+  // The update mask applies to the resource. For the `FieldMask` definition,
+  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteProjectRequest {
+  // The name of the resource to be deleted.
+  string name = 1;
+}
+
+message ListProjectsRequest {
+  // The maximum number of items to return.
+  int32 page_size = 1;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 2;
+}
+
+message ListProjectsResponse {
+  // The found projects
+  repeated Project projects = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+// The retention policy
+message RetentionPolicy {
+
+  // The mode in which the retention policy operates
+  enum RetentionMode {
+    // The mode has not been provided.
+    RETENTION_MODE_UNSPECIFIED = 0;
+    // The retention policy is OFF and is not effective.
+    // OFF = 1;
+    // The policy is to delete documents older than the specified period.
+    DELETE = 2;
+  }
+
+  // Retention mode
+  RetentionMode mode = 1;
+  // Number of days that the policy covers. Documents older than the specified
+  // period are subject to the action defined in "mode".
+  int32 period_days = 2;
+  // Number of days before the policy takes action to notify the data owner.
+  // int32 notification_days = 3;
+}
+
+// The policy used to accept new documents into the collection.
+message AdmissionPolicy {
+
+  // Mode for the policy.
+  enum AdmissionMode {
+    // The mode has not been provided.
+    ADMISSION_UNSPECIFIED = 0;
+    // The policy is not effective.
+    OFF = 1;
+    // The policy is enforced strictly. New documents failing to meet the policy are rejected.
+    STRICT = 2;
+    // A warning when a document does not meet the policy, but the document is still accepted.
+    WARN = 3;
+  }
+
+  // Admission mode
+  AdmissionMode mode = 1;
+  // A string containing a valid JSON schema, used to validate incoming documents.
+  string schema = 2;
+}
+
+// A data collection
+message Collection {
+  // Collection name
+  string name = 1;
+  // The title of the collection
+  string title = 2;
+  // Creation timestamp
+  google.protobuf.Timestamp creation_time = 3;
+  // Created by user
+  string created_by = 4;
+  // Updated timestamp
+  google.protobuf.Timestamp update_time = 5;
+  // Updated by user
+  string updated_by = 6;
+  // The retention policy for the collection.
+  RetentionPolicy retention_policy = 7;
+  // The admission policy for the collection.
+  AdmissionPolicy admission_policy = 8;
+}
+
+message ListCollectionsResponse {
+  // The found collections
+  repeated Collection collections = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+message ListCollectionsRequest {
+  // The parent resource name.
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+message CreateCollectionRequest {
+    // The parent resource name.
+  string parent = 1;
+
+  // The resource to create.
+  Collection collection = 2;
+
+  // The collection id to use for this collection.
+  string collection_id = 3;
+}
+
+message GetCollectionRequest {
+  // The field will contain name of the resource requested.
+  string name = 1;
+}
+
+message UpdateCollectionRequest {
+  // The resource which replaces the resource on the server.
+  Collection collection = 1;
+
+  // The update mask applies to the resource. For the `FieldMask` definition,
+  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteCollectionRequest {
+  // The name of the resource to be deleted.
+  string name = 1;
+}
+
+// // A document label
+// message Label {
+//   // Name of the label
+//   string name = 1;
+//   // Value of the label, as a json string.
+//   string value = 2;
+// }
+
+// A document label
+message LabelSelector {
+  // Name of the label
+  string name = 1;
+  // Value of the label, as a json string.
+  string value = 2;
+  // The operator to use for the selector
+  string operator = 3;
+}
+
+// A warning message.
+message Warning {
+  // the warning type.
+  string type = 1;
+  // The message of the warning
+  string message = 2;
+}
+
+// A collection document
+message Document {
+  // Mode for the policy.
+  enum PayloadFormat {
+    // The format has not been provided.
+    FORMAT_UNSPECIFIED = 0;
+
+    // The payload is to be treated as a plain text string.
+    TEXT = 1;
+
+    // The payload is encoded as a JSON string.
+    JSON = 2;
+  }
+
+  // Document name
+  string name = 1;
+
+  // Creation timestamp
+  google.protobuf.Timestamp creation_time = 2;
+
+  // The labels for the document
+  map<string, string> labels = 3;
+
+  // The document payload
+  string payload = 4;
+
+  // The format in which the payload is encoded
+  PayloadFormat format = 5;
+
+  // Output only. Warnings raised during the current document operation.
+  repeated Warning warnings = 6;
+}
+
+message ListDocumentsResponse {
+  // The documents found
+  repeated Document documents = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+message ListDocumentsRequest {
+  // The parent resource name.
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+
+  // A filter to apply to the documents.
+  string filter = 4;
+}
+
+message AggregationPipeline {
+  // The stages to apply to the aggregation pipeline, as JSON strings.
+  repeated string stages = 1;
+}
+
+// Request an aggregation operation to be applied on a collection.
+message AggregateDocumentsRequest {
+  // The parent resource name.
+  string parent = 1;
+
+  // The aggregation pipeline.
+  AggregationPipeline pipeline = 2;
+}
+
+message CreateDocumentRequest {
+    // The parent resource name.
+  string parent = 1;
+
+  // The resource to create.
+  Document document = 2;
+}
+
+message GetDocumentRequest {
+  // The field will contain name of the resource requested.
+  string name = 1;
+}
+
+message DeleteDocumentRequest {
+  // The name of the resource to be deleted.
+  string name = 1;
+}
+
+message View {
+  // View name (id)
+  string name = 1;
+  // The title of the view
+  string title = 2;
+  // Creation timestamp
+  google.protobuf.Timestamp creation_time = 3;
+  // Created by user
+  string created_by = 4;
+  // The stages to apply to the aggregation pipeline.
+  AggregationPipeline pipeline = 5;
+}
+
+message ListViewsResponse {
+  // The found views
+  repeated View views = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+message ListViewsRequest {
+  // The parent resource name.
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+message CreateViewRequest {
+    // The parent resource name.
+  string parent = 1;
+
+  // The resource to create.
+  View view = 2;
+
+  // The view id to use for this view.
+  string view_id = 3;
+}
+
+message GetViewRequest {
+  // The field will contain name of the resource requested.
+  string name = 1;
+}
+
+message UpdateViewRequest {
+  // The resource which replaces the resource on the server.
+  View view = 1;
+
+  // The update mask applies to the resource. For the `FieldMask` definition,
+  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteViewRequest {
+  // The name of the resource to be deleted.
+  string name = 1;
+}

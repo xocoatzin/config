@@ -49,6 +49,7 @@ class JwtReply(messages.Message):
     token = messages.StringField(1, required=True)
     expires = messages.IntegerField(2, required=True)
 
+
 # WIP
 allowed_client_ids = [
     '439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.googleusercontent.com', # CLI  # noqa
@@ -172,5 +173,6 @@ class UsersApi(remote.Service):
             base64.urlsafe_b64encode(signature))
 
         return JwtReply(token=signed_jwt, expires=expires)
+
 
 api = endpoints.api_server([UsersApi])

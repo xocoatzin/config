@@ -1,0 +1,571 @@
+
+/*
+ * https://cloud.google.com/apis/design
+ */
+syntax = "proto3";
+
+package magicleap.datasets.users;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+
+
+// The Tokens API.
+service Tokens {
+
+  /*
+   * Tokens
+   */
+
+   // Create a token
+  rpc CreateToken(CreateTokenRequest) returns (Token) {
+    option (google.api.http) = {
+      post: "/api/v1/tokens",
+    };
+  }
+
+   // Create a token
+  rpc GetTokenInfo(TokenInfoRequest) returns (TokenInfo) {
+    option (google.api.http) = {
+      get: "/api/v1/tokens:info",
+    };
+  }
+
+}
+
+// The Users API.
+service Users {
+
+  // /*
+  //  * Tokens
+  //  */
+
+  //  // Create a token
+  // rpc CreateToken(CreateTokenRequest) returns (Token) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/tokens",
+  //   };
+  // }
+
+  /*
+   * Roles
+   */
+
+  // List available roles
+  rpc ListRoles(ListRolesRequest) returns (ListRolesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/roles"
+    };
+  }
+
+  /*
+   * Users
+   */
+
+  //  // List available users
+  // rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/users"
+  //   };
+  // }
+
+  // // // Create a new user
+  // // rpc CreateUser(CreateUserRequest) returns (User) {
+  // //   option (google.api.http) = {
+  // //     post: "/api/v1/users"
+  // //     body: "user"
+  // //   };
+  // // }
+
+  // Get a user by name
+  rpc GetUser(GetUserRequest) returns (User) {
+    option (google.api.http) = {
+      get: "/api/v1/{name=users/*}"
+    };
+  }
+
+  // // Update an existing user
+  // rpc UpdateUser(UpdateUserRequest) returns (User) {
+  //   option (google.api.http) = {
+  //     patch: "/api/v1/{user.name=users/*}"
+  //     body: "user"
+  //   };
+  // }
+
+  rpc DisableUser(DisableUserRequest) returns (User) {
+    option (google.api.http) = {
+      post: "/api/v1/{name=users/*}:disable"
+      body: "*"
+    };
+  }
+
+  rpc EnableUser(EnableUserRequest) returns (User) {
+    option (google.api.http) = {
+      post: "/api/v1/{name=users/*}:enable"
+      body: "*"
+    };
+  }
+
+  // // // Delete a user
+  // // rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {
+  // //   option (google.api.http) = {
+  // //     delete: "/api/v1/{name=users/*}"
+  // //   };
+  // // }
+
+  /*
+   * User Roles
+   */
+
+  // List available roles
+  rpc ListUserRoles(ListUserRolesRequest) returns (ListUserRolesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/{parent=users/*}/roles"
+    };
+  }
+
+  // Add a new role
+  rpc AddUserRole(AddUserRoleRequest) returns (Role) {
+    option (google.api.http) = {
+      post: "/api/v1/{parent=users/*}/roles"
+      body: "role"
+    };
+  }
+
+  // // // Get a role by name
+  // // rpc GetRole(GetRoleRequest) returns (Role) {
+  // //   option (google.api.http) = {
+  // //     get: "/api/v1/{name=users/*/roles/*}"
+  // //   };
+  // // }
+
+  // Remove a role
+  rpc RemoveUserRole(RemoveUserRoleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/{name=users/*/roles/*}"
+    };
+  }
+
+  /*
+   * User Groups
+   */
+
+  // List available groups
+  rpc ListUserGroups(ListUserGroupsRequest) returns (ListUserGroupsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/{parent=users/*}/groups"
+    };
+  }
+
+  // /*
+  //  * User Notification s
+  //  */
+
+  // // List available notifications
+  // rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/{parent=users/*}/notifications"
+  //   };
+  // }
+
+  // // Create a new notification
+  // rpc CreateNotification(CreateNotificationRequest) returns (Notification) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{parent=users/*}/notifications"
+  //     body: "notification"
+  //   };
+  // }
+
+  // // Get a notification by name
+  // rpc GetNotification(GetNotificationRequest) returns (Notification) {
+  //   option (google.api.http) = {
+  //     get: "/api/v1/{name=users/*/notifications/*}"
+  //   };
+  // }
+
+  // // // Update an existing notification
+  // // rpc UpdateNotification(UpdateNotificationRequest) returns (Notification) {
+  // //   option (google.api.http) = {
+  // //     patch: "/api/v1/{notification.name=users/*/notifications/*}"
+  // //     body: "notification"
+  // //   };
+  // // }
+
+  // // Update an existing notification
+  // rpc AcknowledgeNotification(AcknowledgeNotificationRequest) returns (Notification) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{notification.name=users/*/notifications/*}:acknowledge"
+  //     body: "*"
+  //   };
+  // }
+
+  // // Delete a notification
+  // rpc DeleteNotification(DeleteNotificationRequest) returns (google.protobuf.Empty) {
+  //   option (google.api.http) = {
+  //     delete: "/api/v1/{name=users/*/notifications/*}"
+  //   };
+  // }
+
+  /*
+   * Groups
+   */
+
+   // List available groups
+  rpc ListGroups(ListGroupsRequest) returns (ListGroupsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/groups"
+    };
+  }
+
+  // Create a new group
+  rpc CreateGroup(CreateGroupRequest) returns (Group) {
+    option (google.api.http) = {
+      post: "/api/v1/groups"
+      body: "group"
+    };
+  }
+
+  // Get a group by name
+  rpc GetGroup(GetGroupRequest) returns (Group) {
+    option (google.api.http) = {
+      get: "/api/v1/{name=groups/*}"
+    };
+  }
+
+  // // Update an existing group
+  // rpc UpdateGroup(UpdateGroupRequest) returns (Group) {
+  //   option (google.api.http) = {
+  //     patch: "/api/v1/{group.name=groups/*}"
+  //     body: "group"
+  //   };
+  // }
+
+  // // // Delete a group
+  // // rpc DeleteGroup(DeleteGroupRequest) returns (google.protobuf.Empty) {
+  // //   option (google.api.http) = {
+  // //     delete: "/api/v1/{name=groups/*}"
+  // //   };
+  // // }
+
+  // // Send an email to the user group
+  // rpc EmailGroup(EmailGroupRequest) returns (TBD) {
+  //   option (google.api.http) = {
+  //     post: "/api/v1/{name=groups/*}:sendEmail"
+  //     body: "*"
+  //   };
+  // }
+
+
+
+  /*
+   * Members member
+   */
+
+  // List available memberships
+  rpc ListMemberships(ListMembershipsRequest) returns (ListMembershipsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/{parent=grpups/*}/memberships"
+    };
+  }
+
+  // Create a new member
+  rpc AddMembership(AddMembershipRequest) returns (Membership) {
+    option (google.api.http) = {
+      post: "/api/v1/{parent=grpups/*}/memberships"
+      body: "membership"
+    };
+  }
+
+  // // // Get a member by name
+  // // rpc GetMember(GetMemberRequest) returns (Member) {
+  // //   option (google.api.http) = {
+  // //     get: "/api/v1/{name=grpups/*/memberships/*}"
+  // //   };
+  // // }
+
+  // Remove a member
+  rpc RemoveMembership(RemoveMembershipRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/{name=grpups/*/memberships/*}"
+    };
+  }
+}
+
+// A token
+message Token {
+  // The expiration time of the token
+  google.protobuf.Timestamp expiration_time = 1;
+
+  oneof tokens {
+    string datasets_token = 2;
+    string access_token = 3;
+    string id_token = 4;
+  }
+
+}
+
+// A message request to create a new datasets token.
+message CreateTokenRequest {
+  Token token = 1;
+}
+
+// A message to request token information.
+message TokenInfoRequest {
+  Token token = 1;
+}
+
+message TokenInfo {
+  int32 iat = 1;
+  int32 exp = 2;
+  string iss = 3;
+  string aud = 4;
+  string sub = 5;
+  string email = 6;
+  string locale = 7;
+  string picture = 8;
+  string given_name = 9;
+  string family_name = 10;
+  string full_name = 11;
+  repeated string roles = 12;
+  repeated string groups = 13;
+}
+
+// A message describing a role
+message Role {
+  // The name of the role
+  string name = 1;
+  // The id of the role
+  string id = 2;
+  // The description of the role
+  string description = 3;
+}
+
+// List availableRoles
+message ListRolesRequest {
+  // The parent resource name.
+  // string parent = 1;
+
+  // // The maximum number of items to return.
+  // int32 page_size = 2;
+
+  // // The next_page_token value returned from a previous List request, if any.
+  // string page_token = 3;
+}
+
+// Response to ListRoles
+message ListRolesResponse {
+  // The resources found
+  repeated Role roles = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+
+// // A message describing a group
+// message Group {
+//   // The name of the group
+//   string name = 1;
+//   // The description of the group
+//   // string description = 2;
+// }
+
+// A user account
+message User {
+  // The name of the entity (not of the user)
+  string name = 1;
+  // The email account of the user
+  string email = 2;
+  // The full name of the user
+  string full_name = 3;
+  // The given name of the user
+  string given_name = 4;
+  // The family name of the user
+  string family_name = 5;
+  // A link to the user's picture, if available.
+  string picture = 6;
+  // The locale code for the user, if available
+  string locale = 7;
+  // If the user account is disabled, this is set to TRUE. Otherwise is FALSE or UpdateNotificationRequest
+  bool disabled = 8;
+  // The time of the account creation
+  google.protobuf.Timestamp creation_time = 9;
+  // A timestamp of the last time the user was issued a token.
+  google.protobuf.Timestamp last_seen_time = 10;
+}
+
+// Request for getting a user
+message GetUserRequest {
+  // The name of the user entity
+  string name = 1;
+}
+
+// Request to add a role to a user.
+message AddUserRoleRequest {
+  // The name of the parent entity
+  string parent = 1;
+  // The role to add
+  Role role = 2;
+}
+
+// Request to remove a role from a user
+message RemoveUserRoleRequest {
+  // The name of the parent entity
+  string name = 1;
+}
+
+// A request message
+message ListUserRolesRequest {
+  // The name of the parent entity.
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+// A response message
+message ListUserRolesResponse {
+  // The found roles
+  repeated Role roles = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+// A request message
+message ListUserGroupsRequest {
+  // The name of the parent entity.
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+// A response message
+message ListUserGroupsResponse {
+  // The found entities
+  repeated Group groups = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+// A request message
+message DisableUserRequest {
+  // The name of the entity
+  string name = 1;
+}
+
+// A request message
+message EnableUserRequest {
+  // The name of the entity
+  string name = 1;
+}
+
+// A message describing a user group
+message Group {
+  // The name of the entity
+  string name = 1;
+  // The title of the group
+  string title = 2;
+  // A description for the group
+  string description = 3;
+  // The creation time of the group
+  google.protobuf.Timestamp creation_time = 4;
+  // The user who created the group
+  string created_by = 5;
+}
+
+// A request message
+message CreateGroupRequest {
+  // The resource to create.
+  Group group = 1;
+
+  // The group id to use.
+  string group_id = 3;
+}
+
+// A request message
+message ListGroupsRequest {
+  // The maximum number of items to return.
+  int32 page_size = 1;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 2;
+}
+
+// A response message
+message ListGroupsResponse {
+  // The found entities
+  repeated Group groups = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
+// A request message
+message GetGroupRequest {
+  // The name of the entity
+  string name = 1;
+}
+
+// A message describing the membership of a user into a group
+message Membership {
+  // The name of the entity
+  string name = 1;
+  // The user account
+  string user = 2;
+  // The user who registered the membership
+  string created_by = 3;
+  // The timestamp of the membership registration
+  google.protobuf.Timestamp creation_time = 4;
+}
+
+// A request message
+message AddMembershipRequest {
+  // The name of the parent entity
+  string parent = 1;
+  // The membership to add
+  Membership membership = 2;
+}
+
+// A request message
+message RemoveMembershipRequest {
+  // The name of the entity
+  string name = 1;
+}
+
+// A request message
+message ListMembershipsRequest {
+  // The name of the parent entity.
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+// A response message
+message ListMembershipsResponse {
+  // The entities found
+  repeated Membership memberships = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no
+  // more results in the list.
+  string next_page_token = 2;
+}
+
