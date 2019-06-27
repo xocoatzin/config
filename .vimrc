@@ -39,6 +39,24 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" To install nvim on ubuntu:
+" sudo apt-get install software-properties-common
+" sudo add-apt-repository ppa:neovim-ppa/unstable
+" sudo apt-get update
+" sudo apt-get install neovim
+" sudo apt-get install python-dev python-pip python3-dev python3-pip
+" sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+" sudo update-alternatives --config vi
+" sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+" sudo update-alternatives --config vim
+" sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+" sudo update-alternatives --config editor
+"
+" Then when running neovim the first time, run ":PlugInstall"
+
+" Python paths
+" pip2 install --user neovim
+" pip3 install --user neovim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -59,6 +77,9 @@ filetype on
 " Set to auto read when a file is changed from the outside
 set autoread
 
+" Enable numbers
+set number
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
@@ -73,77 +94,82 @@ command W w !sudo tee % > /dev/null
 
 " Use system clipboard
 set clipboard=unnamed
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.vim/plugged')
-
-Plug 'tpope/vim-surround'
-Plug 'nvie/vim-flake8'
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'kien/ctrlp.vim'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'airblade/vim-gitgutter'
-Plug 'flazz/vim-colorschemes'
-Plug 'vim-python/python-syntax'
-Plug 'tpope/vim-fugitive'
-Plug 'ervandew/supertab'
-Plug 'Valloric/YouCompleteMe'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
-" Initialize plugin system
-call plug#end()
-
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
-" Enable folding with the spacebar
-nnoremap <space> za
-
-"ignore files in NERDTree
-let NERDTreeIgnore=['\.pyc$', '\~$']
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-
-let g:ycm_server_python_interpreter = '/usr/bin/python3'
-
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
-let g:ultisnips_python_style='google'
-
-" Switch buffers
-nnoremap <F7> :bp<CR>
-nnoremap <F9> :bn<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Python
+" => NeoVim Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let python_highlight_all=1
-autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
-let g:flake8_show_in_gutter=1
-let g:flake8_show_in_file=1
-let g:python_highlight_all=1
-"Show vertical line
-autocmd FileType python set colorcolumn=80
 
-"autocmd FileType python set listchars=eol:¬¨,tab:>¬∑,trail:~,extends:>,precedes:<,space:‚ê£
-autocmd FileType python set list
+if has('nvim')
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " => Plugins
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+  " Specify a directory for plugins
+  " - For Neovim: ~/.local/share/nvim/plugged
+  " - Avoid using standard Vim directory names like 'plugin'
+  call plug#begin('~/.vim/plugged')
+
+  Plug 'tpope/vim-surround'
+  Plug 'nvie/vim-flake8'
+  Plug 'scrooloose/nerdtree'
+  Plug 'jistr/vim-nerdtree-tabs'
+  Plug 'kien/ctrlp.vim'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'flazz/vim-colorschemes'
+  Plug 'vim-python/python-syntax'
+  Plug 'tpope/vim-fugitive'
+  Plug 'ervandew/supertab'
+  Plug 'Valloric/YouCompleteMe'
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
+  Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
+
+  " Initialize plugin system
+  call plug#end()
+
+  " Enable folding
+  set foldmethod=indent
+  set foldlevel=99
+  " Enable folding with the spacebar
+  nnoremap <space> za
+
+  "ignore files in NERDTree
+  let NERDTreeIgnore=['\.pyc$', '\~$']
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 1
+
+  let g:ycm_server_python_interpreter = '/usr/bin/python3'
+
+  " make YCM compatible with UltiSnips (using supertab)
+  let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+  let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+  let g:SuperTabDefaultCompletionType = '<C-n>'
+
+  " better key bindings for UltiSnipsExpandTrigger
+  let g:UltiSnipsExpandTrigger = "<tab>"
+  let g:UltiSnipsJumpForwardTrigger = "<tab>"
+  let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+  let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+  let g:ultisnips_python_style='google'
+
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " => Python
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  let python_highlight_all=1
+  autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
+  let g:flake8_show_in_gutter=1
+  let g:flake8_show_in_file=1
+  let g:python_highlight_all=1
+  "Show vertical line
+  autocmd FileType python set colorcolumn=80
+
+  autocmd FileType python set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+  autocmd FileType python set list
+
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -227,11 +253,12 @@ set foldcolumn=1
 syntax enable
 
 " Enable 256 colors palette in Gnome Terminal
-if $COLORTERM == 'gnome-terminal'
-    set t_Co=256
-endif
+ if $COLORTERM == 'gnome-terminal'
+     set t_Co=256
+ endif
 
-if has("termguicolors")     " set true colors
+" set true colors
+if has("termguicolors")
     set t_8f=[38;2;%lu;%lu;%lum
     set t_8b=[48;2;%lu;%lu;%lum
     set termguicolors
@@ -302,10 +329,6 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
-
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
@@ -354,6 +377,9 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" Switch buffers
+nnoremap <F7> :bp<CR>
+nnoremap <F9> :bn<CR>
 
 """"""""""""""""""""""""""""""
 " => Status line

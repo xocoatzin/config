@@ -1,0 +1,37 @@
+[global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, Logger, LaunchpadBugURLHandler
+  always_split_with_profile = True
+[keybindings]
+[profiles]
+  [[default]]
+    background_color = "#00040b"
+    background_image = None
+    custom_command = TERM=xterm-256color fish
+    font = FuraMono Nerd Font Mono Medium 11
+    foreground_color = "#bfbfbf"
+    scroll_on_output = False
+    scrollback_infinite = True
+    scrollback_lines = 1000000
+    use_custom_command = True
+    use_system_font = False
+  [[Bash]]
+    background_color = "#300a24"
+    background_image = None
+    custom_command = TERM=xterm-256color bash -l
+    font = FuraMono Nerd Font Mono Medium 11
+    foreground_color = "#ffffff"
+    scroll_on_output = False
+    scrollback_lines = 1000000
+    use_custom_command = True
+    use_system_font = False
+
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
