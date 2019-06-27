@@ -107,84 +107,83 @@ set ttimeout
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 if has('nvim')
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " => Plugins
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => Plugins
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-  " Specify a directory for plugins
-  " - For Neovim: ~/.local/share/nvim/plugged
-  " - Avoid using standard Vim directory names like 'plugin'
-  call plug#begin('~/.vim/plugged')
+    " Specify a directory for plugins
+    " - For Neovim: ~/.local/share/nvim/plugged
+    " - Avoid using standard Vim directory names like 'plugin'
+    call plug#begin('~/.vim/plugged')
 
-  Plug 'machakann/vim-sandwich'
-  Plug 'nvie/vim-flake8'
-  Plug 'scrooloose/nerdcommenter'
-  " Plug 'liuchengxu/vista.vim'
-  Plug 'scrooloose/nerdtree'
-  Plug 'jistr/vim-nerdtree-tabs'
-  Plug 'kien/ctrlp.vim'
-  Plug 'Xuyuanp/nerdtree-git-plugin'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
-  Plug 'airblade/vim-gitgutter'
-  Plug 'flazz/vim-colorschemes'
-  Plug 'vim-python/python-syntax'
-  Plug 'tmhedberg/SimpylFold'
-  Plug 'tpope/vim-fugitive'
-  Plug 'ervandew/supertab'
-  Plug 'Valloric/YouCompleteMe'
-  Plug 'SirVer/ultisnips'
-  Plug 'honza/vim-snippets'
-  Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
+    Plug 'machakann/vim-sandwich'
+    Plug 'nvie/vim-flake8'
+    Plug 'scrooloose/nerdcommenter'
+    " Plug 'liuchengxu/vista.vim'
+    Plug 'scrooloose/nerdtree'
+    Plug 'jistr/vim-nerdtree-tabs'
+    Plug 'kien/ctrlp.vim'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'flazz/vim-colorschemes'
+    Plug 'vim-python/python-syntax'
+    Plug 'tmhedberg/SimpylFold'
+    Plug 'tpope/vim-fugitive'
+    Plug 'ervandew/supertab'
+    Plug 'Valloric/YouCompleteMe'
+    Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
+    Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
 
-  " Initialize plugin system
-  call plug#end()
+    " Initialize plugin system
+    call plug#end()
 
-  " Enable folding
-  set foldmethod=indent
-  set foldlevel=99
-  " Enable folding with the spacebar
-  nnoremap <space> za
+    " Enable folding
+    set foldmethod=indent
+    set foldlevel=99
+    " Enable folding with the spacebar
+    nnoremap <space> za
 
-  " Ignore files in NERDTree
-  let NERDTreeIgnore=['\.pyc$', '\~$']
-  " Auto start NerdTree if vim is started with a directory.
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-  " Toggle NerdTree
-  map <C-n> :NERDTreeToggle<CR>
+    " Ignore files in NERDTree
+    let NERDTreeIgnore=['\.pyc$', '\~$']
+    " Auto start NerdTree if vim is started with a directory.
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+    " Toggle NerdTree
+    map <C-n> :NERDTreeToggle<CR>
 
-  let g:airline_powerline_fonts = 1
-  let g:airline#extensions#tabline#enabled = 1
+    let g:airline_powerline_fonts = 1
+    let g:airline#extensions#tabline#enabled = 1
 
-  let g:ycm_server_python_interpreter = '/usr/bin/python3'
+    let g:ycm_server_python_interpreter = '/usr/bin/python3'
 
-  " make YCM compatible with UltiSnips (using supertab)
-  let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-  let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-  let g:SuperTabDefaultCompletionType = '<C-n>'
+    " make YCM compatible with UltiSnips (using supertab)
+    let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+    let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+    let g:SuperTabDefaultCompletionType = '<C-n>'
 
-  " better key bindings for UltiSnipsExpandTrigger
-  let g:UltiSnipsExpandTrigger = "<tab>"
-  let g:UltiSnipsJumpForwardTrigger = "<tab>"
-  let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-  let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
-  let g:ultisnips_python_style='google'
+    " better key bindings for UltiSnipsExpandTrigger
+    let g:UltiSnipsExpandTrigger = "<tab>"
+    let g:UltiSnipsJumpForwardTrigger = "<tab>"
+    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+    let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+    let g:ultisnips_python_style='google'
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " => Python
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  let python_highlight_all=1
-  autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
-  let g:flake8_show_in_gutter=1
-  let g:flake8_show_in_file=1
-  let g:python_highlight_all=1
-  "Show vertical line
-  autocmd FileType python set colorcolumn=80
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => Python
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    let python_highlight_all=1
+    autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
+    let g:flake8_show_in_gutter=1
+    let g:flake8_show_in_file=1
+    let g:python_highlight_all=1
+    "Show vertical line
+    autocmd FileType python set colorcolumn=80
 
-  autocmd FileType python set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
-  autocmd FileType python set list
-
+    autocmd FileType python set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+    autocmd FileType python set list
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
