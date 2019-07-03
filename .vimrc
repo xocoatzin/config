@@ -93,6 +93,7 @@ set ttimeout
 call plug#begin('~/.vim/plugged')
 
 Plug 'machakann/vim-sandwich'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'nvie/vim-flake8'
 Plug 'scrooloose/nerdcommenter'
 " Plug 'liuchengxu/vista.vim'
@@ -128,7 +129,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " Toggle NerdTree
-map <C-n> :NERDTreeToggle<CR>
+map <C-N> :NERDTreeToggle<CR>
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -146,6 +147,16 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 let g:ultisnips_python_style='google'
+
+let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_start_word_key      = '<C-d>'
+let g:multi_cursor_select_all_word_key = '<A-d>'
+let g:multi_cursor_start_key           = 'g<C-d>'
+let g:multi_cursor_select_all_key      = 'g<A-d>'
+let g:multi_cursor_next_key            = '<C-d>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
 
 " Switch buffers
 nnoremap <F7> :bp<CR>
