@@ -7,7 +7,7 @@ ADD . /users/
 WORKDIR /users
 
 # ENV PROJECT_HOME=/users
-RUN make install-dev PROJECT_HOME=/users && \
+RUN make prod-install-all PROJECT_HOME=/users && \
     make proto PROJECT_HOME=/users
 
 # Setting these environment variables are the same as running

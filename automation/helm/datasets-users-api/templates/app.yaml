@@ -1,0 +1,170 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: users-api-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    certmanager.k8s.io/acme-challenge-type: "dns01"
+    certmanager.k8s.io/cluster-issuer: {{ .Values.clusterissuer }}
+    certmanager.k8s.io/acme-dns01-provider: "cloud-dns"
+
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.domain }}
+    secretName: users-api-tls
+  rules:
+  - host: {{ .Values.domain }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: users-api
+          servicePort: 443
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-api
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+    protocol: TCP
+    name: https
+  selector:
+    app: users-api
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: users-api
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: users-api
+        environment: dev
+    spec:
+      volumes:
+      - name: datasets-users-api-service-account
+        secret:
+          secretName: datasets-users-api-service-account
+      - name: nginx-ssl
+        secret:
+          secretName: users-api-tls
+      - name: esp-config
+        configMap:
+          name: esp-config
+
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: cloud.google.com/gke-preemptible
+                operator: Exists
+            weight: 100
+
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: "kubernetes.io/hostname"
+            labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - users-api
+              - key: environment
+                operator: In
+                values:
+                - dev
+
+      containers:
+      - name: esp
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8090
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8090
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 3
+          successThreshold: 1
+          timeoutSeconds: 1
+        # TODO: Resource requests
+        image: gcr.io/endpoints-release/endpoints-runtime:1
+        command: ["/bin/bash"]
+        args: [
+          "/home/startup.sh"
+        ]
+        ports:
+          - containerPort: 443
+        volumeMounts:
+        - mountPath: /etc/nginx/ssl_ro
+          name: nginx-ssl
+          readOnly: true
+        - mountPath: /home
+          name: esp-config
+          readOnly: true
+
+      - name: grpc-server
+        # TODO: Resource requests
+        imagePullPolicy: Always
+        image: gcr.io/ml-datasets-pr/apis/users/grpc-server:{{ .Values.grpc_image_tag }}
+        args: [
+          "--port=8081",
+        ]
+        ports:
+          - containerPort: 8081
+        volumeMounts:
+        - mountPath: /home/service-account/
+          name: datasets-users-api-service-account
+          readOnly: true
+        env:
+            # TODO: Auto-generate / load from secrets
+            #       This is used as the secret to sign pagination tokens.
+          - name: API_SECRET
+            value: {{ .Values.api_secret }}
+          - name: API_DATASTORE_PROJECT
+            value: {{ .Values.api_datastore_project }}
+          - name: API_DATASTORE_NAMESPACE
+            value: datasets-users-api
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /home/service-account/service-account.json
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: esp-config
+  namespace: {{ .Values.namespace }}
+data:
+  startup.sh: |
+    mkdir -p /etc/nginx/ssl/
+    cp /etc/nginx/ssl_ro/tls.crt /etc/nginx/ssl/nginx.crt
+    cp /etc/nginx/ssl_ro/tls.key /etc/nginx/ssl/nginx.key
+
+    echo "Starting ESP"
+
+    /usr/sbin/start_esp \
+      --ssl_port=443 \
+      --pid_file=/tmp/nginx.pid \
+      --service={{ .Values.domain }} \
+      --rollout_strategy=managed \
+      --backend=grpc://127.0.0.1:8081 \
+      --cors_preset=basic \
+      --cors_allow_origin=* \
+      --cors_allow_methods=GET,POST,OPTIONS,PUT,DELETE,PATCH \
+      --cors_allow_headers=Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range,x-api-key,x-grpc-web \
+      --cors_allow_credentials \
+      --healthz=healthz
