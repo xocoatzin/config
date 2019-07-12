@@ -121,7 +121,7 @@ spec:
       - name: grpc-server
         # TODO: Resource requests
         imagePullPolicy: Always
-        image: gcr.io/ml-datasets-pr/apis/users/grpc-server:{{ .Values.grpc_image_tag }}
+        image: gcr.io/ml-datasets-pr/apis/users/grpc-server:{{ .Values.image_tag }}
         args: [
           "--port=8081",
         ]
