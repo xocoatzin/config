@@ -75,6 +75,18 @@ test-unit:  ## Run all the unit tests.
 	@echo "${OKGREEN}All the fake unit tests passed${ENDC}"
 
 
+# Install app for Production:
+
+.PHONY: prod-install-all
+prod-install-all: PROJECT_HOME=.
+prod-install-all:  ## Install the production environment (intended for automation).
+	@echo "${OKGREEN}Installing production environment in ${OKBLUE}${PROJECT_HOME}${ENDC}"
+	@virtualenv -p python3 ${PROJECT_HOME}/.venv3
+	@${PROJECT_HOME}/.venv3/bin/pip install --upgrade pip
+	@${PROJECT_HOME}/.venv3/bin/pip install --upgrade setuptools
+	@${PROJECT_HOME}/.venv3/bin/pip install .[all]
+	@echo "${OKGREEN}Production environment initialized${ENDC}"
+
 # Misc:
 
 # Generates a help menu with the descriptions provided by the comments with double ##
