@@ -148,8 +148,8 @@ call plug#end()
 
 " Ignore files in NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$']
-let g:NERDTreeDirArrowExpandable = 'ÔÅª'
-let g:NERDTreeDirArrowCollapsible = 'ÔÅº'
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 " Auto start NerdTree if vim is started with a directory.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
