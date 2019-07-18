@@ -61,6 +61,21 @@ set listchars=tab:»\ ,eol:¬,nbsp:␣,space:·,trail:•,extends:→,precedes:�
 " Shortcut for vimrc and auto source on save.
 map <leader>vimrc :tabe ~/.vimrc<cr>
 autocmd bufwritepost .vimrc source $MYVIMRC
+
+" Put plugins and dictionaries in this dir (also on Windows)
+let vimDir = '$HOME/.vim'
+let &runtimepath.=','.vimDir
+
+" Keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+    let myUndoDir = expand(vimDir . '/undodir')
+    " Create dirs
+    call system('mkdir ' . vimDir)
+    call system('mkdir ' . myUndoDir)
+    let &undodir = myUndoDir
+    set undofile
+endif
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -153,7 +168,7 @@ let g:multi_cursor_quit_key            = '<Esc>'
 " Vim Doge
 
 let g:doge_doc_standard_python = 'google'
-let g:doge_mapping = '<F2>'
+let g:doge_mapping = '<leader>d'
 let g:doge_mapping_comment_jump_forward = '<leader><Tab>'
 let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
 
