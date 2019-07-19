@@ -44,7 +44,7 @@ dev-install-environment:  ## Install the development environment.
 
 .PHONY: dev-update-git-submodules
 dev-update-git-submodules:  ## Update git submodules.
-	@git submodule update --recursive --remote
+	git submodule update --recursive --remote
 
 
 # Testing:
