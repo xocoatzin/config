@@ -19,7 +19,6 @@ ENDC = \033[0m
 BOLD = \033[1m
 UNDERLINE = \033[4m
 
-
 ###############################################################################
 #                            Standard make targets                            #
 ###############################################################################
@@ -43,10 +42,9 @@ dev-install-environment:  ## Install the development environment.
 	@${PROJECT_HOME}/.venv3/bin/pip install -e .[all] -v
 	@echo "${OKGREEN}Activate development environment with: ${OKBLUE}source ${PROJECT_HOME}/.venv3/bin/activate${ENDC}"
 
-
 .PHONY: dev-update-git-submodules
 dev-update-git-submodules:  ## Update git submodules.
-	@git submodule update --recursive --remote
+	git submodule update --recursive --remote
 
 
 # Testing:
@@ -211,7 +209,6 @@ deploy-service:  # Deploy the endpoints configuration
 .PHONY: deploy-kube
 deploy-kube:  # Deploy the infrastructure configuration to kubernetes
 	@kubectl apply -f infrastructure/app.yaml
-
 
 
 
