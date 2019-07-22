@@ -21,7 +21,7 @@ from google.auth import jwt
 from google.oauth2 import service_account
 import google.auth.transport.requests
 
-import UsersAPI.api_pb2 as pb2
+from UsersAPI.lib.magicleap.datasets import users_pb2 as pb2
 from UsersAPI.tools import authorize
 
 

@@ -13,7 +13,7 @@ from google.cloud import datastore
 from google.protobuf import struct_pb2
 from google.protobuf.json_format import MessageToDict
 
-import UsersAPI.api_pb2 as pb2
+from UsersAPI.lib.magicleap.datasets import users_pb2 as pb2
 from UsersAPI.tools import authorize
 from UsersAPI.roles import USER_ROLES
 from UsersAPI.servicer import helpers

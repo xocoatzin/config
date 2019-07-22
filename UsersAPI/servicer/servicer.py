@@ -8,11 +8,11 @@ Style Guide:
 
 import logging
 
-import UsersAPI.api_pb2_grpc as pb2_grpc
+
+from UsersAPI.lib.magicleap.datasets import users_pb2_grpc as pb2_grpc
 from UsersAPI.servicer.mixin.tokens import TokensMixin
 from UsersAPI.servicer.mixin.roles import RolesMixin
 from UsersAPI.servicer.mixin.users import UsersMixin
-from UsersAPI.servicer.mixin.groups import GroupsMixin
 from google.cloud import datastore
 
 
@@ -27,7 +27,6 @@ log = logging.getLogger(__name__)
 class UsersServicer(
         RolesMixin,
         UsersMixin,
-        GroupsMixin,
         pb2_grpc.UsersServicer):
     """Implements the Users API server."""
 

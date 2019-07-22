@@ -17,7 +17,7 @@ import grpc
 from ApiCommon.logging import config_logger
 
 import UsersAPI
-from UsersAPI import api_pb2_grpc as pb2_grpc
+from UsersAPI.lib.magicleap.datasets import users_pb2_grpc as pb2_grpc
 from UsersAPI.servicer.servicer import UsersServicer, TokensServicer
 
 log = logging.getLogger(__name__)

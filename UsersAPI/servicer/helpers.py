@@ -12,7 +12,7 @@ import time
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
-import UsersAPI.api_pb2 as pb2
+from UsersAPI.lib.magicleap.datasets import users_pb2 as pb2
 
 
 def parse_name(name):

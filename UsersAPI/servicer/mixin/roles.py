@@ -6,7 +6,7 @@ Style Guide:
    http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 """
 
-import UsersAPI.api_pb2 as pb2
+from UsersAPI.lib.magicleap.datasets import users_pb2 as pb2
 from UsersAPI.tools import authorize
 from UsersAPI.roles import USER_ROLES
 

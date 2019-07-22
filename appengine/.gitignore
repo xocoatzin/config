@@ -1,7 +1,0 @@
-lib/
-.v*/
-
-usersv1openapi.json
-*.pyc
-
-flake8*

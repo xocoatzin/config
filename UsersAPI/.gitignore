@@ -3,4 +3,3 @@ __pycache__
 
 *.pb
 metrics_pb2*.py
-client.py

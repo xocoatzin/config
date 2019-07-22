@@ -44,7 +44,8 @@ dev-install-environment:  ## Install the development environment.
 
 .PHONY: dev-update-git-submodules
 dev-update-git-submodules:  ## Update git submodules.
-	git submodule update --recursive --remote
+	@git submodule update --init
+	@git submodule update --recursive --remote
 
 
 # Testing:
@@ -99,16 +100,70 @@ help:  ## Show help messages for make targets
 #                        Project specific make targets                        #
 ###############################################################################
 
-.PHONY: test
-test:  # Run all the available tests.
-	@echo "${OKGREEN}All the fake tests passed${ENDC}"
+.PHONY: dev-build-proto
+dev-build-proto: OUTDIR=UsersAPI/lib/
+dev-build-proto: ## Generate protobuf definitions.
+	@mkdir -p ${OUTDIR}
+	@.venv3/bin/python -m grpc_tools.protoc \
+		--proto_path=submodules/datasets-apis-protobuf/ \
+		--python_out=${OUTDIR} \
+		--grpc_python_out=${OUTDIR} \
+		submodules/datasets-apis-protobuf/magicleap/datasets/*.proto
+	@sed -i '1s;^;# Flake8: noqa\n;' ${OUTDIR}/magicleap/datasets/*.py  # Fix Py3 imports
+	@sed -i 's/^from magicleap.datasets import/from . import/' ${OUTDIR}/magicleap/datasets/*_pb2_grpc.py  # Fix Py3 imports
+	@touch ${OUTDIR}magicleap/__init__.py
+	@touch ${OUTDIR}magicleap/datasets/__init__.py
+	@echo "${OKGREEN}Protobuf generated in ${OUTDIR}${ENDC}"
+
+.PHONY: dev-run-server
+dev-run-server: dev-build-proto
+dev-run-server: export _MAPI_DEV_DISABLE_AUTH=$(shell date '+%Y-%m-%d %H:%M')
+dev-run-server: export API_SECRET=a-very-secret-string
+dev-run-server: export API_DATASTORE_PROJECT=my-project
+dev-run-server: export API_DATASTORE_NAMESPACE=users-namespace
+dev-run-server: export GOOGLE_APPLICATION_CREDENTIALS=${PWD}/.local/credentials/application_default.json
+dev-run-server: export DATASTORE_EMULATOR_HOST=localhost:8081
+dev-run-server: # Run the application server locally
+	@.venv3/bin/users-server --port 18001 --text-logs
+
+.PHONY: dev-emulator-db
+dev-emulator-db:  # Run the datastore emulator locally.
+	@gcloud beta emulators datastore start --data-dir=.local/datastore/db/
+
+.PHONY: dev-run-client
+dev-run-client: API_KEY=AIzaSyAgwZX25V5FZjgu_DHWmdHi5GxQZkqyjMw
+dev-run-client: AUTH_TOKEN=token
+dev-run-client: METHOD=method
+dev-run-client: U_EMAIL=${USER}@magicleap.com
+dev-run-client: U_DSTOKEN=...
+dev-run-client:  # Run the development client.
+	@.venv3/bin/python UsersAPI/client.py \
+		--host 127.0.0.1 \
+		--port 18001 \
+		--api_key ${API_KEY} \
+		--auth_token ${AUTH_TOKEN} \
+		--method ${METHOD}
 
 
-.PHONY: build-image
-build-image:  # Build a docker image containing the project.
-	@docker build \
-		-t $(HOST)$(REPOSITORY):$(TAG) \
-		.
+
+
+
+
+
+#
+# Left Overs:
+#
+
+# .PHONY: test
+# test:  # Run all the available tests.
+# 	@echo "${OKGREEN}All the fake tests passed${ENDC}"
+
+
+# .PHONY: build-image
+# build-image:  # Build a docker image containing the project.
+# 	@docker build \
+# 		-t $(HOST)$(REPOSITORY):$(TAG) \
+# 		.
 
 
 # .PHONY: deploy
@@ -118,22 +173,22 @@ build-image:  # Build a docker image containing the project.
 
 # Custom targets
 
-.PHONY: proto
-proto: PROJECT_HOME=.
-proto: # Generate protobuf definitions.
-	@mkdir -p proto/out/
-	@${PROJECT_HOME}/.venv3/bin/python -m grpc_tools.protoc \
-		--include_imports \
-		--include_source_info \
-		--proto_path=googleapis/ \
-		--proto_path=proto/ \
-		--descriptor_set_out=proto/out/api_descriptor.pb \
-		--python_out=proto/out/ \
-		--grpc_python_out=proto/out/ \
-		proto/api.proto
-	@cp proto/out/*.py UsersAPI/ && \
-		sed -i 's/^import api_pb2 as api__pb2$$/from UsersAPI import api_pb2 as api__pb2/' UsersAPI/api_pb2_grpc.py  # Fix Py3 imports
-	@echo "${OKGREEN}Protobuf generated in proto/out/${ENDC}"
+# .PHONY: proto
+# proto: PROJECT_HOME=.
+# proto: # Generate protobuf definitions.
+# 	@mkdir -p proto/out/
+# 	@${PROJECT_HOME}/.venv3/bin/python -m grpc_tools.protoc \
+# 		--include_imports \
+# 		--include_source_info \
+# 		--proto_path=googleapis/ \
+# 		--proto_path=proto/ \
+# 		--descriptor_set_out=proto/out/api_descriptor.pb \
+# 		--python_out=proto/out/ \
+# 		--grpc_python_out=proto/out/ \
+# 		proto/api.proto
+# 	@cp proto/out/*.py UsersAPI/ && \
+# 		sed -i 's/^import api_pb2 as api__pb2$$/from UsersAPI import api_pb2 as api__pb2/' UsersAPI/api_pb2_grpc.py  # Fix Py3 imports
+# 	@echo "${OKGREEN}Protobuf generated in proto/out/${ENDC}"
 
 
 # .PHONY: _devinstall
@@ -165,17 +220,7 @@ proto: # Generate protobuf definitions.
 # 	@cat ci/lint/flake8.txt
 
 
-.PHONY: run-dev
-run-dev: proto
-run-dev: export _MAPI_DEV_DISABLE_AUTH=$(shell date '+%Y-%m-%d %H:%M')
-run-dev: export API_SECRET=a-very-secret-string
-run-dev: export API_DATASTORE_PROJECT=my-project
-run-dev: export API_DATASTORE_NAMESPACE=users-namespace
-run-dev: export GOOGLE_APPLICATION_CREDENTIALS=${PWD}/.local/credentials/application_default.json
-# run-dev: export GOOGLE_APPLICATION_CREDENTIALS=/ml/Users/MAGICLEAP/atorresgomez/Downloads/analyticsframework-1e0201214e90.json
-run-dev: export DATASTORE_EMULATOR_HOST=localhost:8081
-run-dev: # Run the development server
-	@.venv3/bin/users-server --port 18001 --text-logs
+
 
 # .PHONY: run-container
 # run-container:
@@ -185,42 +230,31 @@ run-dev: # Run the development server
 # 		-e API_SECRET="a-very-secret-string" \
 # 		$(HOST)$(REPOSITORY):$(TAG)  users-server
 
-.PHONY: db-emulator
-db-emulator:  # Run the datastore emulator locally.
-	@gcloud beta emulators datastore start --data-dir=.local/datastore/db/
 
-.PHONY: container
-container:  # Build the docker container with the applciation.
-	@docker build \
-		-t $(HOST)$(REPOSITORY):$(TAG) \
-		.
+# .PHONY: container
+# container:  # Build the docker container with the applciation.
+# 	@docker build \
+# 		-t $(HOST)$(REPOSITORY):$(TAG) \
+# 		.
 
-.PHONY: push
-push: MESSAGE="The application 'Users gRPC server' will be deployed to production."
-# push: prompt_y_n
-push:  # Push docker image to remote registry
-	@docker push $(HOST)$(REPOSITORY):$(TAG)
+# .PHONY: push
+# push: MESSAGE="The application 'Users gRPC server' will be deployed to production."
+# # push: prompt_y_n
+# push:  # Push docker image to remote registry
+# 	@docker push $(HOST)$(REPOSITORY):$(TAG)
 
-.PHONY: deploy-service
-deploy-service: proto
-deploy-service:  # Deploy the endpoints configuration
-	@gcloud endpoints services deploy proto/out/api_descriptor.pb api_config.yaml
+# .PHONY: deploy-service
+# deploy-service: proto
+# deploy-service:  # Deploy the endpoints configuration
+# 	@gcloud endpoints services deploy proto/out/api_descriptor.pb api_config.yaml
 
-.PHONY: deploy-kube
-deploy-kube:  # Deploy the infrastructure configuration to kubernetes
-	@kubectl apply -f infrastructure/app.yaml
+# .PHONY: deploy-kube
+# deploy-kube:  # Deploy the infrastructure configuration to kubernetes
+# 	@kubectl apply -f infrastructure/app.yaml
 
 
 
-.PHONY: prompt_y_n
-prompt_y_n:
-	@echo $(MESSAGE)
-	@( read -p "Are you sure? [y/N]: " sure && case "$$sure" in [yY]) true;; *) false;; esac )
 
-
-.PHONY: run-client-dev
-run-client-dev:
-	@.venv3/bin/python UsersAPI/client.py --host 127.0.0.1 --port 18001 --api_key AIzaSyAgwZX25V5FZjgu_DHWmdHi5GxQZkqyjMw
 
 
 

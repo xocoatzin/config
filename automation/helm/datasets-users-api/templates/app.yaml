@@ -45,7 +45,7 @@ metadata:
   name: users-api
   namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas: 1 # TODO: Autoscaler + replicas per environment.
   template:
     metadata:
       labels:
@@ -132,12 +132,11 @@ spec:
           name: datasets-users-api-service-account
           readOnly: true
         env:
-            # TODO: Auto-generate / load from secrets
-            #       This is used as the secret to sign pagination tokens.
           - name: API_SECRET
             value: {{ .Values.api_secret }}
           - name: API_DATASTORE_PROJECT
-            value: {{ .Values.api_datastore_project }}
+            # value: {{ .Values.api_datastore_project }}
+            value: analyticsframework
           - name: API_DATASTORE_NAMESPACE
             value: datasets-users-api
           - name: GOOGLE_APPLICATION_CREDENTIALS
