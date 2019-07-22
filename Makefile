@@ -173,8 +173,10 @@ dev-run-client:  # Run the development client.
 
 # Custom targets
 
-# .PHONY: proto
-# proto: PROJECT_HOME=.
+.PHONY: proto
+proto: dev-build-proto
+	@echo "Done"
+
 # proto: # Generate protobuf definitions.
 # 	@mkdir -p proto/out/
 # 	@${PROJECT_HOME}/.venv3/bin/python -m grpc_tools.protoc \
