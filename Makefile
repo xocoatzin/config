@@ -111,6 +111,7 @@ dev-build-proto: ## Generate protobuf definitions.
 		submodules/datasets-apis-protobuf/magicleap/datasets/*.proto
 	@sed -i '1s;^;# Flake8: noqa\n;' ${OUTDIR}/magicleap/datasets/*.py  # Fix Py3 imports
 	@sed -i 's/^from magicleap.datasets import/from . import/' ${OUTDIR}/magicleap/datasets/*_pb2_grpc.py  # Fix Py3 imports
+	@touch ${OUTDIR}__init__.py
 	@touch ${OUTDIR}magicleap/__init__.py
 	@touch ${OUTDIR}magicleap/datasets/__init__.py
 	@echo "${OKGREEN}Protobuf generated in ${OUTDIR}${ENDC}"
