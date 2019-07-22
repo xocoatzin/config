@@ -135,8 +135,7 @@ spec:
           - name: API_SECRET
             value: {{ .Values.api_secret }}
           - name: API_DATASTORE_PROJECT
-            # value: {{ .Values.api_datastore_project }}
-            value: analyticsframework
+            value: {{ .Values.api_datastore_project }}
           - name: API_DATASTORE_NAMESPACE
             value: datasets-users-api
           - name: GOOGLE_APPLICATION_CREDENTIALS
