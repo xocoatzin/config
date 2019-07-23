@@ -61,6 +61,7 @@ class ApiCredentials(Enum):
     # Can remove a role from an existing user account
     USERS_ROLES_REMOVE = 'USERS_ROLES_REMOVE'
 
+
 # WIP
 API_ROLES = {
     'users.user': [
