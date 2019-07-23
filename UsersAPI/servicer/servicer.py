@@ -30,15 +30,14 @@ class UsersServicer(
         pb2_grpc.UsersServicer):
     """Implements the Users API server."""
 
-    ###########################################################################
-    #                                   MISC                                  #
-    ###########################################################################
-
     def __init__(self, secret, datastore_project, datastore_namespace):
         """Constructor.
 
         Args:
             secret (str): The secret to use for JWT encoding.
+            datastore_project (str): The name of the GCP project where the
+                database is hosted.
+            datastore_namespace (str): The datastore namespace to use.
         """
         self.secret = secret
         self.dsclient = datastore.Client(
@@ -52,15 +51,14 @@ class TokensServicer(
         pb2_grpc.TokensServicer):
     """Implements the Tokens API server."""
 
-    ###########################################################################
-    #                                   MISC                                  #
-    ###########################################################################
-
     def __init__(self, secret, datastore_project, datastore_namespace):
         """Constructor.
 
         Args:
             secret (str): The secret to use for JWT encoding.
+            datastore_project (str): The name of the GCP project where the
+                database is hosted.
+            datastore_namespace (str): The datastore namespace to use.
         """
         self.secret = secret
         self.dsclient = datastore.Client(

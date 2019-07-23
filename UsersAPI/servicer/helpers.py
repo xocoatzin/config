@@ -25,7 +25,7 @@ def parse_name(name):
 
 
 def to_pb2_timestamp(d):
-    """."""
+    """Convert a timestamp to a protobuf."""
     timestamp = Timestamp()
     timestamp.FromDatetime(datetime.datetime.fromtimestamp(
         time.mktime(d.timetuple())))
@@ -33,7 +33,7 @@ def to_pb2_timestamp(d):
 
 
 def group_to_pb2(entity):
-    """."""
+    """Convert a datastore entity to protobuf."""
     return pb2.Group(
         name='groups/{}'.format(entity.key.name),
         title=entity.get('title'),
@@ -44,7 +44,7 @@ def group_to_pb2(entity):
 
 
 def user_to_pb2(entity):
-    """."""
+    """Convert a datastore entity to protobuf."""
     return pb2.User(
         name='users/{}'.format(entity.get('email')),
         email=entity.get('email'),

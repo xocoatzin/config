@@ -15,7 +15,7 @@ from google.protobuf.json_format import MessageToDict
 
 from UsersAPI.lib.magicleap.datasets import users_pb2 as pb2
 from UsersAPI.tools import authorize
-from UsersAPI.roles import USER_ROLES
+from UsersAPI.roles import USER_ROLES, ApiCredentials
 from UsersAPI.servicer import helpers
 
 
@@ -27,7 +27,7 @@ __all__ = [
 class UsersMixin(object):
     """Implements the Users API server."""
 
-    @authorize(requires=['USERS.READ'])
+    @authorize(requires=[ApiCredentials.USERS_READ])
     def GetUser(self, request, context, options):  # noqa
         """Get a user by entity name."""
         request = MessageToDict(request)
@@ -55,56 +55,7 @@ class UsersMixin(object):
 
         return helpers.user_to_pb2(user_entity)
 
-    @authorize(requires=['USERS.GROUPS.READ'])
-    def ListUserGroups(self, request, context, options):  # noqa
-        """List the roles from a user."""
-        request = MessageToDict(request)
-
-        name_parts = helpers.parse_name(request.get('parent'))
-
-        page_size = request.get('pageSize', 100)
-        if not 0 < page_size <= 100:
-            context.abort(
-                StatusCode.INVALID_ARGUMENT,
-                "Invalid page size, expected value in range [1-100]")
-        page_token = request.get('pageToken')
-
-        user_id = name_parts.get('users')
-
-        if not user_id:
-            context.abort(StatusCode.INVALID_ARGUMENT, "Invalid user name")
-
-        if user_id in ['me']:
-            user_id = options.auth.get('email')
-
-        user_key = self.dsclient.key('User', user_id)
-        query = self.dsclient.query(kind='Membership')
-        query.keys_only()
-        query.add_filter('user_key', '=', user_key)
-        query_iter = query.fetch(limit=page_size, start_cursor=page_token)
-        first_page = next(query_iter.pages)
-        groups = [
-            pb2.Group(
-                name='groups/{}'.format(item.key.parent.name),
-            )
-            for item in first_page
-        ]
-
-        next_page_token = None
-        if query_iter.next_page_token:
-            next_page_token = query_iter.next_page_token.decode("utf-8")
-
-        # At the end of the collection, the next page token is equal
-        # to the original token
-        if next_page_token == page_token:
-            next_page_token = None
-
-        return pb2.ListUserGroupsResponse(
-            groups=groups,
-            next_page_token=next_page_token
-        )
-
-    @authorize(requires=['USERS.ROLES.READ'])
+    @authorize(requires=[ApiCredentials.USERS_ROLES_READ])
     def ListUserRoles(self, request, context, options):  # noqa
         """List the roles from a user."""
         request = MessageToDict(request)
@@ -156,7 +107,7 @@ class UsersMixin(object):
             next_page_token=next_page_token
         )
 
-    @authorize(requires=['USERS.ROLES.ADD'])
+    @authorize(requires=[ApiCredentials.USERS_ROLES_ADD])
     def AddUserRole(self, request, context, options):  # noqa
         """Add a role to a user."""
         request = MessageToDict(request)
@@ -194,7 +145,7 @@ class UsersMixin(object):
             description=USER_ROLES.get(role, {}).get('description')
         )
 
-    @authorize(requires=['USERS.ROLES.REMOVE'])
+    @authorize(requires=[ApiCredentials.USERS_ROLES_REMOVE])
     def RemoveUserRole(self, request, context, options):  # noqa
         """Remove a role from a user."""
         request = MessageToDict(request)
@@ -239,12 +190,12 @@ class UsersMixin(object):
 
         return helpers.user_to_pb2(user_entity)
 
-    @authorize(requires=['USERS.ENABLE'])
+    @authorize(requires=[ApiCredentials.USERS_ENABLE])
     def EnableUser(self, request, context, options):  # noqa
         """Enable a user account."""
         self._set_user_enabled(False, request, context, options)
 
-    @authorize(requires=['USERS.DISABLE'])
+    @authorize(requires=[ApiCredentials.USERS_DISABLE])
     def DisableUser(self, request, context, options):  # noqa
         """Disable a user account."""
         self._set_user_enabled(True, request, context, options)

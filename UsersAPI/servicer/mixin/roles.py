@@ -8,7 +8,7 @@ Style Guide:
 
 from UsersAPI.lib.magicleap.datasets import users_pb2 as pb2
 from UsersAPI.tools import authorize
-from UsersAPI.roles import USER_ROLES
+from UsersAPI.roles import USER_ROLES, ApiCredentials
 
 
 __all__ = [
@@ -19,7 +19,7 @@ __all__ = [
 class RolesMixin(object):
     """Implements the Users API server."""
 
-    @authorize(requires=['ROLES.READ'])
+    @authorize(requires=[ApiCredentials.ROLES_READ])
     def ListRoles(self, request, context, options):  # noqa
         """Get a list of the available roles."""
 

@@ -79,51 +79,6 @@ def load_google_groups(domain, user):
     return groups_found
 
 
-# Access token:
-# {
-#     "azp": "439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.
-#         googleusercontent.com",
-#     "aud": "439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.
-#         googleusercontent.com",
-#     "sub": "116239921441103745586",
-#     "exp": "1549888861",
-#     "email": "atorresgomez@magicleap.com",
-#     "email_verified": "true",
-
-#     "scope": "https://www.googleapis.com/auth/userinfo.email
-#         https://www.googleapis.com/auth/userinfo.profile
-#         https://www.googleapis.com/auth/devstorage.read_write",
-#     "expires_in": "3542",
-#     "access_type": "offline"
-# }
-
-# ID Token:
-# {
-#     "azp": "439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.
-#         googleusercontent.com",
-#     "aud": "439260306570-b8ehja938h32vbl9jb6s2ml4tl8pk9s2.apps.
-#         googleusercontent.com",
-#     "sub": "116239921441103745586",
-#     "exp": "1549888861",
-#     "email": "atorresgomez@magicleap.com",
-#     "email_verified": "true",
-
-#     "iss": "https://accounts.google.com",
-#     "hd": "magicleap.com",
-#     "at_hash": "qNC2ht4Eq-OHgdw65dlnEw",
-#     "name": "Alan Torres",
-#     "picture": "https://lh4.googleusercontent.com/-E0jiKQgPthY/
-#         AAAAAAAAAAI/AAAAAAAAAVY/aQZN1tGuhpI/s96-c/photo.jpg",
-#     "given_name": "Alan",
-#     "family_name": "Torres",
-#     "locale": "en",
-#     "iat": "1549885261",
-#     "alg": "RS256",
-#     "kid": "7c309e3a1c1999cb0404ab7125ee40b7cdbcaf7d",
-#     "typ": "JWT"
-# }
-
-
 class TokensMixin(object):
     """Implements the Users API server."""
 
@@ -266,14 +221,6 @@ class TokensMixin(object):
             entity.key.name
             for entity in query.fetch()
         ]
-
-        # query = self.dsclient.query(kind='Membership')
-        # query.keys_only()
-        # query.add_filter('user_key', '=', user_key)
-        # groups = [
-        #     item.key.parent.name
-        #     for item in query.fetch()
-        # ]
 
         ml_groups = []
         try:
