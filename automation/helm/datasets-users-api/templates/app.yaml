@@ -40,7 +40,7 @@ spec:
   selector:
     app: {{ .Values.app_name }}
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.app_name }}
