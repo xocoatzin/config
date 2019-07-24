@@ -1,8 +1,8 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: users-api-ingress
+  name: {{ .Values.app_name }}-ingress
   namespace: {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: "nginx"
@@ -15,20 +15,20 @@ spec:
   tls:
   - hosts:
     - {{ .Values.domain }}
-    secretName: users-api-tls
+    secretName: {{ .Values.app_name }}-tls
   rules:
   - host: {{ .Values.domain }}
     http:
       paths:
       - path: /
         backend:
-          serviceName: users-api
+          serviceName: {{ .Values.app_name }}
           servicePort: 443
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: users-api
+  name: {{ .Values.app_name }}
   namespace: {{ .Values.namespace }}
 spec:
   ports:
@@ -37,30 +37,59 @@ spec:
     protocol: TCP
     name: https
   selector:
-    app: users-api
+    app: {{ .Values.app_name }}
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
 metadata:
-  name: users-api
+  name: {{ .Values.app_name }}
   namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1 # TODO: Autoscaler + replicas per environment.
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.app_name }}
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 30  # TODO: Add a custom metric to scale based on requests
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app_name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app_name }}
+    environment: dev
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: {{ .Values.app_name }}
+      environment: dev
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: users-api
+        app: {{ .Values.app_name }}
         environment: dev
     spec:
       volumes:
       - name: datasets-users-api-service-account
         secret:
+          defaultMode: 420
           secretName: datasets-users-api-service-account
       - name: nginx-ssl
         secret:
-          secretName: users-api-tls
+          defaultMode: 420
+          secretName: {{ .Values.app_name }}-tls
       - name: esp-config
         configMap:
+          defaultMode: 420
           name: esp-config
 
       affinity:
@@ -80,18 +109,27 @@ spec:
               - key: app
                 operator: In
                 values:
-                - users-api
+                - {{ .Values.app_name }}
               - key: environment
                 operator: In
                 values:
                 - dev
 
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+
       containers:
       - name: esp
         readinessProbe:
+          failureThreshold: 3
           httpGet:
             path: /healthz
             port: 8090
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -102,14 +140,22 @@ spec:
           periodSeconds: 3
           successThreshold: 1
           timeoutSeconds: 1
-        # TODO: Resource requests
         image: gcr.io/endpoints-release/endpoints-runtime:1
         command: ["/bin/bash"]
         args: [
           "/home/startup.sh"
         ]
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "900m"
         ports:
           - containerPort: 443
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
         volumeMounts:
         - mountPath: /etc/nginx/ssl_ro
           name: nginx-ssl
@@ -119,14 +165,23 @@ spec:
           readOnly: true
 
       - name: grpc-server
-        # TODO: Resource requests
         imagePullPolicy: Always
         image: gcr.io/ml-datasets-pr/apis/users/grpc-server:{{ .Values.grpc_image_tag }}
         args: [
           "--port=8081",
         ]
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "900m"
         ports:
           - containerPort: 8081
+            protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
         volumeMounts:
         - mountPath: /home/service-account/
           name: datasets-users-api-service-account
