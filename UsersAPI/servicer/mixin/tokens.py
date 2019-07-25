@@ -246,7 +246,8 @@ class TokensMixin(object):
             # Expiration, same as original ID token
             'exp': expiration,
             # Issuer
-            'iss': 'https://users.datasets.magicleap.com',
+            'iss': 'https://{}'.format(
+                os.environ.get('API_DOMAIN', 'invalid.issuer')),
             # Audience
             'aud': 'https://datasets.magicleap.com',
             # User information

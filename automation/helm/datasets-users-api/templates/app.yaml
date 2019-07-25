@@ -63,7 +63,7 @@ metadata:
     app: {{ .Values.app_name }}
     environment: dev
 spec:
-  replicas: 3 
+  replicas: 3
   selector:
     matchLabels:
       app: {{ .Values.app_name }}
@@ -188,6 +188,8 @@ spec:
           name: datasets-users-api-service-account
           readOnly: true
         env:
+          - name: API_DOMAIN
+            value: {{ .Values.domain }}
           - name: API_SECRET
             value: {{ .Values.api_secret }}
           - name: API_DATASTORE_PROJECT

@@ -6,10 +6,10 @@ config_version: 3
 #
 # Name of the service configuration.
 #
-name: ${endpoints_service_name}
+name: users.${domain}
 
 # API title to appear in the user interface (Google Cloud Console).
-title: Datasets Users API
+title: Datasets Users API (${env})
 
 # Should match the service as defined in api.proto
 apis:
@@ -18,17 +18,9 @@ apis:
 
 # https://cloud.google.com/endpoints/docs/grpc/grpc-dns-configure
 endpoints:
-- name: ${endpoints_service_name}
+- name: users.${domain}
   allow_cors: true
   target: ${ingress_ip}
-
-# usage:
-#   rules:
-#   - selector: "magicleap.datasets.users.Users.*"
-#     allow_unregistered_calls: false
-
-#   - selector: "magicleap.datasets.users.Tokens.*"
-#     allow_unregistered_calls: true
 
 # Request authentication.
 authentication:
@@ -40,7 +32,7 @@ authentication:
   - id: datasets_auth_provider
 
     # JWT issuer (Users API)
-    issuer: https://users.datasets.magicleap.com
+    issuer: https://users.${domain}
 
     # This is the public key endpoint for the Service Account used to sign the JWT
     # https://cloud.google.com/iam/docs/creating-managing-service-account-keys/
