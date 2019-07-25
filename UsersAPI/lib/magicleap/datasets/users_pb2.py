@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='magicleap.datasets.users',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x1emagicleap/datasets/users.proto\x12\x18magicleap.datasets.users\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n\x05Token\x12\x33\n\x0f\x65xpiration_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x18\n\x0e\x64\x61tasets_token\x18\x02 \x01(\tH\x00\x12\x16\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\tH\x00\x12\x12\n\x08id_token\x18\x04 \x01(\tH\x00\x42\x08\n\x06tokens\"D\n\x12\x43reateTokenRequest\x12.\n\x05token\x18\x01 \x01(\x0b\x32\x1f.magicleap.datasets.users.Token\"B\n\x10TokenInfoRequest\x12.\n\x05token\x18\x01 \x01(\x0b\x32\x1f.magicleap.datasets.users.Token\"\xd7\x01\n\tTokenInfo\x12\x0b\n\x03iat\x18\x01 \x01(\x05\x12\x0b\n\x03\x65xp\x18\x02 \x01(\x05\x12\x0b\n\x03iss\x18\x03 \x01(\t\x12\x0b\n\x03\x61ud\x18\x04 \x01(\t\x12\x0b\n\x03sub\x18\x05 \x01(\t\x12\r\n\x05\x65mail\x18\x06 \x01(\t\x12\x0e\n\x06locale\x18\x07 \x01(\t\x12\x0f\n\x07picture\x18\x08 \x01(\t\x12\x12\n\ngiven_name\x18\t \x01(\t\x12\x13\n\x0b\x66\x61mily_name\x18\n \x01(\t\x12\x11\n\tfull_name\x18\x0b \x01(\t\x12\r\n\x05roles\x18\x0c \x03(\t\x12\x0e\n\x06groups\x18\r \x03(\t\"5\n\x04Role\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\"\x12\n\x10ListRolesRequest\"[\n\x11ListRolesResponse\x12-\n\x05roles\x18\x01 \x03(\x0b\x32\x1e.magicleap.datasets.users.Role\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\xf9\x01\n\x04User\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x11\n\tfull_name\x18\x03 \x01(\t\x12\x12\n\ngiven_name\x18\x04 \x01(\t\x12\x13\n\x0b\x66\x61mily_name\x18\x05 \x01(\t\x12\x0f\n\x07picture\x18\x06 \x01(\t\x12\x0e\n\x06locale\x18\x07 \x01(\t\x12\x10\n\x08\x64isabled\x18\x08 \x01(\x08\x12\x31\n\rcreation_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x0elast_seen_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x1e\n\x0eGetUserRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"R\n\x12\x41\x64\x64UserRoleRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12,\n\x04role\x18\x02 \x01(\x0b\x32\x1e.magicleap.datasets.users.Role\"%\n\x15RemoveUserRoleRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"M\n\x14ListUserRolesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"_\n\x15ListUserRolesResponse\x12-\n\x05roles\x18\x01 \x03(\x0b\x32\x1e.magicleap.datasets.users.Role\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"N\n\x15ListUserGroupsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"b\n\x16ListUserGroupsResponse\x12/\n\x06groups\x18\x01 \x03(\x0b\x32\x1f.magicleap.datasets.users.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\"\n\x12\x44isableUserRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11\x45nableUserRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x80\x01\n\x05Group\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x31\n\rcreation_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\ncreated_by\x18\x05 \x01(\t\"V\n\x12\x43reateGroupRequest\x12.\n\x05group\x18\x01 \x01(\x0b\x32\x1f.magicleap.datasets.users.Group\x12\x10\n\x08group_id\x18\x03 \x01(\t\":\n\x11ListGroupsRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x05\x12\x12\n\npage_token\x18\x02 \x01(\t\"^\n\x12ListGroupsResponse\x12/\n\x06groups\x18\x01 \x03(\x0b\x32\x1f.magicleap.datasets.users.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"o\n\nMembership\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04user\x18\x02 \x01(\t\x12\x12\n\ncreated_by\x18\x03 \x01(\t\x12\x31\n\rcreation_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"`\n\x14\x41\x64\x64MembershipRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x38\n\nmembership\x18\x02 \x01(\x0b\x32$.magicleap.datasets.users.Membership\"\'\n\x17RemoveMembershipRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"O\n\x16ListMembershipsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"m\n\x17ListMembershipsResponse\x12\x39\n\x0bmemberships\x18\x01 \x03(\x0b\x32$.magicleap.datasets.users.Membership\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xfc\x01\n\x06Tokens\x12t\n\x0b\x43reateToken\x12,.magicleap.datasets.users.CreateTokenRequest\x1a\x1f.magicleap.datasets.users.Token\"\x16\x82\xd3\xe4\x93\x02\x10\"\x0e/api/v1/tokens\x12|\n\x0cGetTokenInfo\x12*.magicleap.datasets.users.TokenInfoRequest\x1a#.magicleap.datasets.users.TokenInfo\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/tokens:info2\xb3\x07\n\x05Users\x12{\n\tListRoles\x12*.magicleap.datasets.users.ListRolesRequest\x1a+.magicleap.datasets.users.ListRolesResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/api/v1/roles\x12s\n\x07GetUser\x12(.magicleap.datasets.users.GetUserRequest\x1a\x1e.magicleap.datasets.users.User\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/api/v1/{name=users/*}\x12\x86\x01\n\x0b\x44isableUser\x12,.magicleap.datasets.users.DisableUserRequest\x1a\x1e.magicleap.datasets.users.User\")\x82\xd3\xe4\x93\x02#\"\x1e/api/v1/{name=users/*}:disable:\x01*\x12\x83\x01\n\nEnableUser\x12+.magicleap.datasets.users.EnableUserRequest\x1a\x1e.magicleap.datasets.users.User\"(\x82\xd3\xe4\x93\x02\"\"\x1d/api/v1/{name=users/*}:enable:\x01*\x12\x98\x01\n\rListUserRoles\x12..magicleap.datasets.users.ListUserRolesRequest\x1a/.magicleap.datasets.users.ListUserRolesResponse\"&\x82\xd3\xe4\x93\x02 \x12\x1e/api/v1/{parent=users/*}/roles\x12\x89\x01\n\x0b\x41\x64\x64UserRole\x12,.magicleap.datasets.users.AddUserRoleRequest\x1a\x1e.magicleap.datasets.users.Role\",\x82\xd3\xe4\x93\x02&\"\x1e/api/v1/{parent=users/*}/roles:\x04role\x12\x81\x01\n\x0eRemoveUserRole\x12/.magicleap.datasets.users.RemoveUserRoleRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 *\x1e/api/v1/{name=users/*/roles/*}b\x06proto3')
+  serialized_pb=_b('\n\x1emagicleap/datasets/users.proto\x12\x18magicleap.datasets.users\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n\x05Token\x12\x33\n\x0f\x65xpiration_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x18\n\x0e\x64\x61tasets_token\x18\x02 \x01(\tH\x00\x12\x16\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\tH\x00\x12\x12\n\x08id_token\x18\x04 \x01(\tH\x00\x42\x08\n\x06tokens\"D\n\x12\x43reateTokenRequest\x12.\n\x05token\x18\x01 \x01(\x0b\x32\x1f.magicleap.datasets.users.Token\"B\n\x10TokenInfoRequest\x12.\n\x05token\x18\x01 \x01(\x0b\x32\x1f.magicleap.datasets.users.Token\"\xd7\x01\n\tTokenInfo\x12\x0b\n\x03iat\x18\x01 \x01(\x05\x12\x0b\n\x03\x65xp\x18\x02 \x01(\x05\x12\x0b\n\x03iss\x18\x03 \x01(\t\x12\x0b\n\x03\x61ud\x18\x04 \x01(\t\x12\x0b\n\x03sub\x18\x05 \x01(\t\x12\r\n\x05\x65mail\x18\x06 \x01(\t\x12\x0e\n\x06locale\x18\x07 \x01(\t\x12\x0f\n\x07picture\x18\x08 \x01(\t\x12\x12\n\ngiven_name\x18\t \x01(\t\x12\x13\n\x0b\x66\x61mily_name\x18\n \x01(\t\x12\x11\n\tfull_name\x18\x0b \x01(\t\x12\r\n\x05roles\x18\x0c \x03(\t\x12\x0e\n\x06groups\x18\r \x03(\t\"5\n\x04Role\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\"\x12\n\x10ListRolesRequest\"[\n\x11ListRolesResponse\x12-\n\x05roles\x18\x01 \x03(\x0b\x32\x1e.magicleap.datasets.users.Role\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\xf9\x01\n\x04User\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x11\n\tfull_name\x18\x03 \x01(\t\x12\x12\n\ngiven_name\x18\x04 \x01(\t\x12\x13\n\x0b\x66\x61mily_name\x18\x05 \x01(\t\x12\x0f\n\x07picture\x18\x06 \x01(\t\x12\x0e\n\x06locale\x18\x07 \x01(\t\x12\x10\n\x08\x64isabled\x18\x08 \x01(\x08\x12\x31\n\rcreation_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x0elast_seen_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x1e\n\x0eGetUserRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"R\n\x12\x41\x64\x64UserRoleRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12,\n\x04role\x18\x02 \x01(\x0b\x32\x1e.magicleap.datasets.users.Role\"%\n\x15RemoveUserRoleRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"M\n\x14ListUserRolesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"_\n\x15ListUserRolesResponse\x12-\n\x05roles\x18\x01 \x03(\x0b\x32\x1e.magicleap.datasets.users.Role\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\"\n\x12\x44isableUserRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11\x45nableUserRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\xfc\x01\n\x06Tokens\x12t\n\x0b\x43reateToken\x12,.magicleap.datasets.users.CreateTokenRequest\x1a\x1f.magicleap.datasets.users.Token\"\x16\x82\xd3\xe4\x93\x02\x10\"\x0e/api/v1/tokens\x12|\n\x0cGetTokenInfo\x12*.magicleap.datasets.users.TokenInfoRequest\x1a#.magicleap.datasets.users.TokenInfo\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/tokens:info2\xb3\x07\n\x05Users\x12{\n\tListRoles\x12*.magicleap.datasets.users.ListRolesRequest\x1a+.magicleap.datasets.users.ListRolesResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/api/v1/roles\x12s\n\x07GetUser\x12(.magicleap.datasets.users.GetUserRequest\x1a\x1e.magicleap.datasets.users.User\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/api/v1/{name=users/*}\x12\x86\x01\n\x0b\x44isableUser\x12,.magicleap.datasets.users.DisableUserRequest\x1a\x1e.magicleap.datasets.users.User\")\x82\xd3\xe4\x93\x02#\"\x1e/api/v1/{name=users/*}:disable:\x01*\x12\x83\x01\n\nEnableUser\x12+.magicleap.datasets.users.EnableUserRequest\x1a\x1e.magicleap.datasets.users.User\"(\x82\xd3\xe4\x93\x02\"\"\x1d/api/v1/{name=users/*}:enable:\x01*\x12\x98\x01\n\rListUserRoles\x12..magicleap.datasets.users.ListUserRolesRequest\x1a/.magicleap.datasets.users.ListUserRolesResponse\"&\x82\xd3\xe4\x93\x02 \x12\x1e/api/v1/{parent=users/*}/roles\x12\x89\x01\n\x0b\x41\x64\x64UserRole\x12,.magicleap.datasets.users.AddUserRoleRequest\x1a\x1e.magicleap.datasets.users.Role\",\x82\xd3\xe4\x93\x02&\"\x1e/api/v1/{parent=users/*}/roles:\x04role\x12\x81\x01\n\x0eRemoveUserRole\x12/.magicleap.datasets.users.RemoveUserRoleRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 *\x1e/api/v1/{name=users/*/roles/*}b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -646,89 +646,6 @@ _LISTUSERROLESRESPONSE = _descriptor.Descriptor(
 )
 
 
-_LISTUSERGROUPSREQUEST = _descriptor.Descriptor(
-  name='ListUserGroupsRequest',
-  full_name='magicleap.datasets.users.ListUserGroupsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='magicleap.datasets.users.ListUserGroupsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='magicleap.datasets.users.ListUserGroupsRequest.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='magicleap.datasets.users.ListUserGroupsRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1402,
-  serialized_end=1480,
-)
-
-
-_LISTUSERGROUPSRESPONSE = _descriptor.Descriptor(
-  name='ListUserGroupsResponse',
-  full_name='magicleap.datasets.users.ListUserGroupsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='groups', full_name='magicleap.datasets.users.ListUserGroupsResponse.groups', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='magicleap.datasets.users.ListUserGroupsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1482,
-  serialized_end=1580,
-)
-
-
 _DISABLEUSERREQUEST = _descriptor.Descriptor(
   name='DisableUserRequest',
   full_name='magicleap.datasets.users.DisableUserRequest',
@@ -755,8 +672,8 @@ _DISABLEUSERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1582,
-  serialized_end=1616,
+  serialized_start=1402,
+  serialized_end=1436,
 )
 
 
@@ -786,416 +703,8 @@ _ENABLEUSERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1618,
-  serialized_end=1651,
-)
-
-
-_GROUP = _descriptor.Descriptor(
-  name='Group',
-  full_name='magicleap.datasets.users.Group',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='magicleap.datasets.users.Group.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='title', full_name='magicleap.datasets.users.Group.title', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='magicleap.datasets.users.Group.description', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='creation_time', full_name='magicleap.datasets.users.Group.creation_time', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='created_by', full_name='magicleap.datasets.users.Group.created_by', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1654,
-  serialized_end=1782,
-)
-
-
-_CREATEGROUPREQUEST = _descriptor.Descriptor(
-  name='CreateGroupRequest',
-  full_name='magicleap.datasets.users.CreateGroupRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='group', full_name='magicleap.datasets.users.CreateGroupRequest.group', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='group_id', full_name='magicleap.datasets.users.CreateGroupRequest.group_id', index=1,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1784,
-  serialized_end=1870,
-)
-
-
-_LISTGROUPSREQUEST = _descriptor.Descriptor(
-  name='ListGroupsRequest',
-  full_name='magicleap.datasets.users.ListGroupsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='magicleap.datasets.users.ListGroupsRequest.page_size', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='magicleap.datasets.users.ListGroupsRequest.page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1872,
-  serialized_end=1930,
-)
-
-
-_LISTGROUPSRESPONSE = _descriptor.Descriptor(
-  name='ListGroupsResponse',
-  full_name='magicleap.datasets.users.ListGroupsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='groups', full_name='magicleap.datasets.users.ListGroupsResponse.groups', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='magicleap.datasets.users.ListGroupsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1932,
-  serialized_end=2026,
-)
-
-
-_GETGROUPREQUEST = _descriptor.Descriptor(
-  name='GetGroupRequest',
-  full_name='magicleap.datasets.users.GetGroupRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='magicleap.datasets.users.GetGroupRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2028,
-  serialized_end=2059,
-)
-
-
-_MEMBERSHIP = _descriptor.Descriptor(
-  name='Membership',
-  full_name='magicleap.datasets.users.Membership',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='magicleap.datasets.users.Membership.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='user', full_name='magicleap.datasets.users.Membership.user', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='created_by', full_name='magicleap.datasets.users.Membership.created_by', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='creation_time', full_name='magicleap.datasets.users.Membership.creation_time', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2061,
-  serialized_end=2172,
-)
-
-
-_ADDMEMBERSHIPREQUEST = _descriptor.Descriptor(
-  name='AddMembershipRequest',
-  full_name='magicleap.datasets.users.AddMembershipRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='magicleap.datasets.users.AddMembershipRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='membership', full_name='magicleap.datasets.users.AddMembershipRequest.membership', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2174,
-  serialized_end=2270,
-)
-
-
-_REMOVEMEMBERSHIPREQUEST = _descriptor.Descriptor(
-  name='RemoveMembershipRequest',
-  full_name='magicleap.datasets.users.RemoveMembershipRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='magicleap.datasets.users.RemoveMembershipRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2272,
-  serialized_end=2311,
-)
-
-
-_LISTMEMBERSHIPSREQUEST = _descriptor.Descriptor(
-  name='ListMembershipsRequest',
-  full_name='magicleap.datasets.users.ListMembershipsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='magicleap.datasets.users.ListMembershipsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='magicleap.datasets.users.ListMembershipsRequest.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='magicleap.datasets.users.ListMembershipsRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2313,
-  serialized_end=2392,
-)
-
-
-_LISTMEMBERSHIPSRESPONSE = _descriptor.Descriptor(
-  name='ListMembershipsResponse',
-  full_name='magicleap.datasets.users.ListMembershipsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='memberships', full_name='magicleap.datasets.users.ListMembershipsResponse.memberships', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='magicleap.datasets.users.ListMembershipsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2394,
-  serialized_end=2503,
+  serialized_start=1438,
+  serialized_end=1471,
 )
 
 _TOKEN.fields_by_name['expiration_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -1215,13 +724,6 @@ _USER.fields_by_name['creation_time'].message_type = google_dot_protobuf_dot_tim
 _USER.fields_by_name['last_seen_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _ADDUSERROLEREQUEST.fields_by_name['role'].message_type = _ROLE
 _LISTUSERROLESRESPONSE.fields_by_name['roles'].message_type = _ROLE
-_LISTUSERGROUPSRESPONSE.fields_by_name['groups'].message_type = _GROUP
-_GROUP.fields_by_name['creation_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_CREATEGROUPREQUEST.fields_by_name['group'].message_type = _GROUP
-_LISTGROUPSRESPONSE.fields_by_name['groups'].message_type = _GROUP
-_MEMBERSHIP.fields_by_name['creation_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_ADDMEMBERSHIPREQUEST.fields_by_name['membership'].message_type = _MEMBERSHIP
-_LISTMEMBERSHIPSRESPONSE.fields_by_name['memberships'].message_type = _MEMBERSHIP
 DESCRIPTOR.message_types_by_name['Token'] = _TOKEN
 DESCRIPTOR.message_types_by_name['CreateTokenRequest'] = _CREATETOKENREQUEST
 DESCRIPTOR.message_types_by_name['TokenInfoRequest'] = _TOKENINFOREQUEST
@@ -1235,20 +737,8 @@ DESCRIPTOR.message_types_by_name['AddUserRoleRequest'] = _ADDUSERROLEREQUEST
 DESCRIPTOR.message_types_by_name['RemoveUserRoleRequest'] = _REMOVEUSERROLEREQUEST
 DESCRIPTOR.message_types_by_name['ListUserRolesRequest'] = _LISTUSERROLESREQUEST
 DESCRIPTOR.message_types_by_name['ListUserRolesResponse'] = _LISTUSERROLESRESPONSE
-DESCRIPTOR.message_types_by_name['ListUserGroupsRequest'] = _LISTUSERGROUPSREQUEST
-DESCRIPTOR.message_types_by_name['ListUserGroupsResponse'] = _LISTUSERGROUPSRESPONSE
 DESCRIPTOR.message_types_by_name['DisableUserRequest'] = _DISABLEUSERREQUEST
 DESCRIPTOR.message_types_by_name['EnableUserRequest'] = _ENABLEUSERREQUEST
-DESCRIPTOR.message_types_by_name['Group'] = _GROUP
-DESCRIPTOR.message_types_by_name['CreateGroupRequest'] = _CREATEGROUPREQUEST
-DESCRIPTOR.message_types_by_name['ListGroupsRequest'] = _LISTGROUPSREQUEST
-DESCRIPTOR.message_types_by_name['ListGroupsResponse'] = _LISTGROUPSRESPONSE
-DESCRIPTOR.message_types_by_name['GetGroupRequest'] = _GETGROUPREQUEST
-DESCRIPTOR.message_types_by_name['Membership'] = _MEMBERSHIP
-DESCRIPTOR.message_types_by_name['AddMembershipRequest'] = _ADDMEMBERSHIPREQUEST
-DESCRIPTOR.message_types_by_name['RemoveMembershipRequest'] = _REMOVEMEMBERSHIPREQUEST
-DESCRIPTOR.message_types_by_name['ListMembershipsRequest'] = _LISTMEMBERSHIPSREQUEST
-DESCRIPTOR.message_types_by_name['ListMembershipsResponse'] = _LISTMEMBERSHIPSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Token = _reflection.GeneratedProtocolMessageType('Token', (_message.Message,), dict(
@@ -1342,20 +832,6 @@ ListUserRolesResponse = _reflection.GeneratedProtocolMessageType('ListUserRolesR
   ))
 _sym_db.RegisterMessage(ListUserRolesResponse)
 
-ListUserGroupsRequest = _reflection.GeneratedProtocolMessageType('ListUserGroupsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTUSERGROUPSREQUEST,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.ListUserGroupsRequest)
-  ))
-_sym_db.RegisterMessage(ListUserGroupsRequest)
-
-ListUserGroupsResponse = _reflection.GeneratedProtocolMessageType('ListUserGroupsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTUSERGROUPSRESPONSE,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.ListUserGroupsResponse)
-  ))
-_sym_db.RegisterMessage(ListUserGroupsResponse)
-
 DisableUserRequest = _reflection.GeneratedProtocolMessageType('DisableUserRequest', (_message.Message,), dict(
   DESCRIPTOR = _DISABLEUSERREQUEST,
   __module__ = 'magicleap.datasets.users_pb2'
@@ -1370,76 +846,6 @@ EnableUserRequest = _reflection.GeneratedProtocolMessageType('EnableUserRequest'
   ))
 _sym_db.RegisterMessage(EnableUserRequest)
 
-Group = _reflection.GeneratedProtocolMessageType('Group', (_message.Message,), dict(
-  DESCRIPTOR = _GROUP,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.Group)
-  ))
-_sym_db.RegisterMessage(Group)
-
-CreateGroupRequest = _reflection.GeneratedProtocolMessageType('CreateGroupRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEGROUPREQUEST,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.CreateGroupRequest)
-  ))
-_sym_db.RegisterMessage(CreateGroupRequest)
-
-ListGroupsRequest = _reflection.GeneratedProtocolMessageType('ListGroupsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTGROUPSREQUEST,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.ListGroupsRequest)
-  ))
-_sym_db.RegisterMessage(ListGroupsRequest)
-
-ListGroupsResponse = _reflection.GeneratedProtocolMessageType('ListGroupsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTGROUPSRESPONSE,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.ListGroupsResponse)
-  ))
-_sym_db.RegisterMessage(ListGroupsResponse)
-
-GetGroupRequest = _reflection.GeneratedProtocolMessageType('GetGroupRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETGROUPREQUEST,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.GetGroupRequest)
-  ))
-_sym_db.RegisterMessage(GetGroupRequest)
-
-Membership = _reflection.GeneratedProtocolMessageType('Membership', (_message.Message,), dict(
-  DESCRIPTOR = _MEMBERSHIP,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.Membership)
-  ))
-_sym_db.RegisterMessage(Membership)
-
-AddMembershipRequest = _reflection.GeneratedProtocolMessageType('AddMembershipRequest', (_message.Message,), dict(
-  DESCRIPTOR = _ADDMEMBERSHIPREQUEST,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.AddMembershipRequest)
-  ))
-_sym_db.RegisterMessage(AddMembershipRequest)
-
-RemoveMembershipRequest = _reflection.GeneratedProtocolMessageType('RemoveMembershipRequest', (_message.Message,), dict(
-  DESCRIPTOR = _REMOVEMEMBERSHIPREQUEST,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.RemoveMembershipRequest)
-  ))
-_sym_db.RegisterMessage(RemoveMembershipRequest)
-
-ListMembershipsRequest = _reflection.GeneratedProtocolMessageType('ListMembershipsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTMEMBERSHIPSREQUEST,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.ListMembershipsRequest)
-  ))
-_sym_db.RegisterMessage(ListMembershipsRequest)
-
-ListMembershipsResponse = _reflection.GeneratedProtocolMessageType('ListMembershipsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTMEMBERSHIPSRESPONSE,
-  __module__ = 'magicleap.datasets.users_pb2'
-  # @@protoc_insertion_point(class_scope:magicleap.datasets.users.ListMembershipsResponse)
-  ))
-_sym_db.RegisterMessage(ListMembershipsResponse)
-
 
 
 _TOKENS = _descriptor.ServiceDescriptor(
@@ -1448,8 +854,8 @@ _TOKENS = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=2506,
-  serialized_end=2758,
+  serialized_start=1474,
+  serialized_end=1726,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateToken',
@@ -1481,8 +887,8 @@ _USERS = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=1,
   serialized_options=None,
-  serialized_start=2761,
-  serialized_end=3708,
+  serialized_start=1729,
+  serialized_end=2676,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListRoles',

@@ -52,7 +52,7 @@ spec:
     name: {{ .Values.app_name }}
   minReplicas: 3
   maxReplicas: 20
-  targetCPUUtilizationPercentage: 30  # TODO: Add a custom metric to scale based on requests
+  targetCPUUtilizationPercentage: 50  # TODO: Add a custom metric to scale based on requests
 ---
 apiVersion: apps/v1
 kind: Deployment
