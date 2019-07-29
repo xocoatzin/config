@@ -80,6 +80,11 @@ class UsersStub(object):
         request_serializer=magicleap_dot_datasets_dot_users__pb2.ListRolesRequest.SerializeToString,
         response_deserializer=magicleap_dot_datasets_dot_users__pb2.ListRolesResponse.FromString,
         )
+    self.ListUsers = channel.unary_unary(
+        '/magicleap.datasets.users.Users/ListUsers',
+        request_serializer=magicleap_dot_datasets_dot_users__pb2.ListUsersRequest.SerializeToString,
+        response_deserializer=magicleap_dot_datasets_dot_users__pb2.ListUsersResponse.FromString,
+        )
     self.GetUser = channel.unary_unary(
         '/magicleap.datasets.users.Users/GetUser',
         request_serializer=magicleap_dot_datasets_dot_users__pb2.GetUserRequest.SerializeToString,
@@ -123,15 +128,15 @@ class UsersServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def GetUser(self, request, context):
-    """// List available users
-    rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
-    option (google.api.http) = {
-    get: "/api/v1/users"
-    };
-    }
+  def ListUsers(self, request, context):
+    """List available users
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
 
-    // // Create a new user
+  def GetUser(self, request, context):
+    """// // Create a new user
     // rpc CreateUser(CreateUserRequest) returns (User) {
     //   option (google.api.http) = {
     //     post: "/api/v1/users"
@@ -194,6 +199,11 @@ def add_UsersServicer_to_server(servicer, server):
           servicer.ListRoles,
           request_deserializer=magicleap_dot_datasets_dot_users__pb2.ListRolesRequest.FromString,
           response_serializer=magicleap_dot_datasets_dot_users__pb2.ListRolesResponse.SerializeToString,
+      ),
+      'ListUsers': grpc.unary_unary_rpc_method_handler(
+          servicer.ListUsers,
+          request_deserializer=magicleap_dot_datasets_dot_users__pb2.ListUsersRequest.FromString,
+          response_serializer=magicleap_dot_datasets_dot_users__pb2.ListUsersResponse.SerializeToString,
       ),
       'GetUser': grpc.unary_unary_rpc_method_handler(
           servicer.GetUser,

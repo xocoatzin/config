@@ -116,20 +116,28 @@ dev-build-proto: ## Generate protobuf definitions.
 	@touch ${OUTDIR}magicleap/datasets/__init__.py
 	@echo "${OKGREEN}Protobuf generated in ${OUTDIR}${ENDC}"
 
+# Check if the local gcloud is properly authenticated with Application Default Credentials
+.PHONY: dev-check-adc
+dev-check-adc: ## Check the Application Default Credentials
+	@if [ ! -f ${HOME}/.config/gcloud/application_default_credentials.json ]; then \
+		gcloud auth application-default login; \
+	fi
+
 .PHONY: dev-run-server
 dev-run-server: dev-build-proto
 dev-run-server: export _MAPI_DEV_DISABLE_AUTH=$(shell date '+%Y-%m-%d %H:%M')
 dev-run-server: export API_SECRET=a-very-secret-string
 dev-run-server: export API_DATASTORE_PROJECT=my-project
 dev-run-server: export API_DATASTORE_NAMESPACE=users-namespace
-dev-run-server: export GOOGLE_APPLICATION_CREDENTIALS=${PWD}/.local/credentials/application_default.json
-dev-run-server: export DATASTORE_EMULATOR_HOST=localhost:8081
+dev-run-server: export DATASTORE_EMULATOR_HOST=localhost:8028
+dev-run-server: dev-check-adc
 dev-run-server: # Run the application server locally
 	@.venv3/bin/users-server --port 18001 --text-logs
 
 .PHONY: dev-emulator-db
 dev-emulator-db:  # Run the datastore emulator locally.
-	@gcloud beta emulators datastore start --data-dir=.local/datastore/db/
+	@mkdir -p .local/datastore/db
+	@gcloud beta emulators datastore start --data-dir=.local/datastore/db/ --host-port=localhost:8028
 
 .PHONY: dev-run-client
 dev-run-client: API_KEY=AIzaSyAgwZX25V5FZjgu_DHWmdHi5GxQZkqyjMw

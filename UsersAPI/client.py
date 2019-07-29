@@ -73,6 +73,10 @@ class Client(object):
         return self.tstub.CreateToken, req
 
     # Users
+    def ListUsers(self):
+        req = pb2.ListUsersRequest()
+        return self.stub.ListUsers, req
+
     def ListRoles(self):
         req = pb2.ListRolesRequest()
         return self.stub.ListRoles, req

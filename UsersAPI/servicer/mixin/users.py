@@ -18,7 +18,6 @@ from UsersAPI.tools import authorize
 from UsersAPI.roles import USER_ROLES, ApiCredentials
 from UsersAPI.servicer import helpers
 
-
 __all__ = [
     'UsersMixin',
 ]
@@ -26,6 +25,38 @@ __all__ = [
 
 class UsersMixin(object):
     """Implements the Users API server."""
+
+    @authorize(requires=[ApiCredentials.USERS_READ])
+    def ListUsers(self, request, context, options):  # noqa
+        """Get a user by entity name."""
+        request = MessageToDict(request)
+
+        page_size = request.get('pageSize', 100)
+        if not 0 < page_size <= 100:
+            context.abort(
+                StatusCode.INVALID_ARGUMENT,
+                "Invalid page size, expected value in range [1-100]")
+        page_token = request.get('pageToken')
+
+        query = self.dsclient.query(kind='User')
+        query_iter = query.fetch(limit=page_size, start_cursor=page_token)
+        first_page = next(query_iter.pages)
+
+        users = [helpers.user_to_pb2(entity) for entity in first_page]
+
+        next_page_token = None
+        if query_iter.next_page_token:
+            next_page_token = query_iter.next_page_token.decode("utf-8")
+
+        # At the end of the collection, the next page token is equal
+        # to the original token
+        if next_page_token == page_token:
+            next_page_token = None
+
+        return pb2.ListUsersResponse(
+            users=users,
+            next_page_token=next_page_token
+        )
 
     @authorize(requires=[ApiCredentials.USERS_READ])
     def GetUser(self, request, context, options):  # noqa
