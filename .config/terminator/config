@@ -16,6 +16,7 @@
   [[default]]
     background_color = "#00040b"
     cursor_color = "#bfbfbf"
+    cursor_shape = ibeam
     custom_command = TERM=xterm-256color fish
     font = FuraMono Nerd Font Mono Medium 11
     foreground_color = "#bfbfbf"

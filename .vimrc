@@ -35,6 +35,9 @@ filetype plugin on
 filetype indent on
 filetype on
 
+" Enable mouse support (resize splits, select in visual mode, etc)
+set mouse=a
+
 " Set to auto read when a file is changed from the outside
 set autoread
 set number
@@ -234,7 +237,7 @@ endif
 " gv   to open in vertical split, keeping focus on the results
 " q    to close the quickfix window
 if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+  let g:ackprg = 'ag --nogroup --nocolor --column'
 endif
 nnoremap <Leader>a :Ack!<Space>
 
@@ -251,6 +254,8 @@ let g:gitgutter_sign_modified_removed = ''
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 let python_highlight_all=1
 autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
+let no_flake8_maps = 1  " Don't use <F7> key.
+let g:flake8_cmd='/ml/Users/MAGICLEAP/atorresgomez/.vimvenv3/bin/flake8'
 let g:flake8_show_in_gutter=1
 let g:flake8_show_in_file=1
 let g:python_highlight_all=1
