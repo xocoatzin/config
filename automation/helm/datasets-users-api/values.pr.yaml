@@ -1,5 +1,1 @@
-docker-image: gcr.io/ml-datasets-pr/datasets/apis/users/grpc-server
 grpc_image_tag: production
-namespace: users-api
-app_name: users-api
-clusterissuer: letsencrypt-dns-prod
