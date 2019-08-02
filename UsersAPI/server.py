@@ -17,6 +17,7 @@ import grpc
 from ApiCommon.logging import config_logger
 
 import UsersAPI
+from UsersAPI.bootstrap import bootstrap
 from UsersAPI.lib.magicleap.datasets import users_pb2_grpc as pb2_grpc
 from UsersAPI.servicer.servicer import UsersServicer, TokensServicer
 
@@ -67,9 +68,14 @@ def main():
     parser.add_argument(
         '--shutdown_grace_duration', type=int, default=5,
         help='The shutdown grace duration, in seconds')
+    parser.add_argument(
+        '--bootstrap', action='store_true',
+        help='Bootstrap the database entities.')
     args = parser.parse_args()
 
     config_logger(not args.text_logs)
+    if args.bootstrap:
+        bootstrap()
     serve(args.port, args.shutdown_grace_duration)
 
 

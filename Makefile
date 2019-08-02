@@ -132,7 +132,7 @@ dev-run-server: export API_DATASTORE_NAMESPACE=users-namespace
 dev-run-server: export DATASTORE_EMULATOR_HOST=localhost:8028
 dev-run-server: dev-check-adc
 dev-run-server: # Run the application server locally
-	@.venv3/bin/users-server --port 18001 --text-logs
+	@.venv3/bin/users-server --port 18001 --text-logs --bootstrap
 
 .PHONY: dev-emulator-db
 dev-emulator-db:  # Run the datastore emulator locally.

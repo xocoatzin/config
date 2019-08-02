@@ -33,14 +33,14 @@ class TokensServicer(object):
   """
 
   def CreateToken(self, request, context):
-    """Create a token
+    """Create a JWT token from a Google Access/ID token
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def GetTokenInfo(self, request, context):
-    """Create a token
+    """Validate the information from a JWT token.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -144,28 +144,28 @@ class UsersServicer(object):
     //   };
     // }
 
-    Get a user by name
+    Get a user by entity name
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def DisableUser(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
+    """Disable a user account
+    """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def EnableUser(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
+    """Enable a user account
+    """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def ListUserRoles(self, request, context):
-    """List available roles
+    """List available roles for a user account
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
