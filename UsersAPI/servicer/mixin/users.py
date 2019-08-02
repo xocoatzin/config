@@ -42,7 +42,12 @@ class UsersMixin(object):
         query_iter = query.fetch(limit=page_size, start_cursor=page_token)
         first_page = next(query_iter.pages)
 
-        users = [helpers.user_to_pb2(entity) for entity in first_page]
+        # Display full details only to admins.
+        is_admin = 'users.admin' in options.auth.get('roles', [])
+        users = [
+            helpers.user_to_pb2(entity, is_admin)
+            for entity in first_page
+        ]
 
         next_page_token = None
         if query_iter.next_page_token:
@@ -84,7 +89,9 @@ class UsersMixin(object):
         if not user_entity:
             context.abort(StatusCode.NOT_FOUND, "Not found")
 
-        return helpers.user_to_pb2(user_entity)
+        # Display full details only to admins.
+        is_admin = 'users.admin' in options.auth.get('roles', [])
+        return helpers.user_to_pb2(user_entity, is_admin)
 
     @authorize(requires=[ApiCredentials.USERS_ROLES_READ])
     def ListUserRoles(self, request, context, options):  # noqa

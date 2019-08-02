@@ -43,17 +43,25 @@ def group_to_pb2(entity):
     )
 
 
-def user_to_pb2(entity):
+def user_to_pb2(entity, admin_view=False):
     """Convert a datastore entity to protobuf."""
+    # Display full details only to admins.
+    if admin_view:
+        return pb2.User(
+            name='users/{}'.format(entity.get('email')),
+            email=entity.get('email'),
+            full_name=entity.get('full_name'),
+            given_name=entity.get('given_name'),
+            family_name=entity.get('family_name'),
+            picture=entity.get('picture'),
+            locale=entity.get('locale'),
+            disabled=entity.get('disabled', False),
+            creation_time=to_pb2_timestamp(entity.get('created_at')),
+            last_seen_time=to_pb2_timestamp(entity.get('last_seen')),
+        )
     return pb2.User(
         name='users/{}'.format(entity.get('email')),
         email=entity.get('email'),
         full_name=entity.get('full_name'),
-        given_name=entity.get('given_name'),
-        family_name=entity.get('family_name'),
         picture=entity.get('picture'),
-        locale=entity.get('locale'),
-        disabled=entity.get('disabled', False),
-        creation_time=to_pb2_timestamp(entity.get('created_at')),
-        last_seen_time=to_pb2_timestamp(entity.get('last_seen')),
     )
