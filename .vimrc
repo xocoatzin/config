@@ -113,6 +113,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-python/python-syntax'
 Plug 'nvie/vim-flake8'
 Plug 'davidhalter/jedi-vim'
+Plug 'jeetsukumaran/vim-pythonsense'
 " Typescript
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
@@ -123,6 +124,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'kkoomen/vim-doge'
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Plug 'liuchengxu/vista.vim'
 " Search and complete
 Plug 'kien/ctrlp.vim'
@@ -132,8 +134,10 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-easy-align'
 " UI
 Plug 'mhinz/vim-startify'
+" Plug 'severin-lemaignan/vim-minimap'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -186,6 +190,16 @@ let g:multi_cursor_next_key            = '<C-d>'
 let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
+
+" Vim Easy Align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" Vim Instant Markdown
+" Start with :InstantMarkdownPreview, stop with: InstantMarkdownStop
+let g:instant_markdown_autostart = 0
 
 " Vim Doge
 
@@ -273,6 +287,36 @@ autocmd FileType python set list
 "  Usages <leader>n (shows all the usages of a name)
 "  Open module, e.g. :Pyimport os (opens the os module)
 
+" Vim Pythonsense
+" class OneRing(object):             -----------------------------+
+"                                   --------------------+        |
+"    def __init__(self):                                |        |
+"        print("One ring to ...")                       |        |
+"                                                       |        |
+"    def rule_them_all(self):                           |        |
+"        self.find_them()                               |        |
+"                                                       |        |
+"    def find_them(self):           ------------+       |        |
+"        a = [3, 7, 9, 1]           ----+       |       |        |
+"        self.bring_them(a)             |- `if` |- `af` |- `ic`  | - `ac`
+"        self.bind_them("darkness") ----+       |       |        |
+"                                   ------------+       |        |
+"    def bring_them_all(self, a):                       |        |
+"        self.bind_them(a, '#000')                      |        |
+"                                                       |        |
+"    def bind_them(self, a, c):                         |        |
+"        print("shadows lie.")      --------------------+        |
+"                                   -----------------------------+
+"
+"
+" ]] : Move (forward) to the beginning of the next Python class.
+" ][ : Move (forward) to the end of the current Python class.
+" [[ : Move (backward) to beginning of the current Python class (or beginning of the previous Python class if not currently in a class or already at the beginning of a class).
+" [] : Move (backward) to end of the previous Python class.
+" ]m : Move (forward) to the beginning of the next Python method or function.
+" ]M : Move (forward) to the end of the current Python method or function.
+" [m : Move (backward) to the beginning of the current Python method or function (or to the beginning of the previous method or function if not currently in a method/function or already at the beginning of a method/function).
+" [M : Move (backward) to the end of the previous Python method or function.
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
