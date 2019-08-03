@@ -22,6 +22,9 @@ set number
 set termguicolors
 set cursorline
 
+" Add mouse support
+set mouse=a
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
@@ -100,10 +103,11 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'kkoomen/vim-doge'
+" Plug 'kkoomen/vim-doge'
 " Plug 'liuchengxu/vista.vim'
 " Search and complete
 Plug 'kien/ctrlp.vim'
+Plug 'fisadev/vim-ctrlp-cmdpalette'
 Plug 'tpope/vim-fugitive'
 Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
@@ -111,6 +115,8 @@ Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " UI
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-session'
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
@@ -171,6 +177,14 @@ let g:doge_doc_standard_python = 'google'
 let g:doge_mapping = '<leader>d'
 let g:doge_mapping_comment_jump_forward = '<leader><Tab>'
 let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
+
+" Startify
+let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
+let g:startify_custom_footer = g:startify_custom_footer_text 
+let g:startify_session_persistence = 1
+let g:startify_change_to_dir = 0
+let g:startify_change_to_vcs_root = 1
+let g:startify_fortune_use_unicode = 1
 
 " Vim Sandwich
 "
