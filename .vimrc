@@ -16,14 +16,14 @@ filetype plugin on
 filetype indent on
 filetype on
 
+" Enable mouse support (resize splits, select in visual mode, etc)
+set mouse=a
+
 " Set to auto read when a file is changed from the outside
 set autoread
 set number
 set termguicolors
 set cursorline
-
-" Add mouse support
-set mouse=a
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -94,6 +94,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-python/python-syntax'
 Plug 'nvie/vim-flake8'
 Plug 'davidhalter/jedi-vim'
+Plug 'jeetsukumaran/vim-pythonsense'
 " Typescript
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
@@ -104,6 +105,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 " Plug 'kkoomen/vim-doge'
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Plug 'liuchengxu/vista.vim'
 " Search and complete
 Plug 'kien/ctrlp.vim'
@@ -114,9 +116,8 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-easy-align'
 " UI
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-session'
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
@@ -146,7 +147,11 @@ map <C-N> :NERDTreeToggle<CR>
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
-let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
+if executable('/usr/local/bin/python3')
+  let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
+elseif executable('/usr/bin/python3')
+  let g:ycm_server_python_interpreter = '/usr/bin/python3'
+endif
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -171,12 +176,22 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
-" Vim Doge
+" Vim Easy Align
+" Plug 'xolox/vim-session'
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
-let g:doge_doc_standard_python = 'google'
-let g:doge_mapping = '<leader>d'
-let g:doge_mapping_comment_jump_forward = '<leader><Tab>'
-let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
+" Vim Instant Markdown
+" Start with :InstantMarkdownPreview, stop with: InstantMarkdownStop
+let g:instant_markdown_autostart = 0
+
+ "Vim Doge
+"let g:doge_doc_standard_python = 'google'
+"let g:doge_mapping = '<leader>d'
+"let g:doge_mapping_comment_jump_forward = '<leader><Tab>'
+"let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
 
 " Startify
 let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
@@ -229,7 +244,7 @@ endif
 " gv   to open in vertical split, keeping focus on the results
 " q    to close the quickfix window
 if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+  let g:ackprg = 'ag --nogroup --nocolor --column'
 endif
 nnoremap <Leader>a :Ack!<Space>
 
@@ -246,6 +261,8 @@ let g:gitgutter_sign_modified_removed = ''
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 let python_highlight_all=1
 autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
+let no_flake8_maps = 1  " Don't use <F7> key.
+" let g:flake8_cmd='/ml/Users/MAGICLEAP/atorresgomez/.vimvenv3/bin/flake8'
 let g:flake8_show_in_gutter=1
 let g:flake8_show_in_file=1
 let g:python_highlight_all=1
@@ -263,6 +280,36 @@ autocmd FileType python set list
 "  Usages <leader>n (shows all the usages of a name)
 "  Open module, e.g. :Pyimport os (opens the os module)
 
+" Vim Pythonsense
+" class OneRing(object):             -----------------------------+
+"                                   --------------------+        |
+"    def __init__(self):                                |        |
+"        print("One ring to ...")                       |        |
+"                                                       |        |
+"    def rule_them_all(self):                           |        |
+"        self.find_them()                               |        |
+"                                                       |        |
+"    def find_them(self):           ------------+       |        |
+"        a = [3, 7, 9, 1]           ----+       |       |        |
+"        self.bring_them(a)             |- `if` |- `af` |- `ic`  | - `ac`
+"        self.bind_them("darkness") ----+       |       |        |
+"                                   ------------+       |        |
+"    def bring_them_all(self, a):                       |        |
+"        self.bind_them(a, '#000')                      |        |
+"                                                       |        |
+"    def bind_them(self, a, c):                         |        |
+"        print("shadows lie.")      --------------------+        |
+"                                   -----------------------------+
+"
+"
+" ]] : Move (forward) to the beginning of the next Python class.
+" ][ : Move (forward) to the end of the current Python class.
+" [[ : Move (backward) to beginning of the current Python class (or beginning of the previous Python class if not currently in a class or already at the beginning of a class).
+" [] : Move (backward) to end of the previous Python class.
+" ]m : Move (forward) to the beginning of the next Python method or function.
+" ]M : Move (forward) to the end of the current Python method or function.
+" [m : Move (backward) to the beginning of the current Python method or function (or to the beginning of the previous method or function if not currently in a method/function or already at the beginning of a method/function).
+" [M : Move (backward) to the end of the previous Python method or function.
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -367,6 +414,13 @@ if has("gui_running")
     set guitablabel=%M\ %t
 endif
 
+" set true colors
+if has("termguicolors")
+    set t_8f=[38;2;%lu;%lu;%lum
+    set t_8b=[48;2;%lu;%lu;%lum
+    set termguicolors
+endif
+
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
@@ -437,7 +491,7 @@ nnoremap <F7> :bp<CR>
 nnoremap <F9> :bn<CR>
 
 " Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
+"map <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -449,30 +503,30 @@ map <C-l> <C-W>l
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
 
 " Close all the buffers
-map <leader>ba :bufdo bd<cr>
+"map <leader>ba :bufdo bd<cr>
 
 map <leader>l :bnext<cr>
 map <leader>h :bprevious<cr>
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
+"map <leader>tn :tabnew<cr>
+"map <leader>to :tabonly<cr>
+"map <leader>tc :tabclose<cr>
+"map <leader>tm :tabmove 
+"map <leader>t<leader> :tabnext 
 
 " Let 'tl' toggle between this and the last accessed tab
-let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
+"let g:lasttab = 1
+"nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+"au TabLeave * let g:lasttab = tabpagenr()
 
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+"map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+"map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers 
 try
@@ -540,16 +594,16 @@ inoremap <C-f> <c-g>u<Esc>[s1z=`]a<c-g>u
 " => Misc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+"noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Quickly open a buffer for scribble
-map <leader>q :e ~/buffer<cr>
+"map <leader>q :e ~/buffer<cr>
 
 " Quickly open a markdown buffer for scribble
-map <leader>x :e ~/buffer.md<cr>
+"map <leader>x :e ~/buffer.md<cr>
 
 " Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr>
+"map <leader>pp :setlocal paste!<cr>
 
 " }}}
 
