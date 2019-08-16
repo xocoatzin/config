@@ -209,6 +209,7 @@ let g:startify_fortune_use_unicode = 1
 
 " Fzf
 " Commands: Files, Buffers, Colors, Ag, Lines, Snippets, Commits, Commands, ...
+" CTRL-T / CTRL-X / CTRL-V key bindings to open in a new tab, a new split, or in a new vertical split
 
 " CtrlP settings
 "
@@ -547,12 +548,21 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 map 0 ^
 
 " Move a line of text using Shift+[jk]
-nnoremap <S-j> :m .+1<CR>==
-nnoremap <S-k> :m .-2<CR>==
-"inoremap <S-j> <Esc>:m .+1<CR>==gi
-"inoremap <S-k> <Esc>:m .-2<CR>==gi
-vnoremap <S-j> :m '>+1<CR>gv=gv
-vnoremap <S-k> :m '<-2<CR>gv=gv
+if has('macunix')
+    nnoremap ∆ :m .+1<CR>==
+    nnoremap ˚ :m .-2<CR>==
+    inoremap ∆ <Esc>:m .+1<CR>==gi
+    inoremap ˚ <Esc>:m .-2<CR>==gi
+    vnoremap ∆ :m '>+1<CR>gv=gv
+    vnoremap ˚ :m '<-2<CR>gv=gv
+else 
+    nnoremap <A-j> :m .+1<CR>==
+    nnoremap <A-k> :m .-2<CR>==
+    inoremap <A-j> <Esc>:m .+1<CR>==gi
+    inoremap <A-k> <Esc>:m .-2<CR>==gi
+    vnoremap <A-j> :m '>+1<CR>gv=gv
+    vnoremap <A-k> :m '<-2<CR>gv=gv
+endif
 
 " Delete trailing white space on save, useful for some filetypes ;)
 fun! CleanExtraSpaces()
