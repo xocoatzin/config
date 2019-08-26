@@ -98,6 +98,15 @@ if has('persistent_undo')
     set undofile
 endif
 
+" Delete, not cut
+" https://stackoverflow.com/a/11993928/575085
+nnoremap d "_d
+xnoremap d "_d
+"xnoremap p "_dP
+
+" Diff options
+set diffopt+=vertical
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -123,7 +132,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'kkoomen/vim-doge'
+"Plug 'kkoomen/vim-doge'
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Plug 'liuchengxu/vista.vim'
 " Search and complete
@@ -165,6 +174,8 @@ map <C-N> :NERDTreeToggle<CR>
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+" Use compact names for branches (2), disable with = 0
+let g:airline#extensions#branch#format = 2
 
 let g:ycm_server_python_interpreter = '/usr/bin/python3'
 " make YCM compatible with UltiSnips (using supertab)
@@ -203,10 +214,10 @@ let g:instant_markdown_autostart = 0
 
 " Vim Doge
 
-let g:doge_doc_standard_python = 'google'
-let g:doge_mapping = '<leader>d'
-let g:doge_mapping_comment_jump_forward = '<leader><Tab>'
-let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
+"let g:doge_doc_standard_python = 'google'
+"let g:doge_mapping = '<leader>d'
+"let g:doge_mapping_comment_jump_forward = '<leader><Tab>'
+"let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
 
 " Vim Sandwich
 "
@@ -216,6 +227,7 @@ let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
 
 " Fzf
 " Commands: Files, Buffers, Colors, Ag, Lines, Snippets, Commits, Commands, ...
+" CTRL-T / CTRL-X / CTRL-V key bindings to open in a new tab, a new split, or in a new vertical split 
 
 " CtrlP settings
 "
@@ -235,6 +247,7 @@ let g:ctrlp_working_path_mode = 0 " change the working directory during a Vim se
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'  " Use AG as a backend, MUCH faster!
 endif
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|\.git'
 
 " Ack
 " :Ack [options] {pattern} [{directories}]
@@ -554,12 +567,21 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 map 0 ^
 
 " Move a line of text using Shift+[jk]
-nnoremap <S-j> :m .+1<CR>==
-nnoremap <S-k> :m .-2<CR>==
-"inoremap <S-j> <Esc>:m .+1<CR>==gi
-"inoremap <S-k> <Esc>:m .-2<CR>==gi
-vnoremap <S-j> :m '>+1<CR>gv=gv
-vnoremap <S-k> :m '<-2<CR>gv=gv
+if has('macunix')
+    nnoremap ∆ :m .+1<CR>==
+    nnoremap ˚ :m .-2<CR>==
+    inoremap ∆ <Esc>:m .+1<CR>==gi
+    inoremap ˚ <Esc>:m .-2<CR>==gi
+    vnoremap ∆ :m '>+1<CR>gv=gv
+    vnoremap ˚ :m '<-2<CR>gv=gv
+else 
+    nnoremap <A-j> :m .+1<CR>==
+    nnoremap <A-k> :m .-2<CR>==
+    inoremap <A-j> <Esc>:m .+1<CR>==gi
+    inoremap <A-k> <Esc>:m .-2<CR>==gi
+    vnoremap <A-j> :m '>+1<CR>gv=gv
+    vnoremap <A-k> :m '<-2<CR>gv=gv
+endif
 
 " Delete trailing white space on save, useful for some filetypes ;)
 fun! CleanExtraSpaces()
