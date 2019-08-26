@@ -79,6 +79,8 @@ if has('persistent_undo')
     set undofile
 endif
 
+" Quit with uppercase Q, because sloppy
+cnoreabbrev Q q
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -100,23 +102,19 @@ Plug 'HerringtonDarkholme/yats.vim'
 Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 " Text Utils
 Plug 'machakann/vim-sandwich'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-" Plug 'kkoomen/vim-doge'
+Plug 'junegunn/vim-easy-align'
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
-" Plug 'liuchengxu/vista.vim'
 " Search and complete
 Plug 'kien/ctrlp.vim'
 Plug 'fisadev/vim-ctrlp-cmdpalette'
 Plug 'tpope/vim-fugitive'
-Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'
 " UI
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
@@ -147,34 +145,49 @@ map <C-N> :NERDTreeToggle<CR>
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
-if executable('/usr/local/bin/python3')
-  let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
-elseif executable('/usr/bin/python3')
-  let g:ycm_server_python_interpreter = '/usr/bin/python3'
-endif
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+" YCM:
+" After changing any of these options, restart server with :YcmRestartServer
 
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
+" Enabled in comments
+let g:ycm_complete_in_comments = 1  
+" Preload completion with language keywords
+let g:ycm_seed_identifiers_with_syntax = 1  
+" Get rid of the preview window
+let g:ycm_autoclose_preview_window_after_completion = 1  
+let g:ycm_autoclose_preview_window_after_insertion = 1
+" This option controls the key mappings used to select the first completion string.
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']  
+let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
+" This option controls the key mappings used to close the completion menu
+let g:ycm_key_list_stop_completion = ['<C-y>']  
+" Invoke the completion menu for semantic completion
+let g:ycm_key_invoke_completion = '<C-Space>'  
+" This option controls the key mapping used to show the full diagnostic text when the user's cursor is on the line with the diagnostic.
+let g:ycm_key_detailed_diagnostics = '<leader>ycmdiag'
+" Args to pass to ycm_global_extra_conf.py
+let cwd = getcwd()
+let g:ycm_extra_conf_vim_data = []
+" Global configuraton
+let g:ycm_global_ycm_extra_conf = '~/ycm_global_extra_conf.py'  " Global configuration file
+
+"" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<leader><tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 let g:ultisnips_python_style='google'
 
-" Vim Multiple Cursors
-"
-let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_start_word_key      = '<C-d>'
-let g:multi_cursor_select_all_word_key = '<A-d>'
-let g:multi_cursor_start_key           = 'g<C-d>'
-let g:multi_cursor_select_all_key      = 'g<A-d>'
-let g:multi_cursor_next_key            = '<C-d>'
-let g:multi_cursor_prev_key            = '<C-p>'
-let g:multi_cursor_skip_key            = '<C-x>'
-let g:multi_cursor_quit_key            = '<Esc>'
+ "Vim Multiple Cursors
+
+"let g:multi_cursor_use_default_mapping=0
+"let g:multi_cursor_start_word_key      = '<C-d>'
+"let g:multi_cursor_select_all_word_key = '<A-d>'
+"let g:multi_cursor_start_key           = 'g<C-d>'
+"let g:multi_cursor_select_all_key      = 'g<A-d>'
+"let g:multi_cursor_next_key            = '<C-d>'
+"let g:multi_cursor_prev_key            = '<C-p>'
+"let g:multi_cursor_skip_key            = '<C-x>'
+"let g:multi_cursor_quit_key            = '<Esc>'
 
 " Vim Easy Align
 " Plug 'xolox/vim-session'
@@ -305,11 +318,15 @@ autocmd FileType python set list
 "
 " ]] : Move (forward) to the beginning of the next Python class.
 " ][ : Move (forward) to the end of the current Python class.
-" [[ : Move (backward) to beginning of the current Python class (or beginning of the previous Python class if not currently in a class or already at the beginning of a class).
+" [[ : Move (backward) to beginning of the current Python class (or beginning 
+"      of the previous Python class if not currently in a class or already at 
+"      the beginning of a class).
 " [] : Move (backward) to end of the previous Python class.
 " ]m : Move (forward) to the beginning of the next Python method or function.
 " ]M : Move (forward) to the end of the current Python method or function.
-" [m : Move (backward) to the beginning of the current Python method or function (or to the beginning of the previous method or function if not currently in a method/function or already at the beginning of a method/function).
+" [m : Move (backward) to the beginning of the current Python method or function 
+"      (or to the beginning of the previous method or function if not currently in 
+"      a method/function or already at the beginning of a method/function).
 " [M : Move (backward) to the end of the previous Python method or function.
 " }}}
 
