@@ -404,6 +404,11 @@ endif
 " Add a bit extra margin to the left
 set foldcolumn=1
 
+" Transparent floating windows 
+if has('nvim-0.1')
+  set pumblend=15
+  hi PmenuSel blend=0
+endif
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
