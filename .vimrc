@@ -115,7 +115,10 @@ set diffopt+=vertical
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
-
+" Install vim plug with:
+"  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
@@ -249,6 +252,7 @@ let g:startify_fortune_use_unicode = 1
 " <c-y> create a new file and its parent directories.
 " <c-z> mark/unmark multiple files and <c-o> to open them.
 
+" Install: sudo apt install siversearcher-ag
 let g:ctrlp_match_window = 'bottom,order:ttb' " order matching files top to bottom
 let g:ctrlp_switch_buffer = 0 " always open files in new buffers
 let g:ctrlp_working_path_mode = 0 " change the working directory during a Vim session and make CtrlP respect that change
@@ -290,7 +294,7 @@ let g:gitgutter_sign_modified_removed = ''
 let python_highlight_all=1
 autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
 let no_flake8_maps = 1  " Don't use <F7> key.
-let g:flake8_cmd='/ml/Users/MAGICLEAP/atorresgomez/.vimvenv3/bin/flake8'
+let g:flake8_cmd='~/venv/nvim/bin/flake8'
 let g:flake8_show_in_gutter=1
 let g:flake8_show_in_file=1
 let g:python_highlight_all=1
