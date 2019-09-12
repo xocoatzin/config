@@ -180,6 +180,11 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#format = 2
 
 " YCM:
+"
+" Install:
+"     cd ~/.vim/bundle/YouCompleteMe
+"     python3 install.py --all
+"
 " After changing any of these options, restart server with :YcmRestartServer
 
 " Enabled in comments
