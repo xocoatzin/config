@@ -144,7 +144,7 @@ label-occupied-underline = ${color.coccupied}
 type = custom/text
 content = 
 content-foreground = ${color.fg-alt}
-click-left = kitty &
+click-left = ~/d/3rdparty/kitty/launch.sh &
 ;click-middle = urxvt &
 ;click-right = xfce4-terminal &
 
@@ -161,7 +161,7 @@ type = custom/text
 content = 
 content-padding = 1
 content-foreground = ${color.fg-alt}
-click-left = firefox &
+click-left = ~/bin/firefox/firefox &
 click-right = firefox &
 
 [module/settings]
