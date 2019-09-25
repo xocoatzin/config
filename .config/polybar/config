@@ -1,3 +1,4 @@
+; vim:filetype=dosini
 ;==========================================================
 ;
 ;
@@ -52,7 +53,7 @@ blue-gray = #546e7a
 ;==========================================================
 
 [bar/main]
-;monitor = LVDS1
+monitor = ${env:MONITOR:}
 ;width = 90%
 height = 30
 ;offset-x = 5%
@@ -161,7 +162,7 @@ type = custom/text
 content = 
 content-padding = 1
 content-foreground = ${color.fg-alt}
-click-left = ~/bin/firefox/firefox &
+click-left = icefox &
 click-right = firefox &
 
 [module/settings]
@@ -262,7 +263,7 @@ time-alt =  %H:%M %p
 
 [module/weather]
 type = custom/script
-exec = curl -s 'wttr.in/?format=2'
+exec = curl -s 'wttr.in/?format=2&m'
 ;tail = true
 interval = 600
 
