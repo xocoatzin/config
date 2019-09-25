@@ -147,6 +147,7 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+"Plug 'dense-analysis/ale'
 " UI
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
@@ -175,6 +176,14 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 map <C-N> :NERDTreeToggle<CR>
 
 let g:airline_powerline_fonts = 1
+"let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
 let g:airline#extensions#tabline#enabled = 1
 " Use compact names for branches (2), disable with = 0
 let g:airline#extensions#branch#format = 2
@@ -188,19 +197,19 @@ let g:airline#extensions#branch#format = 2
 " After changing any of these options, restart server with :YcmRestartServer
 
 " Enabled in comments
-let g:ycm_complete_in_comments = 1  
+let g:ycm_complete_in_comments = 1
 " Preload completion with language keywords
-let g:ycm_seed_identifiers_with_syntax = 1  
+let g:ycm_seed_identifiers_with_syntax = 1
 " Get rid of the preview window
-let g:ycm_autoclose_preview_window_after_completion = 1  
+let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 " This option controls the key mappings used to select the first completion string.
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']  
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
 " This option controls the key mappings used to close the completion menu
-let g:ycm_key_list_stop_completion = ['<C-y>']  
+let g:ycm_key_list_stop_completion = ['<C-y>']
 " Invoke the completion menu for semantic completion
-let g:ycm_key_invoke_completion = '<C-Space>'  
+let g:ycm_key_invoke_completion = '<C-Space>'
 " This option controls the key mapping used to show the full diagnostic text when the user's cursor is on the line with the diagnostic.
 let g:ycm_key_detailed_diagnostics = '<leader>ycmdiag'
 " Args to pass to ycm_global_extra_conf.py
@@ -216,6 +225,11 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 let g:ultisnips_python_style='google'
 
+" ALE
+"let g:ale_fixers = {'python': ['black', 'isort']}
+"let g:ale_linters = {'python': ['black',  'flake8', 'pydocstyle']}
+"let g:ale_sign_error = '>>'
+"let g:ale_sign_warning = '--'
 
 " Vim Easy Align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -229,7 +243,7 @@ let g:instant_markdown_autostart = 0
 
 " Startify
 let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
-let g:startify_custom_footer = g:startify_custom_footer_text 
+let g:startify_custom_footer = g:startify_custom_footer_text
 let g:startify_session_persistence = 1
 let g:startify_change_to_dir = 0
 let g:startify_change_to_vcs_root = 1
@@ -243,7 +257,7 @@ let g:startify_fortune_use_unicode = 1
 
 " Fzf
 " Commands: Files, Buffers, Colors, Ag, Lines, Snippets, Commits, Commands, ...
-" CTRL-T / CTRL-X / CTRL-V key bindings to open in a new tab, a new split, or in a new vertical split 
+" CTRL-T / CTRL-X / CTRL-V key bindings to open in a new tab, a new split, or in a new vertical split
 
 " CtrlP settings
 "
@@ -287,8 +301,8 @@ nnoremap <Leader>a :Ack!<Space>
 
 " Vim Gitgutter
 let g:gitgutter_sign_added = ''
-let g:gitgutter_sign_modified = '' 
-let g:gitgutter_sign_removed = '' 
+let g:gitgutter_sign_modified = ''
+let g:gitgutter_sign_removed = ''
 let g:gitgutter_sign_removed_first_line = ''
 let g:gitgutter_sign_modified_removed = ''
 " }}}
@@ -341,14 +355,14 @@ autocmd FileType python set list
 "
 " ]] : Move (forward) to the beginning of the next Python class.
 " ][ : Move (forward) to the end of the current Python class.
-" [[ : Move (backward) to beginning of the current Python class (or beginning 
-"      of the previous Python class if not currently in a class or already at 
+" [[ : Move (backward) to beginning of the current Python class (or beginning
+"      of the previous Python class if not currently in a class or already at
 "      the beginning of a class).
 " [] : Move (backward) to end of the previous Python class.
 " ]m : Move (forward) to the beginning of the next Python method or function.
 " ]M : Move (forward) to the end of the current Python method or function.
-" [m : Move (backward) to the beginning of the current Python method or function 
-"      (or to the beginning of the previous method or function if not currently in 
+" [m : Move (backward) to the beginning of the current Python method or function
+"      (or to the beginning of the previous method or function if not currently in
 "      a method/function or already at the beginning of a method/function).
 " [M : Move (backward) to the end of the previous Python method or function.
 " }}}
@@ -360,7 +374,7 @@ autocmd FileType python set list
 set so=7
 
 " Avoid garbled characters in Chinese language windows OS
-let $LANG='en' 
+let $LANG='en'
 set langmenu=en
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
@@ -392,23 +406,23 @@ set whichwrap+=<,>,h,l
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Highlight search results
 set hlsearch
 
 " Makes search act like search in modern browsers
-set incsearch 
+set incsearch
 
 " Don't redraw while executing macros (good performance config)
-set lazyredraw 
+set lazyredraw
 
 " For regular expressions turn magic on
 set magic
 
 " Show matching brackets when text indicator is over them
-set showmatch 
+set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
@@ -427,7 +441,7 @@ endif
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-" Transparent floating windows 
+" Transparent floating windows
 if has('nvim-0.1')
   set pumblend=15
   hi PmenuSel blend=0
@@ -438,7 +452,7 @@ endif
 " => Colors and Fonts
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Enable syntax highlighting
-syntax enable 
+syntax enable
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
@@ -446,7 +460,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme vim-material 
+    colorscheme vim-material
 catch
 endtry
 
@@ -474,9 +488,9 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 " Set git gutter colors (after config. colors so they don't get overwritten
-highlight GitGutterAdd    guifg=#009900 
-highlight GitGutterChange guifg=#bbbb00 
-highlight GitGutterDelete guifg=#ff2222 
+highlight GitGutterAdd    guifg=#009900
+highlight GitGutterChange guifg=#bbbb00
+highlight GitGutterDelete guifg=#ff2222
 highlight clear SignColumn
 " }}}
 
@@ -558,8 +572,8 @@ map <leader>h :bprevious<cr>
 "map <leader>tn :tabnew<cr>
 "map <leader>to :tabonly<cr>
 "map <leader>tc :tabclose<cr>
-"map <leader>tm :tabmove 
-"map <leader>t<leader> :tabnext 
+"map <leader>tm :tabmove
+"map <leader>t<leader> :tabnext
 
 " Let 'tl' toggle between this and the last accessed tab
 "let g:lasttab = 1
@@ -574,7 +588,7 @@ map <leader>h :bprevious<cr>
 " Switch CWD to the directory of the open buffer
 "map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -600,7 +614,7 @@ if has('macunix')
     inoremap ˚ <Esc>:m .-2<CR>==gi
     vnoremap ∆ :m '>+1<CR>gv=gv
     vnoremap ˚ :m '<-2<CR>gv=gv
-else 
+else
     nnoremap <A-j> :m .+1<CR>==
     nnoremap <A-k> :m .-2<CR>==
     inoremap <A-j> <Esc>:m .+1<CR>==gi
@@ -698,7 +712,7 @@ function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
     unmenu Foo
-endfunction 
+endfunction
 
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"

@@ -51,10 +51,10 @@ bindsym $mod+Shift+q kill
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+ bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # start rofi (a program launcher)
-bindsym $mod+d exec rofi -modi "window#run#ssh" -show run
+#bindsym $mod+d exec rofi -modi "window#run#ssh" -show run
 
 # change focus
 bindsym $mod+$left focus left
@@ -233,7 +233,7 @@ border_radius 10
 #bindsym $mod+F6 exec xbacklight -inc 10 
 
 # Lock desktop with keybind
-#bindsym $mod+x exec i3lock -i /home/quiterion/Pictures/Wallpapers/neon-nights.png -p win
+bindsym $mod+x exec i3lock -i /usr/share/backgrounds/Black_hole_by_Marek_Koteluk.jpg -p win
 
 # Zen-ify windows by floating and resizing them
 bindsym $mod+z floating enable; resize set 900 600; move position center
