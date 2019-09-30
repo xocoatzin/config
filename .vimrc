@@ -115,6 +115,14 @@ set diffopt+=vertical
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
+
+" ALE
+let g:ale_fixers = {'python': ['black', 'isort']}
+let g:ale_linters = {'python': ['mypy',  'flake8', 'pydocstyle']}
+let g:ale_virtualenv_dir_names = ['.venv3', '.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv']
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+
 " Install vim plug with:
 "  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -147,7 +155,7 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-"Plug 'dense-analysis/ale'
+Plug 'dense-analysis/ale'
 " UI
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
@@ -224,12 +232,6 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 let g:ultisnips_python_style='google'
-
-" ALE
-"let g:ale_fixers = {'python': ['black', 'isort']}
-"let g:ale_linters = {'python': ['black',  'flake8', 'pydocstyle']}
-"let g:ale_sign_error = '>>'
-"let g:ale_sign_warning = '--'
 
 " Vim Easy Align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -313,7 +315,7 @@ let g:gitgutter_sign_modified_removed = ''
 let python_highlight_all=1
 autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
 let no_flake8_maps = 1  " Don't use <F7> key.
-let g:flake8_cmd='~/venv/nvim/bin/flake8'
+let g:flake8_cmd=$HOME.'/venv/nvim/bin/flake8'
 let g:flake8_show_in_gutter=1
 let g:flake8_show_in_file=1
 let g:python_highlight_all=1
