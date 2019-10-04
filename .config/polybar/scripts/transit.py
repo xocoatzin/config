@@ -10,7 +10,7 @@ if not 17 <= datetime.datetime.now().hour < 19:
 data = json.loads(subprocess.check_output([
     'curl',
     '-s',
-    'http://transport.opendata.ch/v1/connections?from=8591093&to=8503610&limit=2'  # noqa
+    'http://transport.opendata.ch/v1/connections?from=8591093&to=8503610&limit=3'  # noqa
 ]).decode())
 
 info = [

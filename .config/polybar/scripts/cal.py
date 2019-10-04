@@ -81,6 +81,8 @@ def formatdd(begin, end):
     return '{}:{:02d} hr'.format(hours, rest_minutes)
 
 def location(text):
+    if text is None:
+        return ''
     return f'{gray("in")} {text}'
 
 def text(events, now):
@@ -150,11 +152,14 @@ def main():
     now = datetime.datetime.now(tz=TZ)
 
     morning = now.replace(hour=6, minute=0, microsecond=0)
-    evening= now.replace(hour=23, minute=59, microsecond=0)
+    evening= now.replace(hour=18, minute=59, microsecond=0)
 
-    print('Searching for events', flush=True)
+
+    def did_decline(event):
+        return len([i for i in event.get("attendees",[]) if i.get('self') and i.get("responseStatus") == "declined"]) > 0
 
     def get_events(calendar):
+        print('Searching for events', flush=True)
         events_result = service.events().list(
             calendarId=calendar,
             timeMin=morning.isoformat(),
@@ -172,7 +177,7 @@ def main():
                 'end': parse(event['end']['dateTime'])
             }
             for event in events
-            if 'dateTime' in event['start']
+            if 'dateTime' in event['start'] and not did_decline(event)
         ]
 
     events = get_events('primary')
@@ -181,18 +186,22 @@ def main():
 
     DELAY = 60
 
-    def print_message():
+    def print_message(events, counter):
+        # Update every 5 iterations
+        if counter % 5 == 0:
+            events = get_events('primary')
+
         now = datetime.datetime.now(tz=TZ)
         print(text(events, now), flush=True)
         if now < evening:
-            scheduler.enter(DELAY, 1, print_message)
+            scheduler.enter(DELAY, 1, print_message, argument=(events, counter + 1,))
 
     # for event in events:
     #     # absolute entry, priority 1
     #     scheduler.enterabs(event['start'].timestamp(), 1, activate_course, argument=(event, ))
 
     # Immediate, priority 1
-    scheduler.enter(0, 1, print_message)
+    scheduler.enter(0, 1, print_message, argument=(events, 1,))
     scheduler.run()
 
 

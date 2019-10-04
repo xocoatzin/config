@@ -246,7 +246,7 @@ hide_edge_borders both
 exec_always --no-startup-id  xrandr --output DP-0 --rotate left --mode 2560x1440 --pos 0x0 --output DP-2 --pos 1440x700 --output DP-4 --pos 4000x700 
 
 # Wallpaper (unnecessary because of pywal)
-exec_always --no-startup-id feh --randomize --bg-fill /usr/share/backgrounds/*
+exec_always --no-startup-id feh --randomize --bg-fill $HOME/Pictures/Wallpapers/*
 
 # Launch polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh

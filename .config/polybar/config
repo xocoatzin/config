@@ -134,8 +134,8 @@ scroll-down = i3wm-wsprev
 ;== Module Location ========================================================
 
 modules-left = arch workspaces term files browser settings
-modules-center = transit
-;modules-right = volume 
+;modules-center = transit
+modules-right = transit 
  
 ;== Modules ========================================================
 
@@ -323,7 +323,7 @@ interval = 180
 
 [module/weather]
 type = custom/script
-exec = curl -s 'wttr.in/?format=%C+%t&m'
+exec = curl -s 'wttr.in/Zurich?format=%C+%t&m'
 ;tail = true
 interval = 600
 

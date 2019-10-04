@@ -120,8 +120,8 @@ set diffopt+=vertical
 let g:ale_fixers = {'python': ['black', 'isort']}
 let g:ale_linters = {'python': ['mypy',  'flake8', 'pydocstyle']}
 let g:ale_virtualenv_dir_names = ['.venv3', '.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv']
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
+let g:ale_sign_error = '=>'
+let g:ale_sign_warning = '->'
 
 " Install vim plug with:
 "  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
