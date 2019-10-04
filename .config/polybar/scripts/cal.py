@@ -107,7 +107,7 @@ def text(events, now):
         return join(
             gray('Ends in'),
             formatdd(now, current['end']) + gray('.'),
-            gray('after'),
+            gray('and then'),
             summary(nxt['summary']),
             location(nxt['location'])
         )
@@ -115,10 +115,10 @@ def text(events, now):
     return join(
         gray('Ends in'),
         formatdd(now, current['end']) + gray('.'),
-        gray('after'),
+        gray('and then'),
         summary(nxt['summary']),
         location(nxt['location']),
-        gray('after a break from'),
+        gray('after a break of'),
         formatdd(current['end'], nxt['start'])
     )
 
