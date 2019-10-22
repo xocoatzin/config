@@ -3,6 +3,7 @@
 import datetime
 import json
 import subprocess
+import sys
 
 if not 17 <= datetime.datetime.now().hour < 19:
     exit(1)
@@ -22,14 +23,26 @@ info = [
     for connection in data.get('connections', [])
 ]
 
-print(
-    "\ufa2c " +
-    " | ".join([
-        "{} via {}, {} min".format(
-            t[11:16],
-            "/".join(c),
-            d[6:8],
-        )
-        for t, d, c in info
-    ])
-)
+lines = False
+if len(sys.argv) >= 2:
+    if sys.argv[1] == '-l':
+        lines = True
+
+records = [
+    "{} via {}, {} min".format(
+        t[11:16],
+        "/".join(c),
+        d[6:8],
+    )
+    for t, d, c in info
+]
+
+if lines:
+    print(
+        "\n".join(["\ufa2c " + r for r in records])
+    )
+else:
+    print(
+        "\ufa2c " +
+        " | ".join(records)
+    )

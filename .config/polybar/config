@@ -135,7 +135,7 @@ scroll-down = i3wm-wsprev
 
 modules-left = arch workspaces term files browser settings
 ;modules-center = transit
-modules-right = transit 
+modules-right = transit transitmenu
  
 ;== Modules ========================================================
 
@@ -334,6 +334,13 @@ content-padding = 2
 content-background = ${color.acolor}
 content-foreground = ${color.bg}
 click-left = ~/.config/polybar/scripts/pmenu_g
-click-right = ~/.config/polybar/scripts/pmenu_g
+
+[module/transitmenu]
+type = custom/text
+content = T
+content-padding = 2
+content-background = ${color.acolor}
+content-foreground = ${color.bg}
+click-left = "~/venv/polybar/bin/python ~/.config/polybar/scripts/transit.py -l | rofi -dmenu"
 
 ;== EOF ========================================================
