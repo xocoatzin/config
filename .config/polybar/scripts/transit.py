@@ -5,7 +5,12 @@ import json
 import subprocess
 import sys
 
-if not 17 <= datetime.datetime.now().hour < 19:
+lines = False
+if len(sys.argv) >= 2:
+    if sys.argv[1] == '-l':
+        lines = True
+
+if not lines and not 17 <= datetime.datetime.now().hour < 19:
     exit(1)
 
 data = json.loads(subprocess.check_output([
@@ -22,11 +27,6 @@ info = [
     )
     for connection in data.get('connections', [])
 ]
-
-lines = False
-if len(sys.argv) >= 2:
-    if sys.argv[1] == '-l':
-        lines = True
 
 records = [
     "{} via {}, {} min".format(
