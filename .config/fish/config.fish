@@ -11,3 +11,6 @@ set -x CLICOLOR 1
 set -g theme_nerd_fonts yes
 
 set -gx PYTHONSTARTUP ~/.pythonrc
+#set -gx NPM_PACKAGES $HOME/.npm-packages
+#set -gx NODE_PATH "$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+#set -gx PATH "$NPM_PACKAGES/bin:$PATH"

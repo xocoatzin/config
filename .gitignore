@@ -1,1 +1,14 @@
+<<<<<<< HEAD
 *
+=======
+# Virtual environments
+.venv3/
+.local/
+
+# IDEs
+.vscode
+
+*.egg-info
+*.log
+notes.txt
+>>>>>>> b92136107222b0c8e0023a5bb13ba3f1ecc05d83

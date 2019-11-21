@@ -170,25 +170,40 @@ icon-7 = 8;8
 icon-8 = 9;9
 ;icon-default = #
 
-format = <label-state>
+format = <label-state> <label-mode>
+
+label-mode = %mode%
+label-mode-padding = 2
+label-mode-background = ${color.grey}
+
 label-active = %icon%
-label-occupied = %icon%
-label-urgent = %icon%
-label-empty = %icon%
-
-label-occupied-padding = 2
-label-empty-padding = 2
-label-urgent-padding = 2
 label-active-padding = 2
-
 label-active-foreground = ${color.acolor}
-label-urgent-foreground = ${color.curgent}
-label-empty-foreground = ${color.fg}
-label-occupied-foreground = ${color.coccupied}
-
 label-active-underline = ${color.acolor}
-label-urgent-underline = ${color.curgent}
+
+label-occupied = %icon%
+label-occupied-padding = 2
+label-occupied-foreground = ${color.coccupied}
 label-occupied-underline = ${color.coccupied}
+
+label-empty = %icon%
+label-empty-padding = 2
+label-empty-foreground = ${color.fg}
+
+label-urgent = %icon%
+label-urgent-padding = 2
+label-urgent-foreground = ${color.curgent}
+label-urgent-underline = ${color.curgent}
+
+label-focused = %index%
+label-focused-padding = 2
+label-focused-foreground = ${color.acolor}
+;label-focused-background = ${color.grey}
+label-focused-underline = ${color.acolor}
+
+label-separator = |
+label-separator-padding = 1
+label-separator-foreground = ${color.fg-alt}
 
 [module/term]
 type = custom/text

@@ -139,7 +139,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'jeetsukumaran/vim-pythonsense'
 " Typescript
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+"Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 " Text Utils
 Plug 'machakann/vim-sandwich'
 Plug 'scrooloose/nerdcommenter'
@@ -158,6 +158,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 " UI
 Plug 'mhinz/vim-startify'
+Plug 'psliwka/vim-smoothie'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
