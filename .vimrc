@@ -140,6 +140,8 @@ Plug 'jeetsukumaran/vim-pythonsense'
 " Typescript
 Plug 'HerringtonDarkholme/yats.vim'
 "Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+" XML/HTML
+Plug 'alvan/vim-closetag' 
 " Text Utils
 Plug 'machakann/vim-sandwich'
 Plug 'scrooloose/nerdcommenter'
@@ -157,6 +159,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 " UI
+Plug 'qpkorr/vim-bufkill'
 Plug 'mhinz/vim-startify'
 Plug 'psliwka/vim-smoothie'
 Plug 'scrooloose/nerdtree'
@@ -173,6 +176,9 @@ Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last on
 call plug#end()
 
 " Plugin Configuration
+
+" NerdCommenter
+let g:NERDSpaceDelims = 1  " Add a space after the command markers
 
 " Ignore files in NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$']
@@ -308,6 +314,35 @@ let g:gitgutter_sign_modified = ''
 let g:gitgutter_sign_removed = ''
 let g:gitgutter_sign_removed_first_line = ''
 let g:gitgutter_sign_modified_removed = ''
+
+" Vim Close tag
+" These are the file extensions where this plugin is enabled.
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+" This will make the list of non-closing tags self-closing in the specified files.
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+" These are the file types where this plugin is enabled.
+let g:closetag_filetypes = 'html,xhtml,phtml'
+" This will make the list of non-closing tags self-closing in the specified files.
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+let g:closetag_emptyTags_caseSensitive = 1
+" Disables auto-close if not in a "valid" region (based on filetype)
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ }
+" Shortcut for closing tags, default is '>'
+let g:closetag_shortcut = '>'
+" Add > at current position without closing the current tag, default is ''
+let g:closetag_close_shortcut = '<leader>>'
+
+" Vim bufkill
+" Usage: :BD -> delete buffer
+"        :BW -> wipe a file from the buffer
+"        :BUN -> Unload buffer
+"        :BA -> Alternate buffers
+"        :BB :BF -> Move in buffers
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -528,6 +563,8 @@ set smarttab
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
+" Except for:
+autocmd FileType *.js,*.ts,*.css,*.html,*.json setlocal shiftwidth=2 tabstop=2
 
 " Linebreak on 500 characters
 set lbr
@@ -639,7 +676,7 @@ fun! CleanExtraSpaces()
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.html,*.css,*.json :call CleanExtraSpaces()
 endif
 
 " }}}
