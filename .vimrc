@@ -158,9 +158,10 @@ Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
+Plug 'tpope/vim-abolish'
 " UI
 Plug 'qpkorr/vim-bufkill'
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 Plug 'psliwka/vim-smoothie'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
@@ -176,6 +177,12 @@ Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last on
 call plug#end()
 
 " Plugin Configuration
+"
+" Vim Abolish
+" Usage: :Subvert/address{,es}/reference{,s}/g
+"        :Subvert/blog{,s}/post{,s}/g
+"        :Subvert/child{,ren}/adult{,s}/g
+"        :Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or}  {despe,sepa}rat{}
 
 " NerdCommenter
 let g:NERDSpaceDelims = 1  " Add a space after the command markers
@@ -251,12 +258,12 @@ nmap ga <Plug>(EasyAlign)
 let g:instant_markdown_autostart = 0
 
 " Startify
-let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
-let g:startify_custom_footer = g:startify_custom_footer_text
-let g:startify_session_persistence = 1
-let g:startify_change_to_dir = 0
-let g:startify_change_to_vcs_root = 1
-let g:startify_fortune_use_unicode = 1
+" let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
+" let g:startify_custom_footer = g:startify_custom_footer_text
+" let g:startify_session_persistence = 1
+" let g:startify_change_to_dir = 0
+" let g:startify_change_to_vcs_root = 1
+" let g:startify_fortune_use_unicode = 1
 
 " Vim Sandwich
 "

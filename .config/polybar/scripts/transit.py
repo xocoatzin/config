@@ -16,12 +16,13 @@ if not lines and not 17 <= datetime.datetime.now().hour < 19:
 data = json.loads(subprocess.check_output([
     'curl',
     '-s',
-    'http://transport.opendata.ch/v1/connections?from=8591093&to=8503610&limit=3'  # noqa
+    'http://transport.opendata.ch/v1/connections?from=8503006&to=8503610&limit=4&via=8503020'  # noqa
 ]).decode())
 
 info = [
     (
         connection.get('from', {}).get('departure', ''),
+        connection.get('from', {}).get('platform', ''),
         connection.get('duration', ''),
         connection.get('products', ''),
     )
@@ -29,12 +30,13 @@ info = [
 ]
 
 records = [
-    "{} via {}, {} min".format(
+    "{} ({} min) {} Pl {}".format(
         t[11:16],
-        "/".join(c),
         d[6:8],
+        "/".join(c),
+        p,
     )
-    for t, d, c in info
+    for t, p, d, c in info
 ]
 
 if lines:
