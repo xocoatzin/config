@@ -50,7 +50,7 @@ let mapleader = ","
 let g:mapleader = ","
 
 " Double leader is Esc
-imap <Leader><Leader> <ESC>
+" imap <Leader><Leader> <ESC>
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -119,7 +119,10 @@ set diffopt+=vertical
 " ALE
 let g:ale_fixers = {'python': ['black', 'isort']}
 let g:ale_linters = {'python': ['mypy',  'flake8', 'pydocstyle']}
-let g:ale_virtualenv_dir_names = ['.venv3', '.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv']
+let g:ale_virtualenv_dir_names = ['.venv3', '.venv36', '.venv37', '.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv']
+let g:ale_python_black_options = '--line-length 80 --target-version py36'
+" let g:ale_fix_on_save = 1
+let g:ale_python_black_change_directory = 1
 let g:ale_sign_error = '=>'
 let g:ale_sign_warning = '->'
 
@@ -148,7 +151,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'plasticboy/vim-markdown'
+" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Search and complete
 Plug 'kien/ctrlp.vim'
 Plug 'fisadev/vim-ctrlp-cmdpalette'
@@ -171,6 +175,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'tmhedberg/SimpylFold'
 Plug 'flazz/vim-colorschemes'
+Plug 'AlphaMycelium/pathfinder.vim'
 Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
 
 " Initialize plugin system
@@ -355,17 +360,6 @@ let g:closetag_close_shortcut = '<leader>>'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
-let python_highlight_all=1
-autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
-let no_flake8_maps = 1  " Don't use <F7> key.
-let g:flake8_cmd=$HOME.'/venv/nvim/bin/flake8'
-let g:flake8_show_in_gutter=1
-let g:flake8_show_in_file=1
-let g:python_highlight_all=1
-" Show vertical line
-autocmd FileType python set colorcolumn=80
-" Show non printable chars
-autocmd FileType python set list
 
 " Vim jedi
 "  Completion <C-Space>
@@ -439,7 +433,7 @@ endif
 set ruler
 
 " Height of the command bar
-set cmdheight=2
+set cmdheight=1
 
 " A buffer becomes hidden when it is abandoned
 set hid
@@ -536,10 +530,13 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 " Set git gutter colors (after config. colors so they don't get overwritten
-highlight GitGutterAdd    guifg=#009900
-highlight GitGutterChange guifg=#bbbb00
-highlight GitGutterDelete guifg=#ff2222
+highlight GitGutterAdd    guifg=#C3E88D
+highlight GitGutterChange guifg=#FFCB6B
+highlight GitGutterDelete guifg=#FF5370
 highlight clear SignColumn
+highlight Normal guibg=NONE ctermbg=NONE
+highlight Search guibg=#ffcb6b guifg=#444444 gui=NONE
+highlight FoldColumn guifg=#e4e4e4
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -588,8 +585,8 @@ set wrap "Wrap lines
 """""""""""""""""""""""""""""" {{{
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+" vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+" vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 " }}}
 
@@ -730,57 +727,57 @@ inoremap <C-f> <c-g>u<Esc>[s1z=`]a<c-g>u
 " => Helper functions
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
+" function! HasPaste()
+    " if &paste
+        " return 'PASTE MODE  '
+    " endif
+    " return ''
+" endfunction
 
 " Don't close window, when deleting a buffer
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-   let l:currentBufNum = bufnr("%")
-   let l:alternateBufNum = bufnr("#")
+" command! Bclose call <SID>BufcloseCloseIt()
+" function! <SID>BufcloseCloseIt()
+   " let l:currentBufNum = bufnr("%")
+   " let l:alternateBufNum = bufnr("#")
 
-   if buflisted(l:alternateBufNum)
-     buffer #
-   else
-     bnext
-   endif
+   " if buflisted(l:alternateBufNum)
+     " buffer #
+   " else
+     " bnext
+   " endif
 
-   if bufnr("%") == l:currentBufNum
-     new
-   endif
+   " if bufnr("%") == l:currentBufNum
+     " new
+   " endif
 
-   if buflisted(l:currentBufNum)
-     execute("bdelete! ".l:currentBufNum)
-   endif
-endfunction
+   " if buflisted(l:currentBufNum)
+     " execute("bdelete! ".l:currentBufNum)
+   " endif
+" endfunction
 
-function! CmdLine(str)
-    exe "menu Foo.Bar :" . a:str
-    emenu Foo.Bar
-    unmenu Foo
-endfunction
+" function! CmdLine(str)
+    " exe "menu Foo.Bar :" . a:str
+    " emenu Foo.Bar
+    " unmenu Foo
+" endfunction
 
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
+" function! VisualSelection(direction, extra_filter) range
+    " let l:saved_reg = @"
+    " execute "normal! vgvy"
 
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
+    " let l:pattern = escape(@", "\\/.*'$^~[]")
+    " let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
+    " if a:direction == 'gv'
+        " call CmdLine("Ack '" . l:pattern . "' " )
+    " elseif a:direction == 'replace'
+        " call CmdLine("%s" . '/'. l:pattern . '/')
+    " endif
 
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunction
+    " let @/ = l:pattern
+    " let @" = l:saved_reg
+" endfunction
 
 " }}}
 
-" vim:foldmethod=marker:foldlevel=0
+" _vim:foldmethod=marker:foldlevel=0

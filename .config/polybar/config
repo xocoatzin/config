@@ -227,7 +227,7 @@ content = 
 content-padding = 1
 content-foreground = ${color.fg-alt}
 click-left = icefox &
-click-right = firefox &
+click-right = ~/firefox/firefox &
 
 [module/settings]
 type = custom/text
