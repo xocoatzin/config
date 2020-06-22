@@ -1,1 +1,24 @@
 *
+# Ignore files
+!/.agignore
+!/.gitignore
+
+# VIM
+!/.config/nvim/
+!/.vim/after
+!/.vim/ycm_global_extra_conf.py
+
+# SSH
+!/.ssh
+/.ssh/*
+!/.ssh/config
+
+# RC files
+!/.config/fish
+!/.config/fisher
+!/.config/omf
+!/.pythonrc
+!/.zshrc
+!/.tmux.conf
+!/.bashrc
+!/.bash_profile

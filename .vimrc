@@ -127,7 +127,7 @@ Plug 'tpope/vim-abolish'
 " UI
 Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
-Plug 'mhinz/vim-startify'
+"Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -238,12 +238,12 @@ let g:instant_markdown_autostart = 0
 "let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
 
 " Startify
-let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
-let g:startify_custom_footer = g:startify_custom_footer_text
-let g:startify_session_persistence = 1
-let g:startify_change_to_dir = 0
-let g:startify_change_to_vcs_root = 1
-let g:startify_fortune_use_unicode = 1
+"let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
+"let g:startify_custom_footer = g:startify_custom_footer_text
+"let g:startify_session_persistence = 1
+"let g:startify_change_to_dir = 0
+"let g:startify_change_to_vcs_root = 1
+"let g:startify_fortune_use_unicode = 1
 
 " Vim Sandwich
 "
@@ -312,17 +312,6 @@ let g:gitgutter_sign_modified_removed = ''
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
-let python_highlight_all=1
-autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
-let no_flake8_maps = 1  " Don't use <F7> key.
-" let g:flake8_cmd='/ml/Users/MAGICLEAP/atorresgomez/.vimvenv3/bin/flake8'
-let g:flake8_show_in_gutter=1
-let g:flake8_show_in_file=1
-let g:python_highlight_all=1
-" Show vertical line
-autocmd FileType python set colorcolumn=80
-" Show non printable chars
-autocmd FileType python set list
 
 " Vim jedi
 "  Completion <C-Space>
@@ -546,8 +535,8 @@ set wrap "Wrap lines
 """""""""""""""""""""""""""""" {{{
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+"vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+"vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 " }}}
 
@@ -555,8 +544,8 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " => Moving around, tabs, windows and buffers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Switch buffers
-nnoremap <F7> :bp<CR>
-nnoremap <F9> :bn<CR>
+"nnoremap <F7> :bp<CR>
+"nnoremap <F9> :bn<CR>
 
 " Disable highlight when <leader><cr> is pressed
 "map <silent> <leader><cr> :noh<cr>
@@ -688,56 +677,56 @@ inoremap <C-f> <c-g>u<Esc>[s1z=`]a<c-g>u
 " => Helper functions
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
+"function! HasPaste()
+    "if &paste
+        "return 'PASTE MODE  '
+    "endif
+    "return ''
+"endfunction
 
-" Don't close window, when deleting a buffer
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-   let l:currentBufNum = bufnr("%")
-   let l:alternateBufNum = bufnr("#")
+"" Don't close window, when deleting a buffer
+"command! Bclose call <SID>BufcloseCloseIt()
+"function! <SID>BufcloseCloseIt()
+   "let l:currentBufNum = bufnr("%")
+   "let l:alternateBufNum = bufnr("#")
 
-   if buflisted(l:alternateBufNum)
-     buffer #
-   else
-     bnext
-   endif
+   "if buflisted(l:alternateBufNum)
+     "buffer #
+   "else
+     "bnext
+   "endif
 
-   if bufnr("%") == l:currentBufNum
-     new
-   endif
+   "if bufnr("%") == l:currentBufNum
+     "new
+   "endif
 
-   if buflisted(l:currentBufNum)
-     execute("bdelete! ".l:currentBufNum)
-   endif
-endfunction
+   "if buflisted(l:currentBufNum)
+     "execute("bdelete! ".l:currentBufNum)
+   "endif
+"endfunction
 
-function! CmdLine(str)
-    exe "menu Foo.Bar :" . a:str
-    emenu Foo.Bar
-    unmenu Foo
-endfunction
+"function! CmdLine(str)
+    "exe "menu Foo.Bar :" . a:str
+    "emenu Foo.Bar
+    "unmenu Foo
+"endfunction
 
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
+"function! VisualSelection(direction, extra_filter) range
+    "let l:saved_reg = @"
+    "execute "normal! vgvy"
 
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
+    "let l:pattern = escape(@", "\\/.*'$^~[]")
+    "let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
+    "if a:direction == 'gv'
+        "call CmdLine("Ack '" . l:pattern . "' " )
+    "elseif a:direction == 'replace'
+        "call CmdLine("%s" . '/'. l:pattern . '/')
+    "endif
 
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunction
+    "let @/ = l:pattern
+    "let @" = l:saved_reg
+"endfunction
 
 " }}}
 
