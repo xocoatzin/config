@@ -81,6 +81,13 @@ endif
 
 " Quit with uppercase Q, because sloppy
 cnoreabbrev Q q
+
+" Delete, not cut
+" https://stackoverflow.com/a/11993928/575085
+nnoremap d "_d
+xnoremap d "_d
+"xnoremap p "_dP
+"
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -116,7 +123,10 @@ Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
+Plug 'tpope/vim-abolish'
 " UI
+Plug 'qpkorr/vim-bufkill'
+Plug 'psliwka/vim-smoothie'
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
@@ -132,6 +142,12 @@ Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last on
 call plug#end()
 
 " Plugin Configuration
+
+" Vim Abolish
+" Usage: :Subvert/address{,es}/reference{,s}/g
+"        :Subvert/blog{,s}/post{,s}/g
+"        :Subvert/child{,ren}/adult{,s}/g
+"        :Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or}  {despe,sepa}rat{}
 
 " Ignore files in NERDTree
 let NERDTreeIgnore=['\.pyc$', '\~$']
@@ -283,6 +299,14 @@ let g:gitgutter_sign_modified = ''
 let g:gitgutter_sign_removed = ''
 let g:gitgutter_sign_removed_first_line = ''
 let g:gitgutter_sign_modified_removed = ''
+
+" Vim bufkill
+" Usage: :BD -> delete buffer
+"        :BW -> wipe a file from the buffer
+"        :BUN -> Unload buffer
+"        :BA -> Alternate buffers
+"        :BB :BF -> Move in buffers
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -372,7 +396,7 @@ endif
 set ruler
 
 " Height of the command bar
-set cmdheight=2
+set cmdheight=1
 
 " A buffer becomes hidden when it is abandoned
 set hid
@@ -466,10 +490,13 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 " Set git gutter colors (after config. colors so they don't get overwritten
-highlight GitGutterAdd    guifg=#009900
-highlight GitGutterChange guifg=#bbbb00
-highlight GitGutterDelete guifg=#ff2222
+highlight GitGutterAdd    guifg=#C3E88D
+highlight GitGutterChange guifg=#FFCB6B
+highlight GitGutterDelete guifg=#FF5370
 highlight clear SignColumn
+highlight Normal guibg=NONE ctermbg=NONE
+highlight Search guibg=#ffcb6b guifg=#444444 gui=NONE
+highlight FoldColumn guifg=#e4e4e4
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -500,7 +527,10 @@ set smarttab
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
-
+ 
+" Except for:
+autocmd FileType *.ts,*.html,*.css,*.json setlocal shiftwidth=2 tabstop=2 softtabstop=2
+"
 " Linebreak on 500 characters
 set lbr
 set tw=500
@@ -611,7 +641,7 @@ fun! CleanExtraSpaces()
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.js,*.html :call CleanExtraSpaces()
 endif
 
 " }}}
@@ -711,4 +741,4 @@ endfunction
 
 " }}}
 
-" vim:foldmethod=marker:foldlevel=0
+" _vim:foldmethod=marker:foldlevel=0
