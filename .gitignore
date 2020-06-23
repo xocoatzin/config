@@ -1,14 +1,27 @@
-<<<<<<< HEAD
 *
-=======
-# Virtual environments
-.venv3/
-.local/
+/.ssh/*
 
-# IDEs
-.vscode
-
-*.egg-info
-*.log
-notes.txt
->>>>>>> b92136107222b0c8e0023a5bb13ba3f1ecc05d83
+!/.agignore
+!/.bash_profile
+!/.bashrc
+!/.config/Synergy/
+!/.config/compton.conf
+!/.config/compton/
+!/.config/fish/
+!/.config/fisher/
+!/.config/i3/
+!/.config/kitty/
+!/.config/nvim/
+!/.config/omf/
+!/.config/polybar/
+!/.config/rofi/
+!/.config/terminator/
+!/.gitignore
+!/.pythonrc
+!/.ssh
+!/.ssh/config
+!/.tmux.conf
+!/.vim/after
+!/.vim/ycm_global_extra_conf.py
+!/.zshrc
+!/Pictures/Wallpapers
