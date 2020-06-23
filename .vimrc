@@ -204,9 +204,15 @@ let g:ultisnips_python_style='google'
 
 " ALE
 let g:ale_fixers = {'python': ['black', 'isort']}
-let g:ale_linters = {'python': ['black',  'flake8', 'pydocstyle']}
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
+let g:ale_linters = {'python': ['mypy',  'flake8', 'pydocstyle', 'mypy']}
+let g:ale_virtualenv_dir_names = ['.venv3', '.venv36', '.venv37', '.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv']
+let g:ale_python_black_options = '--line-length 80 --target-version py36'
+" let g:ale_fix_on_save = 1
+let g:ale_lint_on_insert_leave = 1
+let g:ale_python_black_change_directory = 1
+let g:ale_change_sign_column_color = 1
+let g:ale_sign_error = ''
+let g:ale_sign_warning = ''
 
  "Vim Multiple Cursors
 
@@ -486,6 +492,8 @@ highlight clear SignColumn
 highlight Normal guibg=NONE ctermbg=NONE
 highlight Search guibg=#ffcb6b guifg=#444444 gui=NONE
 highlight FoldColumn guifg=#e4e4e4
+highlight ALEWarningSign guifg=#FFCB6B
+highlight ALEErrorSign guifg=#FF5370
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
