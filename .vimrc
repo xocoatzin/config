@@ -101,7 +101,7 @@ call plug#begin('~/.vim/plugged')
 
 " Python
 Plug 'vim-python/python-syntax'
-Plug 'nvie/vim-flake8'
+"Plug 'nvie/vim-flake8'
 Plug 'davidhalter/jedi-vim'
 Plug 'jeetsukumaran/vim-pythonsense'
 " Typescript
