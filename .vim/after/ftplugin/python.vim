@@ -6,6 +6,7 @@ let g:python_highlight_all=1
 
 " Show vertical line
 set colorcolumn=80
+"highlight ColorColumn guibg=#000000
 
 " Show non printable chars
 " set listchars=tab:»\ ,eol:¬,nbsp:␣,space:·,trail:•,extends:→,precedes:←

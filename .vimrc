@@ -101,25 +101,21 @@ call plug#begin('~/.vim/plugged')
 
 " Python
 Plug 'vim-python/python-syntax'
-"Plug 'nvie/vim-flake8'
 Plug 'davidhalter/jedi-vim'
 Plug 'jeetsukumaran/vim-pythonsense'
 " Typescript
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+"Plug 'HerringtonDarkholme/yats.vim'
+"Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 " Text Utils
 Plug 'machakann/vim-sandwich'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+"Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Search and complete
-Plug 'kien/ctrlp.vim'
-Plug 'fisadev/vim-ctrlp-cmdpalette'
 Plug 'tpope/vim-fugitive'
 Plug 'Valloric/YouCompleteMe'
-Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
@@ -127,14 +123,16 @@ Plug 'tpope/vim-abolish'
 " UI
 Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
-"Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+"Plug 'jistr/vim-nerdtree-tabs'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'tmhedberg/SimpylFold'
+Plug 'rhysd/git-messenger.vim'
+Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes'
 Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
 
@@ -150,25 +148,45 @@ call plug#end()
 "        :Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or}  {despe,sepa}rat{}
 
 " Ignore files in NERDTree
-let NERDTreeIgnore=['\.pyc$', '\~$']
+let g:NERDTreeIgnore=['\.pyc$', '\~$']
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
-" Auto start NerdTree if vim is started with a directory.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+
+let g:webdevicons_conceal_nerdtree_brackets = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 0
+
+ "Auto start NerdTree if vim is started with a directory.
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" Close VIM if NT is the only window open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Toggle NerdTree
 map <C-N> :NERDTreeToggle<CR>
 
 let g:airline_powerline_fonts = 1
-"let g:airline_left_sep = ''
-"let g:airline_left_alt_sep = ''
-"let g:airline_right_sep = ''
-"let g:airline_right_alt_sep = ''
 let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
+let g:airline_left_alt_sep = ''
+"let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
+let g:airline_right_alt_sep = ''
+"let g:airline_right_alt_sep = ''
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='powerlineish'
+" Compact mode names
+let g:airline_mode_map = {
+    \ '__' : '--',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V-L',
+    \ '' : 'V-B',
+    \ 's'  : 'S',
+    \ 'S'  : 'S-L',
+    \ '' : 'S-B',
+    \ 't'  : 'T',
+    \ }
 
 " YCM:
 " After changing any of these options, restart server with :YcmRestartServer
@@ -193,13 +211,13 @@ let g:ycm_key_detailed_diagnostics = '<leader>ycmdiag'
 let cwd = getcwd()
 let g:ycm_extra_conf_vim_data = []
 " Global configuraton
-let g:ycm_global_ycm_extra_conf = '~/ycm_global_extra_conf.py'  " Global configuration file
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_global_extra_conf.py'  " Global configuration file
 
 "" better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<leader><tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+let g:UltiSnipsSnippetDirectories=['UltiSnips', $HOME.'/.vim/UltiSnips']
 let g:ultisnips_python_style='google'
 
 " ALE
@@ -214,20 +232,7 @@ let g:ale_change_sign_column_color = 1
 let g:ale_sign_error = ''
 let g:ale_sign_warning = ''
 
- "Vim Multiple Cursors
-
-"let g:multi_cursor_use_default_mapping=0
-"let g:multi_cursor_start_word_key      = '<C-d>'
-"let g:multi_cursor_select_all_word_key = '<A-d>'
-"let g:multi_cursor_start_key           = 'g<C-d>'
-"let g:multi_cursor_select_all_key      = 'g<A-d>'
-"let g:multi_cursor_next_key            = '<C-d>'
-"let g:multi_cursor_prev_key            = '<C-p>'
-"let g:multi_cursor_skip_key            = '<C-x>'
-"let g:multi_cursor_quit_key            = '<Esc>'
-
 " Vim Easy Align
-" Plug 'xolox/vim-session'
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -235,69 +240,28 @@ nmap ga <Plug>(EasyAlign)
 
 " Vim Instant Markdown
 " Start with :InstantMarkdownPreview, stop with: InstantMarkdownStop
-let g:instant_markdown_autostart = 0
-
- "Vim Doge
-"let g:doge_doc_standard_python = 'google'
-"let g:doge_mapping = '<leader>d'
-"let g:doge_mapping_comment_jump_forward = '<leader><Tab>'
-"let g:doge_mapping_comment_jump_backward = '<leader><S-Tab>'
-
-" Startify
-"let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
-"let g:startify_custom_footer = g:startify_custom_footer_text
-"let g:startify_session_persistence = 1
-"let g:startify_change_to_dir = 0
-"let g:startify_change_to_vcs_root = 1
-"let g:startify_fortune_use_unicode = 1
+"let g:instant_markdown_autostart = 0
 
 " Vim Sandwich
-"
 " Usage: sa{motion/textobject}{addition} -> Add a surrounding
 "        sd{deletion} -> Delete surrounding
 "        sr{deletion}{addition} -> replace surrounding
 
 " Fzf
-" Commands: Files, Buffers, Colors, Ag, Lines, Snippets, Commits, Commands, ...
-" CTRL-T / CTRL-X / CTRL-V key bindings to open in a new tab, a new split, or in a new vertical split
-
-" CtrlP settings
-"
-" <F5> purge the cache for the current directory to get new files, remove deleted files and apply new ignore options.
-" <c-f> and <c-b> cycle between modes.
-" <c-d> switch to filename only search instead of full path.
-" <c-r> switch to regexp mode.
-" <c-j>, <c-k> the arrow keys to navigate the result list.
-" <c-t> or <c-v>, <c-x> open the selected entry in a new tab or in a new split.
-" <c-n>, <c-p> select the next/previous string in the prompt's history.
-" <c-y> create a new file and its parent directories.
-" <c-z> mark/unmark multiple files and <c-o> to open them.
-
-let g:ctrlp_match_window = 'bottom,order:ttb' " order matching files top to bottom
-let g:ctrlp_switch_buffer = 0 " always open files in new buffers
-let g:ctrlp_working_path_mode = 0 " change the working directory during a Vim session and make CtrlP respect that change
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'  " Use AG as a backend, MUCH faster!
-endif
-
-" Ack
-" :Ack [options] {pattern} [{directories}]
-"
-" ?    a quick summary of these keys, repeat to close
-" o    to open (same as Enter)
-" O    to open and close the quickfix window
-" go   to preview file, open but maintain focus on ack.vim results
-" t    to open in new tab
-" T    to open in new tab without moving to it
-" h    to open in horizontal split
-" H    to open in horizontal split, keeping focus on the results
-" v    to open in vertical split
-" gv   to open in vertical split, keeping focus on the results
-" q    to close the quickfix window
-if executable('ag')
-  let g:ackprg = 'ag --nogroup --nocolor --column'
-endif
-nnoremap <Leader>a :Ack!<Space>
+" Commands: 
+"     :Files 
+"     :Buffers 
+"     :Colors 
+"     :Ag
+"     :Lines
+"     :Snippets
+"     :Commits
+"     :Commands
+" CTRL-T -> Open in tab 
+" CTRL-X -> Open in split
+" CTRL-V -> Open in vertical split
+map <C-P> :Files<CR>
+map <Leader>a :Ag<CR>
 
 " Vim Gitgutter
 let g:gitgutter_sign_added = ''
