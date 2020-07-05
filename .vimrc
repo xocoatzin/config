@@ -63,7 +63,10 @@ set listchars=tab:»\ ,eol:¬,nbsp:␣,space:·,trail:•,extends:→,precedes:�
 
 " Shortcut for vimrc and auto source on save.
 map <leader>vimrc :tabe ~/.vimrc<cr>
-autocmd bufwritepost .vimrc source $MYVIMRC
+augroup GroupSource
+    autocmd!
+    autocmd bufwritepost .vimrc source $MYVIMRC
+augroup END
 
 " Put plugins and dictionaries in this dir (also on Windows)
 let vimDir = '$HOME/.vim'
@@ -92,7 +95,7 @@ xnoremap d "_d
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
@@ -132,6 +135,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'tmhedberg/SimpylFold'
 Plug 'rhysd/git-messenger.vim'
+Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes'
 Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
@@ -159,7 +163,10 @@ let g:WebDevIconsUnicodeDecorateFolderNodes = 0
 "autocmd StdinReadPre * let s:std_in=1
 "autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " Close VIM if NT is the only window open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup GroupNerd
+    autocmd!
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
 " Toggle NerdTree
 map <C-N> :NERDTreeToggle<CR>
 
@@ -394,9 +401,9 @@ set t_vb=
 set tm=500
 
 " Properly disable sound on errors on MacVim
-if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
-endif
+"if has("gui_macvim")
+    "autocmd GUIEnter * set vb t_vb=
+"endif
 
 
 " Add a bit extra margin to the left
@@ -490,7 +497,10 @@ set shiftwidth=4
 set tabstop=4
  
 " Except for:
-autocmd FileType *.ts,*.html,*.css,*.json setlocal shiftwidth=2 tabstop=2 softtabstop=2
+"augroup GroupTabsize
+    "autocmd!
+    "autocmd FileType *.ts,*.html,*.css,*.json setlocal shiftwidth=2 tabstop=2 softtabstop=2
+"augroup END
 "
 " Linebreak on 500 characters
 set lbr
@@ -602,8 +612,17 @@ fun! CleanExtraSpaces()
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.js,*.html :call CleanExtraSpaces()
+    augroup GroupNerd
+        autocmd!
+        autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.json,*.html :call CleanExtraSpaces()
+    augroup END
 endif
+
+" Auto Formatting
+command! PrettyJSON4 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4))"
+command! PrettyJSON2 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2))"
+command! PrettyJSON4S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4, sort_keys=True))"
+command! PrettyJSON2S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2, sort_keys=True))"
 
 " }}}
 
