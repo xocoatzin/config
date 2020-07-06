@@ -31,7 +31,7 @@ let mapleader = ","
 let g:mapleader = ","
 
 " Double leader is Esc
-imap <Leader><Leader> <ESC>
+" imap <Leader><Leader> <ESC>
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -90,13 +90,20 @@ cnoreabbrev Q q
 nnoremap d "_d
 xnoremap d "_d
 "xnoremap p "_dP
-"
+
+" Diff options
+set diffopt+=vertical
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 
+" Install vim plug with:
+"  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
@@ -107,15 +114,18 @@ Plug 'vim-python/python-syntax'
 Plug 'davidhalter/jedi-vim'
 Plug 'jeetsukumaran/vim-pythonsense'
 " Typescript
-"Plug 'HerringtonDarkholme/yats.vim'
-"Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+Plug 'HerringtonDarkholme/yats.vim'
+" Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+" XML/HTML
+Plug 'alvan/vim-closetag' 
 " Text Utils
 Plug 'machakann/vim-sandwich'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
-"Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'plasticboy/vim-markdown'
+" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Search and complete
 Plug 'tpope/vim-fugitive'
 Plug 'Valloric/YouCompleteMe'
@@ -128,8 +138,8 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-"Plug 'jistr/vim-nerdtree-tabs'
-"Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'jistr/vim-nerdtree-tabs'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -150,6 +160,9 @@ call plug#end()
 "        :Subvert/blog{,s}/post{,s}/g
 "        :Subvert/child{,ren}/adult{,s}/g
 "        :Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or}  {despe,sepa}rat{}
+
+" NerdCommenter
+let g:NERDSpaceDelims = 1  " Add a space after the command markers
 
 " Ignore files in NERDTree
 let g:NERDTreeIgnore=['\.pyc$', '\~$']
@@ -173,11 +186,11 @@ map <C-N> :NERDTreeToggle<CR>
 let g:airline_powerline_fonts = 1
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
-"let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
-"let g:airline_right_alt_sep = ''
 let g:airline#extensions#tabline#enabled = 1
+" Use compact names for branches (2), disable with = 0
+let g:airline#extensions#branch#format = 2
 let g:airline_theme='powerlineish'
 " Compact mode names
 let g:airline_mode_map = {
@@ -194,8 +207,14 @@ let g:airline_mode_map = {
     \ '' : 'S-B',
     \ 't'  : 'T',
     \ }
+let $FZF_DEFAULT_COMMAND='ag -l --nocolor --hidden -g ""'
 
 " YCM:
+"
+" Install:
+"     cd ~/.vim/bundle/YouCompleteMe
+"     python3 install.py --all
+"
 " After changing any of these options, restart server with :YcmRestartServer
 
 " Enabled in comments
@@ -276,6 +295,27 @@ let g:gitgutter_sign_modified = ''
 let g:gitgutter_sign_removed = ''
 let g:gitgutter_sign_removed_first_line = ''
 let g:gitgutter_sign_modified_removed = ''
+
+" Vim Close tag
+" These are the file extensions where this plugin is enabled.
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+" This will make the list of non-closing tags self-closing in the specified files.
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+" These are the file types where this plugin is enabled.
+let g:closetag_filetypes = 'html,xhtml,phtml'
+" This will make the list of non-closing tags self-closing in the specified files.
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+let g:closetag_emptyTags_caseSensitive = 1
+" Disables auto-close if not in a "valid" region (based on filetype)
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ }
+" Shortcut for closing tags, default is '>'
+let g:closetag_shortcut = '>'
+" Add > at current position without closing the current tag, default is ''
+let g:closetag_close_shortcut = '<leader>>'
 
 " Vim bufkill
 " Usage: :BD -> delete buffer
@@ -449,6 +489,9 @@ if has("termguicolors")
     set termguicolors
 endif
 
+" Transparent background
+hi Normal guibg=NONE ctermbg=NONE
+
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
@@ -495,7 +538,7 @@ set smarttab
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
- 
+
 " Except for:
 "augroup GroupTabsize
     "autocmd!
@@ -722,3 +765,4 @@ inoremap <C-f> <c-g>u<Esc>[s1z=`]a<c-g>u
 " }}}
 
 " _vim:foldmethod=marker:foldlevel=0
+
