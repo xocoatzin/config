@@ -1,24 +1,5 @@
 " http://amix.dk/blog/post/19691#The-ultimate-Vim-configuration-on-Github
 
-" To install nvim on ubuntu:
-" sudo apt-get install software-properties-common
-" sudo add-apt-repository ppa:neovim-ppa/unstable
-" sudo apt-get update
-" sudo apt-get install neovim
-" sudo apt-get install python-dev python-pip python3-dev python3-pip
-" sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
-" sudo update-alternatives --config vi
-" sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
-" sudo update-alternatives --config vim
-" sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
-" sudo update-alternatives --config editor
-"
-" Then when running neovim the first time, run ":PlugInstall"
-
-" Python paths
-" pip2 install --user neovim
-" pip3 install --user neovim
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
@@ -55,7 +36,7 @@ let g:mapleader = ","
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" :W sudo saves the file 
+" :W sudo saves the file
 " (useful for handling the permission-denied error)
 try
   command W w !sudo tee % > /dev/null
@@ -76,13 +57,16 @@ set foldlevel=99
 nnoremap <space> za
 
 " Non printable chars
-set showbreak=↪\ 
+set showbreak=↪\
 set listchars=tab:»\ ,eol:¬,nbsp:␣,space:·,trail:•,extends:→,precedes:←
 " set list
 
 " Shortcut for vimrc and auto source on save.
 map <leader>vimrc :tabe ~/.vimrc<cr>
-autocmd bufwritepost .vimrc source $MYVIMRC
+augroup GroupSource
+    autocmd!
+    autocmd bufwritepost .vimrc source $MYVIMRC
+augroup END
 
 " Put plugins and dictionaries in this dir (also on Windows)
 let vimDir = '$HOME/.vim'
@@ -114,19 +98,7 @@ set diffopt+=vertical
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
-
-" ALE
-let g:ale_fixers = {'python': ['black', 'isort']}
-let g:ale_linters = {'python': ['mypy',  'flake8', 'pydocstyle', 'mypy']}
-let g:ale_virtualenv_dir_names = ['.venv3', '.venv36', '.venv37', '.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv']
-let g:ale_python_black_options = '--line-length 80 --target-version py36'
-" let g:ale_fix_on_save = 1
-let g:ale_lint_on_insert_leave = 1
-let g:ale_python_black_change_directory = 1
-let g:ale_change_sign_column_color = 1
-let g:ale_sign_error = ''
-let g:ale_sign_warning = ''
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 
 " Install vim plug with:
 "  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -139,12 +111,11 @@ call plug#begin('~/.vim/plugged')
 
 " Python
 Plug 'vim-python/python-syntax'
-Plug 'nvie/vim-flake8'
 Plug 'davidhalter/jedi-vim'
 Plug 'jeetsukumaran/vim-pythonsense'
 " Typescript
 Plug 'HerringtonDarkholme/yats.vim'
-"Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+" Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 " XML/HTML
 Plug 'alvan/vim-closetag' 
 " Text Utils
@@ -156,35 +127,34 @@ Plug 'junegunn/vim-easy-align'
 Plug 'plasticboy/vim-markdown'
 " Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Search and complete
-Plug 'kien/ctrlp.vim'
-Plug 'fisadev/vim-ctrlp-cmdpalette'
 Plug 'tpope/vim-fugitive'
 Plug 'Valloric/YouCompleteMe'
-Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-abolish'
 " UI
 Plug 'qpkorr/vim-bufkill'
-" Plug 'mhinz/vim-startify'
 Plug 'psliwka/vim-smoothie'
 Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" Plug 'jistr/vim-nerdtree-tabs'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'tmhedberg/SimpylFold'
+Plug 'rhysd/git-messenger.vim'
+Plug 'kshenoy/vim-signature'
+Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes'
-Plug 'AlphaMycelium/pathfinder.vim'
 Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
 
 " Initialize plugin system
 call plug#end()
 
 " Plugin Configuration
-"
+
 " Vim Abolish
 " Usage: :Subvert/address{,es}/reference{,s}/g
 "        :Subvert/blog{,s}/post{,s}/g
@@ -195,27 +165,49 @@ call plug#end()
 let g:NERDSpaceDelims = 1  " Add a space after the command markers
 
 " Ignore files in NERDTree
-let NERDTreeIgnore=['\.pyc$', '\~$']
+let g:NERDTreeIgnore=['\.pyc$', '\~$']
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
-" Auto start NerdTree if vim is started with a directory.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+
+let g:webdevicons_conceal_nerdtree_brackets = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 0
+
+ "Auto start NerdTree if vim is started with a directory.
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" Close VIM if NT is the only window open
+augroup GroupNerd
+    autocmd!
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
 " Toggle NerdTree
 map <C-N> :NERDTreeToggle<CR>
 
 let g:airline_powerline_fonts = 1
-"let g:airline_left_sep = ''
-"let g:airline_left_alt_sep = ''
-"let g:airline_right_sep = ''
-"let g:airline_right_alt_sep = ''
 let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
+let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
+let g:airline_right_alt_sep = ''
 let g:airline#extensions#tabline#enabled = 1
 " Use compact names for branches (2), disable with = 0
 let g:airline#extensions#branch#format = 2
+let g:airline_theme='powerlineish'
+" Compact mode names
+let g:airline_mode_map = {
+    \ '__' : '--',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V-L',
+    \ '' : 'V-B',
+    \ 's'  : 'S',
+    \ 'S'  : 'S-L',
+    \ '' : 'S-B',
+    \ 't'  : 'T',
+    \ }
+let $FZF_DEFAULT_COMMAND='ag -l --nocolor --hidden -g ""'
 
 " YCM:
 "
@@ -245,14 +237,26 @@ let g:ycm_key_detailed_diagnostics = '<leader>ycmdiag'
 let cwd = getcwd()
 let g:ycm_extra_conf_vim_data = []
 " Global configuraton
-let g:ycm_global_ycm_extra_conf = '~/ycm_global_extra_conf.py'  " Global configuration file
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_global_extra_conf.py'  " Global configuration file
 
 "" better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<leader><tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+let g:UltiSnipsSnippetDirectories=['UltiSnips', $HOME.'/.vim/UltiSnips']
 let g:ultisnips_python_style='google'
+
+" ALE
+let g:ale_fixers = {'python': ['black', 'isort']}
+let g:ale_linters = {'python': ['mypy',  'flake8', 'pydocstyle', 'mypy']}
+let g:ale_virtualenv_dir_names = ['.venv3', '.venv36', '.venv37', '.env', '.venv', 'env', 've-py3', 've', 'virtualenv', 'venv']
+let g:ale_python_black_options = '--line-length 80 --target-version py36'
+" let g:ale_fix_on_save = 1
+let g:ale_lint_on_insert_leave = 1
+let g:ale_python_black_change_directory = 1
+let g:ale_change_sign_column_color = 1
+let g:ale_sign_error = ''
+let g:ale_sign_warning = ''
 
 " Vim Easy Align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -262,65 +266,28 @@ nmap ga <Plug>(EasyAlign)
 
 " Vim Instant Markdown
 " Start with :InstantMarkdownPreview, stop with: InstantMarkdownStop
-let g:instant_markdown_autostart = 0
-
-" Startify
-" let g:startify_custom_footer_text = ['b -> buffer    s -> hsplit    v -> vsplit    t -> tab']
-" let g:startify_custom_footer = g:startify_custom_footer_text
-" let g:startify_session_persistence = 1
-" let g:startify_change_to_dir = 0
-" let g:startify_change_to_vcs_root = 1
-" let g:startify_fortune_use_unicode = 1
+"let g:instant_markdown_autostart = 0
 
 " Vim Sandwich
-"
 " Usage: sa{motion/textobject}{addition} -> Add a surrounding
 "        sd{deletion} -> Delete surrounding
 "        sr{deletion}{addition} -> replace surrounding
 
 " Fzf
-" Commands: Files, Buffers, Colors, Ag, Lines, Snippets, Commits, Commands, ...
-" CTRL-T / CTRL-X / CTRL-V key bindings to open in a new tab, a new split, or in a new vertical split
-
-" CtrlP settings
-"
-" <F5> purge the cache for the current directory to get new files, remove deleted files and apply new ignore options.
-" <c-f> and <c-b> cycle between modes.
-" <c-d> switch to filename only search instead of full path.
-" <c-r> switch to regexp mode.
-" <c-j>, <c-k> the arrow keys to navigate the result list.
-" <c-t> or <c-v>, <c-x> open the selected entry in a new tab or in a new split.
-" <c-n>, <c-p> select the next/previous string in the prompt's history.
-" <c-y> create a new file and its parent directories.
-" <c-z> mark/unmark multiple files and <c-o> to open them.
-
-" Install: sudo apt install siversearcher-ag
-let g:ctrlp_match_window = 'bottom,order:ttb' " order matching files top to bottom
-let g:ctrlp_switch_buffer = 0 " always open files in new buffers
-let g:ctrlp_working_path_mode = 0 " change the working directory during a Vim session and make CtrlP respect that change
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'  " Use AG as a backend, MUCH faster!
-endif
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|\.git'
-
-" Ack
-" :Ack [options] {pattern} [{directories}]
-"
-" ?    a quick summary of these keys, repeat to close
-" o    to open (same as Enter)
-" O    to open and close the quickfix window
-" go   to preview file, open but maintain focus on ack.vim results
-" t    to open in new tab
-" T    to open in new tab without moving to it
-" h    to open in horizontal split
-" H    to open in horizontal split, keeping focus on the results
-" v    to open in vertical split
-" gv   to open in vertical split, keeping focus on the results
-" q    to close the quickfix window
-if executable('ag')
-  let g:ackprg = 'ag --nogroup --nocolor --column'
-endif
-nnoremap <Leader>a :Ack!<Space>
+" Commands: 
+"     :Files 
+"     :Buffers 
+"     :Colors 
+"     :Ag
+"     :Lines
+"     :Snippets
+"     :Commits
+"     :Commands
+" CTRL-T -> Open in tab 
+" CTRL-X -> Open in split
+" CTRL-V -> Open in vertical split
+map <C-P> :Files<CR>
+map <Leader>a :Ag<CR>
 
 " Vim Gitgutter
 let g:gitgutter_sign_added = ''
@@ -474,9 +441,9 @@ set t_vb=
 set tm=500
 
 " Properly disable sound on errors on MacVim
-if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
-endif
+"if has("gui_macvim")
+    "autocmd GUIEnter * set vb t_vb=
+"endif
 
 
 " Add a bit extra margin to the left
@@ -571,9 +538,13 @@ set smarttab
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
-" Except for:
-autocmd FileType *.js,*.ts,*.css,*.html,*.json setlocal shiftwidth=2 tabstop=2
 
+" Except for:
+"augroup GroupTabsize
+    "autocmd!
+    "autocmd FileType *.ts,*.html,*.css,*.json setlocal shiftwidth=2 tabstop=2 softtabstop=2
+"augroup END
+"
 " Linebreak on 500 characters
 set lbr
 set tw=500
@@ -589,8 +560,8 @@ set wrap "Wrap lines
 """""""""""""""""""""""""""""" {{{
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-" vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-" vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+"vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+"vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 " }}}
 
@@ -598,8 +569,8 @@ set wrap "Wrap lines
 " => Moving around, tabs, windows and buffers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Switch buffers
-nnoremap <F7> :bp<CR>
-nnoremap <F9> :bn<CR>
+"nnoremap <F7> :bp<CR>
+"nnoremap <F9> :bn<CR>
 
 " Disable highlight when <leader><cr> is pressed
 "map <silent> <leader><cr> :noh<cr>
@@ -684,8 +655,17 @@ fun! CleanExtraSpaces()
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.html,*.css,*.json :call CleanExtraSpaces()
+    augroup GroupNerd
+        autocmd!
+        autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.json,*.html :call CleanExtraSpaces()
+    augroup END
 endif
+
+" Auto Formatting
+command! PrettyJSON4 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4))"
+command! PrettyJSON2 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2))"
+command! PrettyJSON4S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4, sort_keys=True))"
+command! PrettyJSON2S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2, sort_keys=True))"
 
 " }}}
 
@@ -731,57 +711,58 @@ inoremap <C-f> <c-g>u<Esc>[s1z=`]a<c-g>u
 " => Helper functions
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Returns true if paste mode is enabled
-" function! HasPaste()
-    " if &paste
-        " return 'PASTE MODE  '
-    " endif
-    " return ''
-" endfunction
+"function! HasPaste()
+    "if &paste
+        "return 'PASTE MODE  '
+    "endif
+    "return ''
+"endfunction
 
-" Don't close window, when deleting a buffer
-" command! Bclose call <SID>BufcloseCloseIt()
-" function! <SID>BufcloseCloseIt()
-   " let l:currentBufNum = bufnr("%")
-   " let l:alternateBufNum = bufnr("#")
+"" Don't close window, when deleting a buffer
+"command! Bclose call <SID>BufcloseCloseIt()
+"function! <SID>BufcloseCloseIt()
+   "let l:currentBufNum = bufnr("%")
+   "let l:alternateBufNum = bufnr("#")
 
-   " if buflisted(l:alternateBufNum)
-     " buffer #
-   " else
-     " bnext
-   " endif
+   "if buflisted(l:alternateBufNum)
+     "buffer #
+   "else
+     "bnext
+   "endif
 
-   " if bufnr("%") == l:currentBufNum
-     " new
-   " endif
+   "if bufnr("%") == l:currentBufNum
+     "new
+   "endif
 
-   " if buflisted(l:currentBufNum)
-     " execute("bdelete! ".l:currentBufNum)
-   " endif
-" endfunction
+   "if buflisted(l:currentBufNum)
+     "execute("bdelete! ".l:currentBufNum)
+   "endif
+"endfunction
 
-" function! CmdLine(str)
-    " exe "menu Foo.Bar :" . a:str
-    " emenu Foo.Bar
-    " unmenu Foo
-" endfunction
+"function! CmdLine(str)
+    "exe "menu Foo.Bar :" . a:str
+    "emenu Foo.Bar
+    "unmenu Foo
+"endfunction
 
-" function! VisualSelection(direction, extra_filter) range
-    " let l:saved_reg = @"
-    " execute "normal! vgvy"
+"function! VisualSelection(direction, extra_filter) range
+    "let l:saved_reg = @"
+    "execute "normal! vgvy"
 
-    " let l:pattern = escape(@", "\\/.*'$^~[]")
-    " let l:pattern = substitute(l:pattern, "\n$", "", "")
+    "let l:pattern = escape(@", "\\/.*'$^~[]")
+    "let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-    " if a:direction == 'gv'
-        " call CmdLine("Ack '" . l:pattern . "' " )
-    " elseif a:direction == 'replace'
-        " call CmdLine("%s" . '/'. l:pattern . '/')
-    " endif
+    "if a:direction == 'gv'
+        "call CmdLine("Ack '" . l:pattern . "' " )
+    "elseif a:direction == 'replace'
+        "call CmdLine("%s" . '/'. l:pattern . '/')
+    "endif
 
-    " let @/ = l:pattern
-    " let @" = l:saved_reg
-" endfunction
+    "let @/ = l:pattern
+    "let @" = l:saved_reg
+"endfunction
 
 " }}}
 
 " _vim:foldmethod=marker:foldlevel=0
+
