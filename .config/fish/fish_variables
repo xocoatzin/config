@@ -1,5 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export --path ADF_PATH:/Users/atorresgomez/esp/esp\x2dadf
+SETUVAR --export --path IDF_PATH:/Users/atorresgomez/esp/esp\x2didf
 SETUVAR __fish_init_2_3_0:\x1d
 SETUVAR __fish_initialized:3100
 SETUVAR _fish_abbr_d:docker
