@@ -147,6 +147,7 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'rhysd/git-messenger.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
+Plug 'chuling/pure-material.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
 
@@ -288,7 +289,7 @@ nmap ga <Plug>(EasyAlign)
 " CTRL-V -> Open in vertical split
 map <C-P> :Files<CR>
 map <Leader>a :Ag<CR>
-noremap <silent> <leader>ga :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 
 " Vim Gitgutter
 let g:gitgutter_sign_added = ''
@@ -424,6 +425,9 @@ set hlsearch
 " Makes search act like search in modern browsers
 set incsearch
 
+" Preview replacements
+set inccommand=nosplit
+
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
 
@@ -462,6 +466,7 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Enable syntax highlighting
 syntax enable
+set fillchars+=vert:│
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
@@ -469,7 +474,8 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme vim-material
+    " colorscheme vim-material
+    colorscheme pure_material
 catch
 endtry
 
@@ -490,9 +496,6 @@ if has("termguicolors")
     set termguicolors
 endif
 
-" Transparent background
-hi Normal guibg=NONE ctermbg=NONE
-
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
@@ -504,11 +507,12 @@ highlight GitGutterAdd    guifg=#C3E88D
 highlight GitGutterChange guifg=#FFCB6B
 highlight GitGutterDelete guifg=#FF5370
 highlight clear SignColumn
-highlight Normal guibg=NONE ctermbg=NONE
 highlight Search guibg=#ffcb6b guifg=#444444 gui=NONE
 highlight FoldColumn guifg=#e4e4e4
 highlight ALEWarningSign guifg=#FFCB6B
 highlight ALEErrorSign guifg=#FF5370
+highlight Comment guifg=#49656F
+highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -656,7 +660,7 @@ fun! CleanExtraSpaces()
 endfun
 
 if has("autocmd")
-    augroup GroupNerd
+    augroup GroupCleanSpaces
         autocmd!
         autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.json,*.html :call CleanExtraSpaces()
     augroup END
