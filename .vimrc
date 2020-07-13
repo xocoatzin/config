@@ -44,7 +44,7 @@ catch
 endtry
 
 " Use system clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Leader timeout
 set notimeout
@@ -288,6 +288,7 @@ nmap ga <Plug>(EasyAlign)
 " CTRL-V -> Open in vertical split
 map <C-P> :Files<CR>
 map <Leader>a :Ag<CR>
+noremap <silent> <leader>ga :Ag <C-R><C-W><CR>
 
 " Vim Gitgutter
 let g:gitgutter_sign_added = ''
