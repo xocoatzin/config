@@ -140,6 +140,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Plug 'jistr/vim-nerdtree-tabs'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -326,6 +327,7 @@ let g:closetag_close_shortcut = '<leader>>'
 "        :BA -> Alternate buffers
 "        :BB :BF -> Move in buffers
 
+let g:highlightedyank_highlight_duration = 200
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -512,7 +514,10 @@ highlight FoldColumn guifg=#e4e4e4
 highlight ALEWarningSign guifg=#FFCB6B
 highlight ALEErrorSign guifg=#FF5370
 highlight Comment guifg=#49656F
+highlight TermCursorNC ctermfg=15 guifg=#fdf6e3 guibg=#93a1a1
+highlight HighlightedyankRegion cterm=reverse gui=reverse
 highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -578,7 +583,7 @@ set wrap "Wrap lines
 "nnoremap <F9> :bn<CR>
 
 " Disable highlight when <leader><cr> is pressed
-"map <silent> <leader><cr> :noh<cr>
+map <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -623,7 +628,10 @@ catch
 endtry
 
 " Return to last edit position when opening files (You want this!)
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup GroupGoback
+    autocmd!
+    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup END
 
 " }}}
 
