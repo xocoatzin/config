@@ -151,7 +151,6 @@ click-middle = ~/.config/polybar/scripts/rfull
 click-right = ~/.config/polybar/scripts/rmenu_wi_g
 
 [module/workspaces]
-;type = internal/xworkspaces
 type = internal/i3
 pin-workspaces = true
 index-sort = true
@@ -159,38 +158,40 @@ enable-click = true
 enable-scroll = true
 format-padding = 0
 
-icon-0 = 1;
-icon-1 = 2;
-icon-2 = 3;
-icon-3 = 4;
-icon-4 = 5;
-icon-5 = 6;6
-icon-6 = 7;7
-icon-7 = 8;8
-icon-8 = 9;9
-;icon-default = #
+; icon-0 = 1;
+; icon-1 = 2;
+; icon-2 = 3;
+; icon-3 = 4;
+; icon-4 = 5;
+; icon-5 = 6;6
+; icon-6 = 7;7
+; icon-7 = 8;8
+; icon-8 = 9;9
+; icon-default = #
 
 format = <label-state> <label-mode>
 
 label-mode = %mode%
 label-mode-padding = 2
 label-mode-background = ${color.grey}
+label-mode-underline = ${color.grey}
 
-label-active = %icon%
+label-active = %index%
 label-active-padding = 2
 label-active-foreground = ${color.acolor}
 label-active-underline = ${color.acolor}
 
-label-occupied = %icon%
+label-occupied = %index%
 label-occupied-padding = 2
 label-occupied-foreground = ${color.coccupied}
 label-occupied-underline = ${color.coccupied}
 
-label-empty = %icon%
+label-empty = %index%
 label-empty-padding = 2
 label-empty-foreground = ${color.fg}
+label-empty-underline = ${color.grey}
 
-label-urgent = %icon%
+label-urgent = %index%
 label-urgent-padding = 2
 label-urgent-foreground = ${color.curgent}
 label-urgent-underline = ${color.curgent}
@@ -198,27 +199,26 @@ label-urgent-underline = ${color.curgent}
 label-focused = %index%
 label-focused-padding = 2
 label-focused-foreground = ${color.acolor}
-;label-focused-background = ${color.grey}
 label-focused-underline = ${color.acolor}
 
 label-separator = |
 label-separator-padding = 1
 label-separator-foreground = ${color.fg-alt}
 
-[module/term]
-type = custom/text
-content = 
-content-foreground = ${color.fg-alt}
-click-left = ~/d/3rdparty/kitty/launch.sh &
+; [module/term]
+; type = custom/text
+; content = 
+; content-foreground = ${color.fg-alt}
+; click-left = ~/d/3rdparty/kitty/launch.sh &
 ;click-middle = urxvt &
 ;click-right = xfce4-terminal &
 
-[module/files]
-type = custom/text
-content = 
-content-padding = 1
-content-foreground = ${color.fg-alt}
-click-left = thunar &
+; [module/files]
+; type = custom/text
+; content = 
+; content-padding = 1
+; content-foreground = ${color.fg-alt}
+; click-left = thunar &
 ;click-right = ranger &
 
 [module/browser]
@@ -229,11 +229,11 @@ content-foreground = ${color.fg-alt}
 click-left = icefox &
 click-right = ~/firefox/firefox &
 
-[module/settings]
-type = custom/text
-content = 
-content-padding = 1
-content-foreground = ${color.fg-alt}
+; [module/settings]
+; type = custom/text
+; content = 
+; content-padding = 1
+; content-foreground = ${color.fg-alt}
 ;click-left = xfce4-settings &
 ;click-right = lxappearance &
 

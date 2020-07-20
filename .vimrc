@@ -107,6 +107,15 @@ cnoreabbrev W w
 " https://stackoverflow.com/a/11993928/575085
 nnoremap d "_d
 xnoremap d "_d
+vnoremap d "_d
+nnoremap D "_D
+vnoremap D "_D
+nnoremap c "_c
+vnoremap c "_c
+nnoremap C "_C
+vnoremap C "_C
+xnoremap p "_p
+xnoremap P "_P
 
 " Avoid garbled characters in Chinese language windows OS
 " let $LANG='en'
@@ -153,6 +162,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Plug 'jistr/vim-nerdtree-tabs'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'nelstrom/vim-visual-star-search'  " Use * to search for text selected in visual mode
+Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -327,6 +338,18 @@ let g:closetag_close_shortcut = '<leader>>'
 "        :BUN -> Unload buffer
 "        :BA -> Alternate buffers
 "        :BB :BF -> Move in buffers
+
+let g:vim_markdown_no_default_key_mappings = 1
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+
+" crc 	coerce to camelCase
+" crm 	coerce to MixedCase
+" crs (also cr_) 	coerce to snake_case
+" cru 	coerce to SNAKE_UPPERCASE
+" cr- 	coerce to dash-case
+
+let g:highlightedyank_highlight_duration = 200
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -403,8 +426,8 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    " colorscheme vim-material
-    colorscheme equinusocio_material
+    colorscheme vim-material
+    " colorscheme equinusocio_material
 catch
 endtry
 
@@ -426,13 +449,19 @@ highlight FoldColumn guifg=#e4e4e4
 highlight ALEWarningSign guifg=#FFCB6B
 highlight ALEErrorSign guifg=#FF5370
 highlight Comment guifg=#49656F
+highlight TermCursorNC ctermfg=15 guifg=#fdf6e3 guibg=#93a1a1
+highlight HighlightedyankRegion cterm=reverse gui=reverse
 highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
+
 " }}}
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+
 " Smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
@@ -450,7 +479,10 @@ catch
 endtry
 
 " Return to last edit position when opening files
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup GroupGoback
+    autocmd!
+    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup END
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
