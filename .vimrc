@@ -105,17 +105,17 @@ cnoreabbrev W w
 
 " Delete, not cut
 " https://stackoverflow.com/a/11993928/575085
-nnoremap d "_d
-xnoremap d "_d
-vnoremap d "_d
-nnoremap D "_D
-vnoremap D "_D
-nnoremap c "_c
-vnoremap c "_c
-nnoremap C "_C
-vnoremap C "_C
-xnoremap p "_p
-xnoremap P "_P
+nnoremap d "_d  " To the black hole register
+xnoremap d "_d  " To the black hole register
+vnoremap d "_d  " To the black hole register
+nnoremap D "_D  " To the black hole register
+vnoremap D "_D  " To the black hole register
+nnoremap c "_c  " To the black hole register
+vnoremap c "_c  " To the black hole register
+nnoremap C "_C  " To the black hole register
+vnoremap C "_C  " To the black hole register
+xnoremap p "0p  " From the yank register
+xnoremap P "0P  " From the yank register
 
 " Avoid garbled characters in Chinese language windows OS
 " let $LANG='en'
