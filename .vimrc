@@ -17,8 +17,6 @@ set number
 set termguicolors
 set cursorline
 set clipboard=unnamedplus                        " Use system clipboard
-set notimeout                                    " Leader timeout
-set ttimeout
 set foldmethod=indent                            " Enable folding
 set foldlevel=99
 set foldcolumn=1                                 " Add a bit extra margin to the left
@@ -115,9 +113,10 @@ nnoremap c "_c
 vnoremap c "_c
 nnoremap C "_C
 vnoremap C "_C
-" From the yank register
-xnoremap p "0p
-xnoremap P "0P
+nnoremap x "+x
+xnoremap x "+x
+xnoremap p "+p
+xnoremap P "+P
 
 " Avoid garbled characters in Chinese language windows OS
 " let $LANG='en'
@@ -143,6 +142,7 @@ Plug 'HerringtonDarkholme/yats.vim'
 " XML/HTML
 Plug 'alvan/vim-closetag' 
 " Text Utils
+Plug 'cohama/lexima.vim'
 Plug 'machakann/vim-sandwich'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
@@ -495,6 +495,15 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Remap VIM 0 to first non-blank character
 " map 0 ^
+
+" Auto close brackets
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
 
 " Move a line of text using Shift+[jk]
 if has('macunix')
