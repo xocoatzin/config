@@ -135,6 +135,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 " Text Utils
+Plug 'tpope/vim-sleuth'
 Plug 'machakann/vim-sandwich'
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
