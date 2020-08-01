@@ -1,0 +1,47 @@
+{
+    "cSpell.userWords": [
+        "noqa"
+    ],
+    "diagnostic.errorSign": "",
+    "diagnostic.infoSign": "",
+    "diagnostic.warningSign": "",
+    "git.addedSign.text": "",
+    "git.addedSign.hlGroup": [ "GruvboxGreenSign" ],
+    "git.changedSign.text": "",
+    "git.changedSign.hlGroup": [ "GruvboxAquaSign" ],
+    "git.removedSign.text": "",
+    "git.removedSign.hlGroup": [ "GruvboxRedSign" ],
+    "git.topRemovedSign.text": "",
+    "git.topRemovedSign.hlGroup.hlGroup": [ "GruvboxRedSign" ],
+    "git.changeRemovedSign.text": "",
+    "git.changeRemovedSign.hlGroup": [ "GruvboxPurpleSign" ],
+    "html.autoClosingTags": true,
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "80",
+        "--target-version",
+        "py36"
+    ],
+    "python.formatting.provider": "black",
+    "python.jediPath": "/Library/Frameworks/Python.framework/Versions/3.8//lib/python3.8/site-packages/",
+    "python.linting.flake8Enabled": true,
+    "python.linting.ignorePatterns": [
+        ".venv*",
+        "**/site-packages/**/*.py"
+    ],
+    "python.linting.mypyEnabled": true,
+    "python.linting.pydocstyleEnabled": true,
+    "python.venvFolders": [
+        ".venv3",
+        ".venv36",
+        ".venv37",
+        ".env",
+        ".venv",
+        "venv",
+        "virtualenv"
+    ],
+    "yaml.format.enable": true,
+    "yaml.schemas": {
+        "kubernetes": "*.yaml"
+    }
+}
