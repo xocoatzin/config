@@ -47,7 +47,7 @@ set langmenu=en                                  " en_US as the standard languag
 set ffs=unix,dos,mac                             " Use Unix as the standard file type
 set updatetime=50                                " Time to wait before write swap file to disk
 set shortmess+=c                                 " Don't pass messages to |ins-completion-menu|.
-set signcolumn=yes                               " Draw always
+set signcolumn=yes:2                             " Draw always
 
 " Backups and undoing
 set backup
@@ -215,9 +215,6 @@ let g:airline_mode_map = {
     \ '' : 'S-B',
     \ 't'  : 'T',
     \ }
-let $FZF_DEFAULT_COMMAND='ag -l --nocolor --hidden -g ""'
-" let $FZF_DEFAULT_OPTS='--reverse'
-let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 
 " UltiSnips
 " TODO: Disable these 3
@@ -241,11 +238,13 @@ nmap ga <Plug>(EasyAlign)
 
 " Fzf
 " Commands: 
-"     :Files      :Buffers        :Colors     :Ag
-"     :Lines      :Snippets       :Commits    :Commands
+"     :Files       :Buffers        :Colors       :Ag
+"     :Lines       :Snippets       :Commits      :Commands
 " CTRL-T -> Open in tab 
 " CTRL-X -> Open in split
 " CTRL-V -> Open in vertical split
+let $FZF_DEFAULT_COMMAND='ag -l --nocolor --hidden -g ""'
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 map <C-P> :Files<CR>
 map <Leader>ag :Ag<CR>
 nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
@@ -400,6 +399,14 @@ function! s:select_current_word()
 endfunc
 
 "
+" coc-bookmark
+"
+nmap <Leader>ba <Plug>(coc-bookmark-annotate)
+nmap <Leader>bt <Plug>(coc-bookmark-toggle)
+nmap <Leader>bj <Plug>(coc-bookmark-next)
+nmap <Leader>bk <Plug>(coc-bookmark-prev)
+nnoremap <silent><nowait> <space>b  :<C-u>CocList bookmark<cr>
+"
 " Coc-snippets
 "
 let g:coc_snippet_next = '<leader>j'
@@ -482,6 +489,10 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Remap VIM 0 to first non-blank character
 " map 0 ^
+
+" Keep selection when indenting in visual mode.
+vmap < <gv
+vmap > >gv
 
 " Move a line of text using Shift+[jk]
 if has('macunix')
