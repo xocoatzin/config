@@ -1,0 +1,56 @@
+{
+  "extension": {
+    "coc-ultisnips": {
+      "disabled": false
+    },
+    "coc-lists": {
+      "disabled": false
+    },
+    "coc-jedi": {
+      "disabled": true
+    },
+    "coc-highlight": {
+      "disabled": false
+    },
+    "coc-fzf-preview": {
+      "disabled": false
+    },
+    "coc-calc": {
+      "disabled": false
+    },
+    "coc-actions": {
+      "disabled": false
+    },
+    "coc-yaml": {
+      "disabled": false
+    },
+    "coc-tsserver": {
+      "disabled": false
+    },
+    "coc-sh": {
+      "disabled": false
+    },
+    "coc-python": {
+      "disabled": false
+    },
+    "coc-markdownlint": {
+      "disabled": false
+    },
+    "coc-json": {
+      "disabled": false
+    },
+    "coc-html": {
+      "disabled": false
+    },
+    "coc-css": {
+      "disabled": false
+    },
+    "coc-cmake": {
+      "disabled": true
+    },
+    "coc-angular": {
+      "disabled": false
+    }
+  },
+  "lastUpdate": 1596442435174
+}
