@@ -147,12 +147,14 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'stsewd/fzf-checkout.vim'
 Plug 'tpope/vim-abolish'
 " UI
 Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
-Plug 'scrooloose/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': ':UpdateRemotePlugins'}
+" Plug 'scrooloose/nerdtree'
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'nelstrom/vim-visual-star-search'  " Use * to search for text selected in visual mode
 Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'
@@ -176,20 +178,55 @@ call plug#end()
 let g:NERDSpaceDelims = 1  " Add a space after the command markers
 
 " Ignore files in NERDTree
-let g:NERDTreeIgnore=['\.pyc$', '\~$']
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
+" let g:NERDTreeIgnore=['\.pyc$', '\~$']
+" let g:NERDTreeDirArrowExpandable = ''
+" let g:NERDTreeDirArrowCollapsible = ''
 
-let g:webdevicons_conceal_nerdtree_brackets = 1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 0
+" let g:webdevicons_conceal_nerdtree_brackets = 1
+" let g:WebDevIconsUnicodeDecorateFolderNodes = 0
 
-" Close VIM if NT is the only window open
-augroup GroupNerd
-    autocmd!
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
-" Toggle NerdTree
-map <C-N> :NERDTreeToggle<CR>
+" " Close VIM if NT is the only window open
+" augroup GroupNerd
+    " autocmd!
+    " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" augroup END
+" " Toggle NerdTree
+" map <C-N> :NERDTreeToggle<CR>
+
+" ChadTree
+"
+" | functions              | usage                                                                             | default key              |
+" | quit                   | close chad window                                                                 | q                        |
+" | refresh                | trigger refresh                                                                   | <c-r>                    |
+" | change_focus           | re-center root at folder                                                          | c                        |
+" | change_focus_up        | re-center root at root's parent                                                   | C                        |
+" | refocus                | refocus root at vim cwd                                                           | ~                        |
+" | jump_to_current        | set cursor row to currently active file                                           | J                        |
+" | primary                | open / close folders & open file                                                  | <enter>                  |
+" | secondary              | open / close folders & preview file                                               | <tab>, <doubleclick>     |
+" | tertiary               | open / close folders & open file in new tab                                       | <m-enter>, <middlemouse> |
+" | v_split                | open / close folders & open file in vertical split                                | w                        |
+" | h_split                | open / close folders & open file in horizontal split                              | W                        |
+" | open_sys               | open file using open / xdg-open                                                   | o                        |
+" | toggle_hidden          | toggle showing hidden items (you need to set your own ignore list)                | .                        |
+" | collapse               | collapse all sub folders                                                          | <s-tab>                  |
+" | copy_name              | copy file path of items under cursor / visual selection / selection               | y                        |
+" | filter                 | set glob filter for visible items                                                 | f                        |
+" | clear_filter           | clear filtering                                                                   | F                        |
+" | select                 | select item under cursor / visual selection                                       | s                        |
+" | clear_select           | clear selection                                                                   | S                        |
+" | new                    | create new folder / file at location under cursor (ending with / will be folders) | a                        |
+" | rename                 | rename file under cursor                                                          | r                        |
+" | delete                 | delete item under cursor / visual selection / selection                           | d                        |
+" | trash                  | trash item under cursor / visual selection / selection                            | t                        |
+" | copy                   | copy selected items to location under cursor                                      | p                        |
+" | cut                    | move selected items to location under cursor                                      | x                        |
+" | stat                   | print ls -l stat to status line                                                   | K                        |
+" | toggle_follow          | toggle follow mode on / off                                                       |                          |
+" | toggle_version_control | toggle version control on / off                                                   |                          |
+" | bigger                 | increase chad size                                                                | +, =                     |
+" | smaller                | decrease chad size                                                                | -, _                     |
+nnoremap <C-N> <cmd>CHADopen<cr>
 
 let g:airline_powerline_fonts = 1
 let g:airline_left_sep = ''
@@ -249,6 +286,11 @@ map <C-P> :Files<CR>
 map <Leader>ag :Ag<CR>
 nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 
+" Fzf Checkout
+" let g:fzf_checkout_track_key = 'ctrl-t'
+" let g:fzf_checkout_create_key = 'ctrl-n'
+" let g:fzf_checkout_delete_key = 'ctrl-d'
+
 " Vim bufkill
 " Usage: :BD -> delete buffer
 "        :BW -> wipe a file from the buffer
@@ -263,7 +305,7 @@ nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 " cru 	coerce to SNAKE_UPPERCASE
 " cr- 	coerce to dash-case
 
-let g:highlightedyank_highlight_duration = 200
+let g:highlightedyank_highlight_duration = 50
 
 " }}}
 
@@ -367,7 +409,8 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " Add (Neo)Vim's native statusline support.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set statusline^=%{coc#status()}
 
 " Mappings for CoCList
 " Show all diagnostics.

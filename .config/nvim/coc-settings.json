@@ -9,6 +9,7 @@
     "git.addedSign.hlGroup": [ "GruvboxGreenSign" ],
     "git.changedSign.text": "┃",
     "git.changedSign.hlGroup": [ "GruvboxAquaSign" ],
+    "git.enableGlobalStatus": false,
     "git.removedSign.text": "┏",
     "git.removedSign.hlGroup": [ "GruvboxRedSign" ],
     "git.topRemovedSign.text": "┗",
@@ -40,6 +41,10 @@
         "venv",
         "virtualenv"
     ],
+    "tsserver.formatOnType": true,
+    "tsserver.enable": true,
+    "typescript.format.enabled": true,
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
     "yaml.format.enable": true,
     "yaml.schemas": {
         "kubernetes": "*.yaml"
