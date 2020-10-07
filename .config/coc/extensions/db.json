@@ -50,6 +50,9 @@
     },
     "coc-angular": {
       "disabled": false
+    },
+    "coc-tslint": {
+      "disabled": false
     }
   },
   "lastUpdate": 1596442435174

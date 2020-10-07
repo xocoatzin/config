@@ -121,6 +121,12 @@ xnoremap x "+x
 xnoremap p "+p
 xnoremap P "+P
 
+command WQ wq
+command Wq wq
+command WA wa
+command Wa wa
+command W w
+command Q q
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -141,12 +147,14 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
+Plug 'AndrewRadev/linediff.vim'
 " Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Search and complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'stsewd/fzf-checkout.vim'
 Plug 'tpope/vim-abolish'
 " UI
 Plug 'qpkorr/vim-bufkill'
@@ -248,6 +256,11 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 map <C-P> :Files<CR>
 map <Leader>ag :Ag<CR>
 nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
+
+" Fzf checkout
+" let g:fzf_checkout_track_key = 'ctrl-t'
+" let g:fzf_checkout_create_key = 'ctrl-n'
+" let g:fzf_checkout_delete_key = 'ctrl-d'
 
 " Vim bufkill
 " Usage: :BD -> delete buffer
@@ -367,7 +380,10 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " Add (Neo)Vim's native statusline support.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+let airline#extensions#coc#error_symbol = ' '
+let airline#extensions#coc#warning_symbol = ' '
 
 " Mappings for CoCList
 " Show all diagnostics.
@@ -409,7 +425,7 @@ nnoremap <silent><nowait> <space>b  :<C-u>CocList bookmark<cr>
 "
 " Coc-snippets
 "
-let g:coc_snippet_next = '<leader>j'
+let g:coc_snippet_next = '<leader>m'
 let g:coc_snippet_prev = '<leader>k'
 
 " }}}
@@ -427,6 +443,11 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
+let g:gruvbox_hls_cursor = 'green'
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_sign_column = 'bg0'
+let g:gruvbox_improved_warnings = 1
+
 try
     colorscheme gruvbox
 catch
@@ -441,15 +462,15 @@ endif
 
 
 " Set git gutter colors (after config. colors so they don't get overwritten
-let g:gruvbox_invert_signs = 1
 highlight clear SignColumn
 highlight FoldColumn guifg=#e4e4e4
 highlight HighlightedyankRegion cterm=reverse gui=reverse
-highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
+" highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
 highlight link CocErrorSign GruvboxRed
 highlight link CocWarningSign GruvboxYellow
 highlight link CocInfoSign GruvboxBlue
 highlight link CocHintSign GruvboxGreen
+highlight! link Todo DiffDelete
 
 if has('nvim-0.1')
   set pumblend=15  " Transparent floating windows

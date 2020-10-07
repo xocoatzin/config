@@ -92,7 +92,7 @@ def text(events, now):
         nxt = next((e for e in events if now <= e['start']), None)
         if nxt:
             return join(
-                summary(nxt['summary']),
+                summary(nxt.get('summary', 'Untitled')),
                 gray('starting in'),
                 formatdd(now, nxt['start']),
                 location(nxt['location'])
@@ -108,7 +108,7 @@ def text(events, now):
             gray('Ends in'),
             formatdd(now, current['end']) + gray('.'),
             gray('and then'),
-            summary(nxt['summary']),
+            summary(nxt.get('summary', 'Untitled')),
             location(nxt['location'])
         )
 
@@ -116,7 +116,7 @@ def text(events, now):
         gray('Ends in'),
         formatdd(now, current['end']) + gray('.'),
         gray('and then'),
-        summary(nxt['summary']),
+        summary(nxt.get('summary', 'Untitled')),
         location(nxt['location']),
         gray('after a break of'),
         formatdd(current['end'], nxt['start'])
@@ -168,10 +168,10 @@ def main():
             orderBy='startTime'
         ).execute()
         events = events_result.get('items', [])
-        # __import__('pdb').set_trace()
+        #  __import__('pdb').set_trace()
         return [
             {
-                'summary': event['summary'],
+                'summary': event.get('summary', 'Untitled'),
                 'location': event.get('location', None),
                 'start': parse(event['start']['dateTime']),
                 'end': parse(event['end']['dateTime'])

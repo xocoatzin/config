@@ -262,8 +262,6 @@ bindsym $mod+r mode "resize"
 # It is called i3-gaps after all
 gaps inner 5
 gaps outer 5
-
-# It's rounded too lol
 border_radius 2
 
 # Bind volume keys
@@ -281,8 +279,16 @@ bindsym $mod+x exec i3lock -i /usr/share/backgrounds/warty-final-ubuntu.png -p w
 bindsym $mod+z floating enable; resize set 900 600; move position center
 
 # Remove borders for i3-gaps
-for_window [class=".*"] border pixel 0
+for_window [class=".*"] border pixel 5
 hide_edge_borders both
+
+# class                 border   backgr.  text     indicator child_border
+client.focused          #00897b  #c0ca33  #ffffff  #2e9ef4   #00897b  
+client.focused_inactive #546e7a  #546e7a  #888888  #292d2e   #546e7a
+client.urgent           #e53935  #e53935  #ffffff  #900000   #e53935
+client.unfocused        #333333  #333333  #888888  #292d2e   #333333
+client.placeholder      #8e24aa  #8e24aa  #ffffff  #000000   #8e24aa
+client.background       #ffffff
 
 # Rotate the vertical screen
 exec_always --no-startup-id  xrandr --output DP-0 --rotate left --mode 2560x1440 --pos 0x0 --output DP-2 --pos 1440x700 --output DP-4 --pos 4000x700 
@@ -295,7 +301,7 @@ bindsym $mod+p exec --no-startup-id feh --randomize --bg-fill $HOME/Pictures/Wal
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Launch compton
-exec_always --no-startup-id $HOME/.config/compton/launch.sh
+# exec_always --no-startup-id $HOME/.config/compton/launch.sh
 
 # system tray
 exec_always --no-startup-id nm-applet
