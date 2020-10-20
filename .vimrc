@@ -120,6 +120,8 @@ nnoremap x "+x
 xnoremap x "+x
 xnoremap p "+p
 xnoremap P "+P
+vnoremap p "_dp
+vnoremap P "_dP
 
 command WQ wq
 command Wq wq

@@ -14,3 +14,4 @@ set -gx PYTHONSTARTUP ~/.pythonrc
 #set -gx NPM_PACKAGES $HOME/.npm-packages
 #set -gx NODE_PATH "$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 #set -gx PATH "$NPM_PACKAGES/bin:$PATH"
+set -gx PATH "/ml/Users/MAGICLEAP/atorresgomez/bin:$PATH"

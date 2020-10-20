@@ -1,5 +1,6 @@
 {
-  "cSpell.userWords": ["noqa", "preemptible", "aiohttp", "kopf", "tmpfs", "datalabcfg", "DCLI", "kubernetes", "kube", "pytest"],
+  "cSpell.userWords": ["noqa", "preemptible", "aiohttp", "kopf", "tmpfs", "datalab", "datalabcfg", "DCLI", "kubernetes", "kube", "pytest"],
+  "cSpell.allowCompoundWords": true,
   "diagnostic.errorSign": "",
   "diagnostic.infoSign": "",
   "diagnostic.warningSign": "",
