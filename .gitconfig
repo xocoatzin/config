@@ -1,6 +1,7 @@
 [user]
 	email = atorresgomez@magicleap.com
 	name = Alan Torres
+	signingkey = 6CC7AA104F02ECBB
 [push]
 	default = current
 [alias]
@@ -23,3 +24,7 @@
     syntax-theme = Monokai Extended
 [interactive]
     diffFilter = delta --color-only
+[commit]
+	gpgsign = true
+[gpg]
+	program = gpg

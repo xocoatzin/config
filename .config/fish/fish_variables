@@ -6,7 +6,7 @@ SETUVAR _fish_abbr__3A_q:exit
 SETUVAR _fish_abbr_d:docker
 SETUVAR _fish_abbr_g:git
 SETUVAR _fish_abbr_ga:git\x20add
-SETUVAR _fish_abbr_gc:git\x20commit\x20\x2dm
+SETUVAR _fish_abbr_gc:git\x20commit\x20\x2dS\x20\x2dm
 SETUVAR _fish_abbr_gca:git\x20checkout\x20production\x20\x26\x26\x20git\x20pull\x3b\x20git\x20checkout\x20staging\x20\x26\x26\x20git\x20pull\x3b\x20git\x20checkout\x20development\x20\x26\x26\x20git\x20pull
 SETUVAR _fish_abbr_gcd:git\x20checkout\x20development\x20\x26\x26\x20git\x20pull
 SETUVAR _fish_abbr_gcn:git\x20checkout\x20\x2db

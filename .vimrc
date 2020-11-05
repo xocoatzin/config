@@ -17,7 +17,7 @@ set number
 set termguicolors
 set cursorline
 set clipboard=unnamedplus                        " Use system clipboard
-set foldmethod=indent                            " Enable folding
+" set foldmethod=indent                            " Enable folding
 set foldlevel=99
 set foldcolumn=1                                 " Add a bit extra margin to the left
 set diffopt+=vertical                            " Diff options
@@ -150,6 +150,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
 Plug 'AndrewRadev/linediff.vim'
+Plug 'nvim-treesitter/nvim-treesitter'
 " Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Search and complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -279,6 +280,33 @@ nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 " cr- 	coerce to dash-case
 
 let g:highlightedyank_highlight_duration = 200
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", 
+  highlight = {
+    enable = true,
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+    indent = {
+      enable = true
+    },
+    textobjects = {
+      enable = true 
+    },
+  },
+}
+EOF
+
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 
 " }}}
 
