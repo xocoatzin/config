@@ -1,0 +1,6 @@
+[user]
+	name = Alan Torres
+	email = atorresgomez@magicleap.com
+	signingkey = D81CEC3B92CB0851
+[gpg]
+	program = gpg

@@ -131,6 +131,7 @@ xnoremap P "+P
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 call plug#begin('~/.vim/plugged')
 
+Plug 'nvim-treesitter/nvim-treesitter'
 " Typescript
 " Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
@@ -141,6 +142,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
+Plug 'axiaoxin/vim-json-line-format'
 " Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Search and complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -153,6 +155,7 @@ Plug 'tpope/vim-abolish'
 Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
 Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': ':UpdateRemotePlugins'}
+" Plug 'wfxr/minimap.vim'
 " Plug 'scrooloose/nerdtree'
 " Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'nelstrom/vim-visual-star-search'  " Use * to search for text selected in visual mode
@@ -306,6 +309,40 @@ nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 " cr- 	coerce to dash-case
 
 let g:highlightedyank_highlight_duration = 50
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", 
+  highlight = {
+    enable = true,
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+    indent = {
+      enable = true
+    },
+    textobjects = {
+      enable = true 
+    },
+  },
+}
+EOF
+
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+
+" echo nvim_treesitter#statusline(90)  " 90 can be any length
+" module->expression_statement->call->identifier
+
+" Json Lines:
+" use <leader>pj to show formated json by print it,
+" use <leader>wj could change the text to formatted json
 
 " }}}
 
@@ -471,6 +508,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
+    " let g:gruvbox_invert_signs = 1
     colorscheme gruvbox
 catch
 endtry
@@ -484,7 +522,6 @@ endif
 
 
 " Set git gutter colors (after config. colors so they don't get overwritten
-let g:gruvbox_invert_signs = 1
 highlight clear SignColumn
 highlight FoldColumn guifg=#e4e4e4
 highlight HighlightedyankRegion cterm=reverse gui=reverse
@@ -565,7 +602,7 @@ endfun
 
 augroup GroupCleanSpaces
     autocmd!
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.json,*.html :call CleanExtraSpaces()
+    autocmd BufWritePre *.c,*cpp,*.h,*.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.json,*.html :call CleanExtraSpaces()
 augroup END
 
 " Auto Formatting
