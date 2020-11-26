@@ -67,6 +67,10 @@ set ai                                           " Auto indent
 set si                                           " Smart indent
 set wrap                                         " Wrap lines
 
+" Search for .vimrc files in the project's directory
+set exrc
+set secure
+
 " Spell checking
 set spelllang=en_us
 map <leader>ss :setlocal spell!<cr> " Pressing ,ss will toggle and untoggle spell checking
@@ -150,8 +154,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
 Plug 'tpope/vim-abolish'
 " UI
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
 Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': ':UpdateRemotePlugins'}
@@ -159,7 +165,6 @@ Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': ':UpdateRemotePlugins'}
 " Plug 'scrooloose/nerdtree'
 " Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'nelstrom/vim-visual-star-search'  " Use * to search for text selected in visual mode
-Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tmhedberg/SimpylFold'
@@ -307,8 +312,6 @@ nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 " crs (also cr_) 	coerce to snake_case
 " cru 	coerce to SNAKE_UPPERCASE
 " cr- 	coerce to dash-case
-
-let g:highlightedyank_highlight_duration = 50
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
@@ -524,8 +527,7 @@ endif
 " Set git gutter colors (after config. colors so they don't get overwritten
 highlight clear SignColumn
 highlight FoldColumn guifg=#e4e4e4
-highlight HighlightedyankRegion cterm=reverse gui=reverse
-highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
+" highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
 highlight link CocErrorSign GruvboxRed
 highlight link CocWarningSign GruvboxYellow
 highlight link CocInfoSign GruvboxBlue

@@ -49,6 +49,7 @@
     "yaml.schemas": {
         "kubernetes": "*.yaml"
     },
+    "yank.highlight.duration": 100,
     "languageserver": {
         "ccls": {
             "command": "ccls",
