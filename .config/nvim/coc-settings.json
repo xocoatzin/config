@@ -38,6 +38,7 @@
     "venv",
     "virtualenv"
   ],
+  "yank.highlight.duration": 50,
   "tsserver.formatOnType": true,
   "tsserver.enable": true,
   "typescript.format.enabled": true,
