@@ -165,17 +165,21 @@ Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-media-files.nvim'
 " Plug 'wfxr/minimap.vim'
 " Plug 'scrooloose/nerdtree'
 " Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'nelstrom/vim-visual-star-search'  " Use * to search for text selected in visual mode
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+Plug 'akinsho/nvim-bufferline.lua'
 Plug 'tmhedberg/SimpylFold'
 Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes'
-Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
+" Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
+Plug 'kyazdani42/nvim-web-devicons'
 
 " Initialize plugin system
 call plug#end()
@@ -303,6 +307,9 @@ nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 " let g:fzf_checkout_create_key = 'ctrl-n'
 " let g:fzf_checkout_delete_key = 'ctrl-d'
 
+nmap <Leader>j :cnext<CR>
+nmap <Leader>k :cprevious<CR>
+
 " Vim bufkill
 " Usage: :BD -> delete buffer
 "        :BW -> wipe a file from the buffer
@@ -316,30 +323,6 @@ nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 " crs (also cr_) 	coerce to snake_case
 " cru 	coerce to SNAKE_UPPERCASE
 " cr- 	coerce to dash-case
-
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", 
-  highlight = {
-    enable = true,
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
-    indent = {
-      enable = true
-    },
-    textobjects = {
-      enable = true 
-    },
-  },
-}
-EOF
 
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
@@ -581,21 +564,12 @@ vmap < <gv
 vmap > >gv
 
 " Move a line of text using Shift+[jk]
-if has('macunix')
-    nnoremap ∆ :m .+1<CR>==
-    nnoremap ˚ :m .-2<CR>==
-    inoremap ∆ <Esc>:m .+1<CR>==gi
-    inoremap ˚ <Esc>:m .-2<CR>==gi
-    vnoremap ∆ :m '>+1<CR>gv=gv
-    vnoremap ˚ :m '<-2<CR>gv=gv
-else
-    nnoremap <A-j> :m .+1<CR>==
-    nnoremap <A-k> :m .-2<CR>==
-    inoremap <A-j> <Esc>:m .+1<CR>==gi
-    inoremap <A-k> <Esc>:m .-2<CR>==gi
-    vnoremap <A-j> :m '>+1<CR>gv=gv
-    vnoremap <A-k> :m '<-2<CR>gv=gv
-endif
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Delete trailing white space on save, useful for some filetypes ;)
 fun! CleanExtraSpaces()

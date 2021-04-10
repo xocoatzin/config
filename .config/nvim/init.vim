@@ -6,3 +6,9 @@ let &packpath = &runtimepath
 
 source ~/.vimrc
 
+lua << EOF
+require("statusline.lua")
+require("bufferline.lua")
+require("treesitter.lua")
+--require("telescope-nvim.lua")
+EOF
