@@ -13,7 +13,14 @@ set path+=**                                     " Search down into subfolders, 
 set history=500                                  " Sets how many lines of history VIM has to remember
 set mouse=a                                      " Enable mouse support (resize splits, select in visual mode, etc)
 set autoread                                     " Set to auto read when a file is changed from the outside
-set number
+
+set number relativenumber
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
 set termguicolors
 set cursorline
 set clipboard=unnamedplus                        " Use system clipboard
@@ -51,8 +58,9 @@ set signcolumn=yes:2                             " Draw always
 
 " Backups and undoing
 set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupdir=/tmp
 set backupskip=/tmp/*,/private/tmp/*
+set backupcopy=yes
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
 
@@ -136,6 +144,8 @@ xnoremap P "+P
 call plug#begin('~/.vim/plugged')
 
 Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'stsewd/sphinx.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'towolf/vim-helm' 
 " Typescript
 " Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
@@ -161,14 +171,14 @@ Plug 'tpope/vim-abolish'
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
-Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-media-files.nvim'
 " Plug 'wfxr/minimap.vim'
-" Plug 'scrooloose/nerdtree'
-" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'scrooloose/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'nelstrom/vim-visual-star-search'  " Use * to search for text selected in visual mode
 " Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
@@ -194,20 +204,20 @@ call plug#end()
 let g:NERDSpaceDelims = 1  " Add a space after the command markers
 
 " Ignore files in NERDTree
-" let g:NERDTreeIgnore=['\.pyc$', '\~$']
-" let g:NERDTreeDirArrowExpandable = ''
-" let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeIgnore=['\.pyc$', '\~$']
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 
-" let g:webdevicons_conceal_nerdtree_brackets = 1
-" let g:WebDevIconsUnicodeDecorateFolderNodes = 0
+let g:webdevicons_conceal_nerdtree_brackets = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 0
 
-" " Close VIM if NT is the only window open
-" augroup GroupNerd
-    " autocmd!
-    " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" augroup END
-" " Toggle NerdTree
-" map <C-N> :NERDTreeToggle<CR>
+" Close VIM if NT is the only window open
+augroup GroupNerd
+    autocmd!
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
+" Toggle NerdTree
+map <C-N> :NERDTreeToggle<CR>
 
 " ChadTree
 "
@@ -242,7 +252,7 @@ let g:NERDSpaceDelims = 1  " Add a space after the command markers
 " | toggle_version_control | toggle version control on / off                                                   |                          |
 " | bigger                 | increase chad size                                                                | +, =                     |
 " | smaller                | decrease chad size                                                                | -, _                     |
-nnoremap <C-N> <cmd>CHADopen<cr>
+" nnoremap <C-N> <cmd>CHADopen<cr>
 
 let g:airline_powerline_fonts = 1
 let g:airline_left_sep = ''
@@ -586,9 +596,9 @@ augroup GroupCleanSpaces
 augroup END
 
 " Auto Formatting
-command! PrettyJSON4 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4))"
-command! PrettyJSON2 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2))"
-command! PrettyJSON4S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4, sort_keys=True))"
-command! PrettyJSON2S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2, sort_keys=True))"
+" command! PrettyJSON4 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4))"
+" command! PrettyJSON2 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2))"
+" command! PrettyJSON4S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4, sort_keys=True))"
+" command! PrettyJSON2S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2, sort_keys=True))"
 
 " }}}

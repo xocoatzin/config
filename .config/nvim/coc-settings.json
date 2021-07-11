@@ -1,5 +1,34 @@
 {
-  "cSpell.userWords": ["noqa"],
+  "coc.preferences.rootPatterns":[
+    ".git",
+    "setup.py"
+  ],
+  "cSpell.userWords": [
+    "struct",
+    "noqa",
+    "preemptible",
+    "aiohttp",
+    "kopf",
+    "tmpfs",
+    "datalab",
+    "datalabcfg",
+    "DCLI",
+    "kubernetes",
+    "kube",
+    "fnmatch",
+    "dateutil",
+    "protobuf",
+    "proto",
+    "uploader",
+    "issubset",
+    "itertools",
+    "nargs",
+    "ojson",
+    "ojsonl",
+    "grpc",
+    "pytest"
+  ],
+  "cSpell.allowCompoundWords": true,
   "diagnostic.errorSign": "",
   "diagnostic.infoSign": "",
   "diagnostic.warningSign": "",
@@ -22,20 +51,11 @@
     "py36"
   ],
   "python.formatting.provider": "black",
-  "python.jediPath": "/Library/Frameworks/Python.framework/Versions/3.8//lib/python3.8/site-packages/",
   "python.linting.flake8Enabled": true,
   "python.linting.ignorePatterns": [".venv*", "**/site-packages/**/*.py"],
   "python.linting.mypyEnabled": true,
   "python.linting.pydocstyleEnabled": true,
-  "python.venvFolders": [
-    ".venv3",
-    ".venv36",
-    ".venv37",
-    ".env",
-    ".venv",
-    "venv",
-    "virtualenv"
-  ],
+  "python.venvPath": "${env:HOME}/.virtualenvs",
   "suggest.completionItemKindLabels": {
     "keyword": "\uf1de",
     "variable": "\ue79b",
@@ -71,7 +91,11 @@
   "yaml.schemas": {
     "kubernetes": "*.yaml"
   },
-  "yank.highlight.duration": 100,
+  "yank.highlight.duration": 50,
+  "yaml.format.enable": true,
+  "yaml.schemas": {
+    "kubernetes": "*.yaml"
+  },
   "languageserver": {
     "ccls": {
       "command": "ccls",

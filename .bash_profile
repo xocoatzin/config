@@ -20,3 +20,4 @@ if [ -f '/Users/atorresgomez/google-cloud-sdk/path.bash.inc' ]; then source '/Us
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/atorresgomez/google-cloud-sdk/completion.bash.inc' ]; then source '/Users/atorresgomez/google-cloud-sdk/completion.bash.inc'; fi
+. "$HOME/.cargo/env"

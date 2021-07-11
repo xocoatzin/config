@@ -12,3 +12,5 @@ require("bufferline.lua")
 require("treesitter.lua")
 --require("telescope-nvim.lua")
 EOF
+
+set guifont=FiraCode\ Nerd\ Font:h14
