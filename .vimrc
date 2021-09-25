@@ -158,7 +158,8 @@ Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
 Plug 'axiaoxin/vim-json-line-format'
 Plug 'flwyd/vim-conjoin'
-" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
+
 " Search and complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-fugitive'
@@ -188,8 +189,12 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes'
+Plug 'pwntester/octo.nvim'
 " Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
 Plug 'kyazdani42/nvim-web-devicons'
+
+" Instant markdown
+let g:instant_markdown_autostart = 0
 
 " Initialize plugin system
 call plug#end()
