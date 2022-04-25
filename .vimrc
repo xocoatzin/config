@@ -13,7 +13,14 @@ set path+=**                                     " Search down into subfolders, 
 set history=500                                  " Sets how many lines of history VIM has to remember
 set mouse=a                                      " Enable mouse support (resize splits, select in visual mode, etc)
 set autoread                                     " Set to auto read when a file is changed from the outside
-set number
+
+set number relativenumber
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
 set termguicolors
 set cursorline
 set clipboard=unnamedplus                        " Use system clipboard
@@ -150,7 +157,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
 Plug 'AndrewRadev/linediff.vim'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 " Search and complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -160,6 +167,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'tpope/vim-abolish'
 " UI
+Plug 'ojroques/vim-oscyank'
 Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
 Plug 'scrooloose/nerdtree'
@@ -176,6 +184,9 @@ Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last on
 
 " Initialize plugin system
 call plug#end()
+
+" Yank to host
+vnoremap <leader>c :OSCYank<CR>
 
 " Vim Abolish
 " Usage: :Subvert/address{,es}/reference{,s}/g
@@ -259,6 +270,15 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 map <C-P> :Files<CR>
 map <Leader>ag :Ag<CR>
 nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
+" Default options are --nogroup --column --color
+let s:ag_options = ' --hidden '
+command! -bang -nargs=* Ag
+      \ call fzf#vim#ag(
+      \   <q-args>,
+      \   s:ag_options,
+      \  fzf#vim#with_preview('right:50%'),
+      \   <bang>0
+      \ )
 
 " Fzf checkout
 " let g:fzf_checkout_track_key = 'ctrl-t'
@@ -490,6 +510,12 @@ if has("termguicolors")
     set termguicolors
 endif
 
+augroup vimrc_todo
+    au!
+    au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX):/
+          \ containedin=.*Comment,vimCommentTitle
+augroup END
+highlight def link MyTodo Todo
 
 " Set git gutter colors (after config. colors so they don't get overwritten
 highlight clear SignColumn
