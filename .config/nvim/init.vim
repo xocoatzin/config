@@ -1,8 +1,10 @@
-set runtimepath^=/.vim runtimepath+=~/.vim/after
-
 let g:python3_host_prog = '~/.venv/nvim/bin/python3'
 
 let &packpath = &runtimepath
+
+lua << EOF
+require('config')
+EOF
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -14,91 +16,26 @@ filetype plugin on " Enable filetype plugins
 filetype indent on
 filetype on
 
-set nocompatible
-set path+=**                                     " Search down into subfolders, with auto-complete
-set history=500                                  " Sets how many lines of history VIM has to remember
-set mouse=a                                      " Enable mouse support (resize splits, select in visual mode, etc)
-set autoread                                     " Set to auto read when a file is changed from the outside
-
-set number relativenumber
+set number
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
-set termguicolors
-set cursorline
-set clipboard=unnamedplus                        " Use system clipboard
-set foldmethod=indent                            " Enable folding
-set foldlevel=99
-set foldcolumn=1                                 " Add a bit extra margin to the left
-set diffopt+=vertical                            " Diff options
-set ruler                                        " Always show current position
-set cmdheight=1                                  " Height of the command bar
-set hid                                          " A buffer becomes hidden when it is abandoned
-set backspace=eol,start,indent                   " Configure backspace so it acts as it should act
-set whichwrap+=<,>,h,l
-set so=7                                         " Set 7 lines to the cursor - when moving vertically using j/k
-set wildmenu                                     " Turn on the WiLd menu
-set wildignore=*.o,*~,*.pyc,*/.git/*,*/.DS_Store " Ignore compiled files
-set ignorecase                                   " Ignore case when searching
-set smartcase                                    " When searching try to be smart about cases
-set hlsearch                                     " Highlight search results
-set incsearch                                    " Makes search act like search in modern browsers
-set inccommand=nosplit                           " Preview replacements
-set lazyredraw                                   " Don't redraw while executing macros (good performance config)
-set magic                                        " For regular expressions turn magic on
-set showmatch                                    " Show matching brackets when text indicator is over them
-set mat=2                                        " How many tenths of a second to blink when matching brackets
-set noerrorbells                                 " No annoying sound on errors
-set novisualbell
-set t_vb=
-set tm=500
-set encoding=utf8                                " Set utf8 as standard encoding
-set langmenu=en                                  " en_US as the standard language
-set ffs=unix,dos,mac                             " Use Unix as the standard file type
-set updatetime=50                                " Time to wait before write swap file to disk
-set shortmess+=c                                 " Don't pass messages to |ins-completion-menu|.
-set signcolumn=yes:2                             " Draw always
 
-" Backups and undoing
-set backup
-set backupdir=/tmp
-set backupskip=/tmp/*,/private/tmp/*
-set backupcopy=yes
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set writebackup
-
-" Text, tab and indent related
-set expandtab                                    " Use spaces instead of tabs
-set smarttab                                     " Be smart when using tabs ;)
-set shiftwidth=4                                 " 1 tab == 4 spaces
-set tabstop=4
-set lbr                                          " Linebreak on 500 characters
-set tw=500
-set ai                                           " Auto indent
-set si                                           " Smart indent
-set wrap                                         " Wrap lines
-
-" Search for .vimrc files in the project's directory
-set exrc
-set secure
 
 " Spell checking
-set spelllang=en_us
-map <leader>ss :setlocal spell!<cr> " Pressing ,ss will toggle and untoggle spell checking
-map <leader>sn ]s " Next error
-map <leader>sp [s " Prev error
-map <leader>sa zg " Add to dictionary
-map <leader>s? z= " Show suggestions
-inoremap <C-f> <c-g>u<Esc>[s1z=`]a<c-g>u " Correct last error
+" map <leader>ss :setlocal spell!<cr> " Pressing ,ss will toggle and untoggle spell checking
+" map <leader>sn ]s " Next error
+" map <leader>sp [s " Prev error
+" map <leader>sa zg " Add to dictionary
+" map <leader>s? z= " Show suggestions
+" inoremap <C-f> <c-g>u<Esc>[s1z=`]a<c-g>u " Correct last error
 
 " Enable folding with the spacebar
 " nnoremap <space> za
 
-set showbreak=↪\
-set listchars=tab:»\ ,eol:¬,nbsp:␣,space:·,trail:•,extends:→,precedes:← " Non printable chars
 
 " Shortcut for vimrc and auto source on save.
 command! VimConfig :tabe ~/.config/nvim/init.vim
@@ -121,6 +58,8 @@ endif
 " Alias for commands
 cnoreabbrev Q q
 cnoreabbrev W w
+cnoreabbrev Wa wa
+cnoreabbrev Vs vs
 
 " Delete, not cut
 " https://stackoverflow.com/a/11993928/575085
@@ -158,13 +97,14 @@ Plug 'towolf/vim-helm'
 " Text Utils
 Plug 'tpope/vim-sleuth'
 Plug 'machakann/vim-sandwich'
-Plug 'scrooloose/nerdcommenter'
+Plug 'numToStr/Comment.nvim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-easy-align'
 Plug 'axiaoxin/vim-json-line-format'
 Plug 'flwyd/vim-conjoin'
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Search and complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -175,7 +115,7 @@ Plug 'stsewd/fzf-checkout.vim'
 " Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/rpc' }
 Plug 'tpope/vim-abolish'
 " UI
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+" Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'qpkorr/vim-bufkill'
 Plug 'psliwka/vim-smoothie'
 " Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
@@ -187,6 +127,7 @@ Plug 'nvim-telescope/telescope-media-files.nvim'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'nelstrom/vim-visual-star-search'  " Use * to search for text selected in visual mode
+Plug 'luukvbaal/stabilize.nvim'
 " Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
@@ -195,7 +136,10 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes'
-Plug 'pwntester/octo.nvim'
+"Plug 'pwntester/octo.nvim'
+Plug 'romgrk/nvim-treesitter-context'
+Plug 'github/copilot.vim'
+Plug 'ggandor/lightspeed.nvim'
 " Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
 Plug 'kyazdani42/nvim-web-devicons'
 
@@ -205,14 +149,21 @@ let g:instant_markdown_autostart = 0
 " Initialize plugin system
 call plug#end()
 
+" Lightspeed
+
+nmap <leader>s <Plug>Lightspeed_s
+nmap <leader>S <Plug>Lightspeed_S
+
+
+" Copilot, accept with C-J
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
+
 " Vim Abolish
 " Usage: :Subvert/address{,es}/reference{,s}/g
 "        :Subvert/blog{,s}/post{,s}/g
 "        :Subvert/child{,ren}/adult{,s}/g
 "        :Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or}  {despe,sepa}rat{}
-
-" NerdCommenter
-let g:NERDSpaceDelims = 1  " Add a space after the command markers
 
 " Ignore files in NERDTree
 let g:NERDTreeIgnore=['\.pyc$', '\~$']
@@ -510,26 +461,12 @@ let g:coc_snippet_prev = '<leader>k'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 " Enable syntax highlighting
 syntax enable
-set fillchars+=vert:│
-set background=dark
-
-" Enable 256 colors palette in Gnome Terminal
-if $COLORTERM == 'gnome-terminal'
-    set t_Co=256
-endif
 
 try
     " let g:gruvbox_invert_signs = 1
     colorscheme gruvbox
 catch
 endtry
-
-" set true colors
-if has("termguicolors")
-    set t_8f=[38;2;%lu;%lu;%lum
-    set t_8b=[48;2;%lu;%lu;%lum
-    set termguicolors
-endif
 
 
 " Set git gutter colors (after config. colors so they don't get overwritten
@@ -540,11 +477,8 @@ highlight link CocErrorSign GruvboxRed
 highlight link CocWarningSign GruvboxYellow
 highlight link CocInfoSign GruvboxBlue
 highlight link CocHintSign GruvboxGreen
-
-if has('nvim-0.1')
-  set pumblend=15  " Transparent floating windows
-  highlight PmenuSel blend=0
-endif
+highlight PmenuSel blend=0
+highlight link IndentBlanklineContextChar GruvboxYellow
 " }}}
 
 
@@ -560,12 +494,6 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Specify the behavior when switching between buffers
-try
-  set switchbuf=useopen,usetab,newtab
-  set stal=2
-catch
-endtry
 
 " Return to last edit position when opening files
 augroup GroupGoback
@@ -573,6 +501,15 @@ augroup GroupGoback
     autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 augroup END
 " }}}
+
+function! ResizeWindows()
+    let savetab = tabpagenr()
+    tabdo wincmd =
+    execute 'tabnext' savetab
+endfunction
+augroup GroupVimResized
+    autocmd VimResized * call ResizeWindows()
+augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -603,21 +540,13 @@ endfun
 
 augroup GroupCleanSpaces
     autocmd!
-    autocmd BufWritePre *.c,*cpp,*.h,*.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.json,*.html :call CleanExtraSpaces()
+    autocmd BufWritePre *.lua,*.c,*cpp,*.h,*.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.json,*.html :call CleanExtraSpaces()
 augroup END
 
-" Auto Formatting
-" command! PrettyJSON4 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4))"
-" command! PrettyJSON2 %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2))"
-" command! PrettyJSON4S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=4, sort_keys=True))"
-" command! PrettyJSON2S %!python -c "import json, sys, collections; print(json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2, sort_keys=True))"
-
-" }}}
-"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 lua << EOF
-require("plugins.lua")
+require("plugins.setup")
 
 -- Use faster grep alternatives if possible
 if vim.fn.executable "rg" > 0 then
@@ -628,6 +557,11 @@ elseif vim.fn.executable "ag" > 0 then
   vim.opt.grepformat = vim.opt.grepformat ^ { "%f:%l:%c:%m" }
 end
 
+
+-- Search for .vimrc files in the project's directory
+-- vim.o.exrc=true
+-- Disable shell and write commands
+vim.o.secure=true
+
 EOF
 
-set guifont=FiraCode\ Nerd\ Font:h14
