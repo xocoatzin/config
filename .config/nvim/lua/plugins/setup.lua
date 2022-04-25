@@ -1,0 +1,8 @@
+require("plugins.statusline")
+require("plugins.bufferline")
+require("plugins.treesitter")
+require("plugins.telescope")
+--require("plugins.octo")
+require("plugins.indent_blankline")
+require("plugins.stabilize")
+require("plugins.comment")
