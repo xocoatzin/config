@@ -13,11 +13,21 @@ if len(sys.argv) >= 2:
 if not lines and not 17 <= datetime.datetime.now().hour < 19:
     exit(1)
 
-data = json.loads(subprocess.check_output([
-    'curl',
-    '-s',
-    'http://transport.opendata.ch/v1/connections?from=8503006&to=8503610&limit=4&via=8503020'  # noqa
-]).decode())
+kappeli = '8591222'
+altstetten = '8503001'
+oerlikon = '8503006'
+
+connections = []
+for dest in (altstetten, kappeli):
+    dest_data = json.loads(subprocess.check_output([
+        'curl',
+        '-s',
+        'http://transport.opendata.ch/v1/connections?from={from_}&to={dest}&limit=4'.format( # noqa
+            from_=oerlikon,
+            dest=dest,
+        )
+    ]).decode())
+    connections += dest_data.get("connections", [])
 
 info = [
     (
@@ -25,18 +35,20 @@ info = [
         connection.get('from', {}).get('platform', ''),
         connection.get('duration', ''),
         connection.get('products', ''),
+        " ".join(connection.get('sections', [])[0].get('arrival', {}).get('location', {}).get('name', '').split()[1:])
     )
-    for connection in data.get('connections', [])
+    for connection in sorted(connections, key=lambda x: x['from']['departure'])
 ]
 
 records = [
-    "{} ({} min) {} Pl {}".format(
+    "{} ({} min) {} Pl {} - Via {}".format(
         t[11:16],
         d[6:8],
         "/".join(c),
         p,
+        via,
     )
-    for t, p, d, c in info
+    for t, p, d, c, via in info
 ]
 
 if lines:

@@ -1,27 +1,34 @@
 {
+  "coc.preferences.rootPatterns":[
+    ".git",
+    "setup.py"
+  ],
   "cSpell.userWords": [
-    "noqa",
-    "preemptible",
+    "DCLI",
     "aiohttp",
-    "kopf",
-    "tmpfs",
     "datalab",
     "datalabcfg",
-    "DCLI",
-    "kubernetes",
-    "kube",
-    "fnmatch",
     "dateutil",
-    "protobuf",
-    "proto",
-    "uploader",
+    "fnmatch",
+    "grpc",
     "issubset",
     "itertools",
+    "kopf",
+    "kube",
+    "kubernetes",
     "nargs",
+    "noqa",
     "ojson",
     "ojsonl",
-    "grpc",
-    "pytest"
+    "preemptible",
+    "proto",
+    "protobuf",
+    "pytest",
+    "struct",
+    "tmpfs",
+    "uploader",
+    "virtualenv",
+    "venv"
   ],
   "cSpell.allowCompoundWords": true,
   "diagnostic.errorSign": "",
@@ -47,11 +54,11 @@
   ],
   "python.formatting.provider": "black",
   "python.jediEnabled": false,
-  "python.jediPath": "~/venv/nvim/lib/python3.8/site-packages/",
   "python.linting.flake8Enabled": true,
   "python.linting.ignorePatterns": [".venv*", "**/site-packages/**/*.py"],
   "python.linting.mypyEnabled": true,
   "python.linting.pydocstyleEnabled": true,
+  "python.venvPath": "${env:HOME}/.virtualenvs",
   "python.venvFolders": [
     ".venv3",
     ".venv36",
@@ -96,5 +103,21 @@
   "yaml.format.enable": true,
   "yaml.schemas": {
     "kubernetes": "*.yaml"
+  },
+  "yaml.format.enable": true,
+  "yaml.schemas": {
+    "kubernetes": "*.yaml"
+  },
+  "languageserver": {
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/"],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
+        }
+      }
+    }
   }
 }

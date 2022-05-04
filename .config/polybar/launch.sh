@@ -13,7 +13,7 @@ if type "xrandr"; then
         # MONITOR=$m polybar --reload top &
         MONITOR=$m polybar --reload bottom &
     done
-    MONITOR=DP-0 polybar --reload top &
+    MONITOR=DP-4 polybar --reload top &
 else
     polybar --reload main &
     #polybar --reload bottom &
