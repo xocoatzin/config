@@ -276,7 +276,7 @@ border_radius 2
 bindsym $mod+x exec i3lock -i /usr/share/backgrounds/warty-final-ubuntu.png -p win
 
 # Zen-ify windows by floating and resizing them
-bindsym $mod+z floating enable; resize set 900 600; move position center
+# bindsym $mod+z floating enable; resize set 900 600; move position center
 
 # Remove borders for i3-gaps
 for_window [class=".*"] border pixel 5
