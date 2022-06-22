@@ -2,9 +2,14 @@ let g:python3_host_prog = '~/.venv/nvim/bin/python3'
 
 let &packpath = &runtimepath
 
-lua << EOF
-require('config')
-EOF
+augroup packer_user_config
+  autocmd!
+  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+augroup end
+
+lua require('plugins')
+lua require('config')
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -84,70 +89,12 @@ xnoremap P "+P
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 
-" Install vim plug with:
-" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-call plug#begin('~/.vim/plugged')
+nnoremap <C-p> <cmd>Telescope find_files<cr>
+nnoremap <leader>ft <cmd>Telescope<cr>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
 
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'stsewd/sphinx.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'towolf/vim-helm' 
-" Typescript
-" Plug 'HerringtonDarkholme/yats.vim'
-" Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
-" Text Utils
-Plug 'tpope/vim-sleuth'
-Plug 'machakann/vim-sandwich'
-Plug 'numToStr/Comment.nvim'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'junegunn/vim-easy-align'
-Plug 'axiaoxin/vim-json-line-format'
-Plug 'flwyd/vim-conjoin'
-Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
-Plug 'lukas-reineke/indent-blankline.nvim'
-
-" Search and complete
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'stsewd/fzf-checkout.vim'
-" Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/rpc' }
-Plug 'tpope/vim-abolish'
-" UI
-" Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-Plug 'qpkorr/vim-bufkill'
-Plug 'psliwka/vim-smoothie'
-" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-media-files.nvim'
-" Plug 'wfxr/minimap.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'nelstrom/vim-visual-star-search'  " Use * to search for text selected in visual mode
-Plug 'luukvbaal/stabilize.nvim'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
-Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
-Plug 'akinsho/nvim-bufferline.lua'
-Plug 'tmhedberg/SimpylFold'
-Plug 'kshenoy/vim-signature'
-Plug 'mbbill/undotree'
-Plug 'flazz/vim-colorschemes'
-"Plug 'pwntester/octo.nvim'
-Plug 'romgrk/nvim-treesitter-context'
-Plug 'github/copilot.vim'
-Plug 'ggandor/lightspeed.nvim'
-" Plug 'ryanoasis/vim-devicons' " Always load the vim-devicons as the very last one.
-Plug 'kyazdani42/nvim-web-devicons'
-
-" Instant markdown
-let g:instant_markdown_autostart = 0
-
-" Initialize plugin system
-call plug#end()
 
 " Lightspeed
 
@@ -268,11 +215,11 @@ nmap ga <Plug>(EasyAlign)
 " CTRL-T -> Open in tab 
 " CTRL-X -> Open in split
 " CTRL-V -> Open in vertical split
-let $FZF_DEFAULT_COMMAND='ag -l --nocolor --hidden -g ""'
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-map <C-P> :Files<CR>
-map <Leader>ag :Ag<CR>
-nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
+"let $FZF_DEFAULT_COMMAND='ag -l --nocolor --hidden -g ""'
+"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
+"map <C-P> :Files<CR>
+"map <Leader>ag :Ag<CR>
+"nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
 
 " Fzf Checkout
 " let g:fzf_checkout_track_key = 'ctrl-t'
@@ -411,6 +358,9 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 set statusline^=%{coc#status()}
 
+" Global statusline
+set laststatus=3
+
 " Mappings for CoCList
 " Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
@@ -464,6 +414,7 @@ syntax enable
 
 try
     " let g:gruvbox_invert_signs = 1
+    " let g:gruvbox_material_foreground = "original" " or material, or mix"
     colorscheme gruvbox
 catch
 endtry
@@ -479,6 +430,18 @@ highlight link CocInfoSign GruvboxBlue
 highlight link CocHintSign GruvboxGreen
 highlight PmenuSel blend=0
 highlight link IndentBlanklineContextChar GruvboxYellow
+
+
+
+" highlight link TelescopeBorder GruvboxYellow
+" highlight link TelescopePromptBorder GruvboxYellow
+" highlight TelescopePromptNormal guibg=#222222
+" highlight link TelescopePromptPrefix
+" highlight TelescopeNormal guibg=#333333
+" highlight link TelescopePreviewTitle
+" highlight link TelescopePromptTitle
+" highlight link TelescopeResultsTitle
+" highlight link TelescopeSelection
 " }}}
 
 
@@ -546,7 +509,7 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 lua << EOF
-require("plugins.setup")
+-- require("plugins.setup")
 
 -- Use faster grep alternatives if possible
 if vim.fn.executable "rg" > 0 then
@@ -564,4 +527,3 @@ end
 vim.o.secure=true
 
 EOF
-
