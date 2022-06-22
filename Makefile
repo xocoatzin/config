@@ -3,7 +3,7 @@
 	# @stow -D ${folder} && stow ${folder}
 	# 
 	#
-SUBDIRS = nvim
+SUBDIRS = nvim ag python
 
 .PHONY: all $(SUBDIRS)
 
