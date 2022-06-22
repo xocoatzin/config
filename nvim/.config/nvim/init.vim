@@ -90,10 +90,12 @@ xnoremap P "+P
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 
 nnoremap <C-p> <cmd>Telescope find_files<cr>
-nnoremap <leader>ft <cmd>Telescope<cr>
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>tt <cmd>Telescope<cr>
+nnoremap <leader>tg <cmd>Telescope live_grep<cr>
+nnoremap <leader>tl <cmd>Telescope frecency<cr>
+nnoremap <leader>tb <cmd>Telescope buffers<cr>
+nnoremap <leader>tf <cmd>Telescope file_browser<cr>
+" nnoremap <leader>tf <cmd>Telescope find_files<cr>
 
 
 " Lightspeed
@@ -412,37 +414,21 @@ let g:coc_snippet_prev = '<leader>k'
 " Enable syntax highlighting
 syntax enable
 
-try
-    " let g:gruvbox_invert_signs = 1
-    " let g:gruvbox_material_foreground = "original" " or material, or mix"
-    colorscheme gruvbox
-catch
-endtry
 
 
 " Set git gutter colors (after config. colors so they don't get overwritten
 highlight clear SignColumn
 highlight FoldColumn guifg=#e4e4e4
 " highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
-highlight link CocErrorSign GruvboxRed
-highlight link CocWarningSign GruvboxYellow
-highlight link CocInfoSign GruvboxBlue
-highlight link CocHintSign GruvboxGreen
+" highlight link CocErrorSign GruvboxRed
+" highlight link CocWarningSign GruvboxYellow
+" highlight link CocInfoSign GruvboxBlue
+" highlight link CocHintSign GruvboxGreen
 highlight PmenuSel blend=0
 highlight link IndentBlanklineContextChar GruvboxYellow
 
 
 
-" highlight link TelescopeBorder GruvboxYellow
-" highlight link TelescopePromptBorder GruvboxYellow
-" highlight TelescopePromptNormal guibg=#222222
-" highlight link TelescopePromptPrefix
-" highlight TelescopeNormal guibg=#333333
-" highlight link TelescopePreviewTitle
-" highlight link TelescopePromptTitle
-" highlight link TelescopeResultsTitle
-" highlight link TelescopeSelection
-" }}}
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

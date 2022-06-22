@@ -161,48 +161,17 @@ return require("packer").startup(function()
 		end,
 	})
 	use({
-		"nvim-telescope/telescope-fzf-native.nvim",
-		config = function()
-			require("telescope").load_extension("fzf")
-		end,
-		run = "make",
-	})
-	use({
-		"nvim-telescope/telescope-file-browser.nvim",
-		config = function()
-			require("telescope").load_extension("file_browser")
-		end,
-	})
-	use({
-		"nvim-telescope/telescope-frecency.nvim",
-		config = function()
-			require("telescope").load_extension("frecency")
-		end,
-		requires = { "tami5/sqlite.lua" },
-	})
-	use({
 		"nvim-telescope/telescope.nvim",
 		requires = {
+			{ "tami5/sqlite.lua" },
 			{ "nvim-lua/plenary.nvim" },
+			{ "nvim-telescope/telescope-github.nvim" },
+			{ "nvim-telescope/telescope-fzf-native.nvim" },
+			{ "nvim-telescope/telescope-file-browser.nvim" },
+			{ "nvim-telescope/telescope-frecency.nvim" },
 		},
 		config = function()
 			local actions = require("telescope.actions")
-            -- local fg = require("core.utils").fg
-            -- local fg_bg = require("core.utils").fg_bg
-            -- local bg = require("core.utils").bg
-            -- fg_bg("TelescopeBorder", darker_black, darker_black)
-            -- fg_bg("TelescopePromptBorder", black2, black2)
-            --
-            -- fg_bg("TelescopePromptNormal", white, black2)
-            -- fg_bg("TelescopePromptPrefix", red, black2)
-            --
-            -- bg("TelescopeNormal", darker_black)
-            --
-            -- fg_bg("TelescopePreviewTitle", black, green)
-            -- fg_bg("TelescopePromptTitle", black, red)
-            -- fg_bg("TelescopeResultsTitle", darker_black, darker_black)
-            --
-            -- bg("TelescopeSelection", black2)
 			require("telescope").setup({
 				defaults = {
 					mappings = {
@@ -253,8 +222,19 @@ return require("packer").startup(function()
 					file_browser = {
 						hijack_netwr = true,
 					},
+					frecency = {
+						ignore_patterns = { "*.git/*", "*/tmp/*", "*/node_modules/*", "*/*venv*/*" },
+						workspaces = {
+							["home"] = "~",
+							["conf"] = "~/.config",
+						},
+					},
 				},
 			})
+			require("telescope").load_extension("fzf")
+			require("telescope").load_extension("file_browser")
+			require("telescope").load_extension("frecency")
+			require("telescope").load_extension("gh")
 		end,
 	})
 	use({
@@ -263,9 +243,48 @@ return require("packer").startup(function()
 			require("which-key").setup({})
 		end,
 	})
+	use({
+		"luisiacc/gruvbox-baby",
+		config = function()
+			local colors = require("gruvbox-baby.colors").config()
+			-- dark = "#202020",
+			-- foreground = "#ebdbb2",
+			-- background = "#282828",
+			-- background_dark = "#242424",
+			-- bg_light = "#32302f",
+			-- medium_gray = "#504945",
+			-- comment = "#665c54",
+			-- gray = "#DEDEDE",
+			-- soft_yellow = "#EEBD35",
+			-- soft_green = "#98971a",
+			-- bright_yellow = "#fabd2f",
+			-- orange = "#d65d0e",
+			-- red = "#fb4934",
+			-- error_red = "#cc241d",
+			-- magenta = "#b16286",
+			-- pink = "#D4879C",
+			-- light_blue = "#7fa2ac",
+			-- dark_gray = "#83a598",
+			-- blue_gray = "#458588",
+			-- forest_green = "#689d6a",
+			-- clean_green = "#8ec07c",
+			-- milk = "#E7D7AD",
+
+			-- vim.g.gruvbox_baby_background_color = "dark"
+			vim.g.gruvbox_baby_telescope_theme = 1
+			vim.g.gruvbox_baby_highlights = {
+				Visual = { bg = "#444455" },
+				CocGitAddedSign = { fg = colors.soft_green },
+				CocGitChangedSign = { fg = colors.soft_yellow },
+				CocGitRemovedSign = { fg = colors.red },
+				CocGitTopRemovedSign = { fg = colors.red },
+				CocGitChangeRemovedSign = { fg = colors.red },
+			}
+			vim.cmd([[colorscheme gruvbox-baby]])
+		end,
+	})
 	-- Vimscript plugins
 	-- use({ "flazz/vim-colorschemes" })
-	use({ "sainnhe/gruvbox-material" })
 	use({ "flwyd/vim-conjoin" })
 	use({ "ggandor/lightspeed.nvim" })
 	use({ "github/copilot.vim", disable = true })
