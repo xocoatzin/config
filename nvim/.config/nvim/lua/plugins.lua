@@ -15,6 +15,7 @@ return require("packer").startup(function()
 					"fish",
 					"go",
 					"graphql",
+					"hcl",
 					"html",
 					"http",
 					"java",
@@ -110,7 +111,7 @@ return require("packer").startup(function()
 				space_char_blankline = " ",
 				use_treesitter = true,
 				show_current_context = true,
-				show_current_context_start = true,
+				show_current_context_start = false,
 				show_end_of_line = true,
 				context_patterns = { ".*" },
 				show_first_indent_level = false,
@@ -135,11 +136,6 @@ return require("packer").startup(function()
 		config = function()
 			require("statusline")
 		end,
-	})
-	use({
-		"neoclide/coc.nvim",
-		branch = "release",
-		run = "yarn install --frozen-lockfile",
 	})
 	use({
 		"romgrk/nvim-treesitter-context",
@@ -283,8 +279,31 @@ return require("packer").startup(function()
 			vim.cmd([[colorscheme gruvbox-baby]])
 		end,
 	})
+	use({
+		"karb94/neoscroll.nvim",
+		config = function()
+			require("neoscroll").setup({
+				-- All these keys will be mapped to their corresponding default scrolling animation
+				mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
+				hide_cursor = true, -- Hide cursor while scrolling
+				stop_eof = true, -- Stop at <EOF> when scrolling downwards
+				use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
+				respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+				cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+				-- easing_function = nil, -- Default easing function
+				-- pre_hook = nil, -- Function to run before the scrolling animation starts
+				-- post_hook = nil, -- Function to run after the scrolling animation ends
+				-- performance_mode = false, -- Disable "Performance Mode" on all buffers.
+			})
+		end,
+	})
 	-- Vimscript plugins
 	-- use({ "flazz/vim-colorschemes" })
+	use({
+		"neoclide/coc.nvim",
+		branch = "release",
+		run = "yarn install --frozen-lockfile",
+	})
 	use({ "flwyd/vim-conjoin" })
 	use({ "ggandor/lightspeed.nvim" })
 	use({ "github/copilot.vim", disable = true })
@@ -300,6 +319,5 @@ return require("packer").startup(function()
 
 	-- use 'SirVer/ultisnips'
 	-- use 'honza/vim-snippets'
-	-- use 'psliwka/vim-smoothie'
 	-- use 'tmhedberg/SimpylFold'
 end)
