@@ -298,6 +298,13 @@ return require("packer").startup(function()
 		end,
 	})
 	use({
+		"L3MON4D3/LuaSnip",
+		after = "nvim-cmp",
+		config = function()
+			require("config.snippets")
+		end,
+	})
+	use({
 		"hrsh7th/nvim-cmp",
 		requires = {
 			{ "hrsh7th/cmp-nvim-lsp" },
@@ -309,12 +316,38 @@ return require("packer").startup(function()
 			{ "hrsh7th/cmp-nvim-lua" },
 			{ "hrsh7th/cmp-nvim-lsp-signature-help" },
 			{ "f3fora/cmp-spell" },
-			{ "L3MON4D3/LuaSnip" },
 			{ "saadparwaiz1/cmp_luasnip" },
 		},
 		config = function()
 			-- Setup nvim-cmp.
 			local cmp = require("cmp")
+			local kind_icons = {
+				Text = "",
+				Method = "",
+				Function = "�������������",
+				Constructor = "",
+				Field = "",
+				Variable = "",
+				Class = "ﴯ",
+				Interface = "",
+				Module = "",
+				Property = "ﰠ",
+				Unit = "",
+				Value = "",
+				Enum = "",
+				Keyword = "",
+				Snippet = "",
+				Color = "",
+				File = "",
+				Reference = "",
+				Folder = "",
+				EnumMember = "",
+				Constant = "",
+				Struct = "",
+				Event = "",
+				Operator = "",
+				TypeParameter = "",
+			}
 
 			cmp.setup({
 				snippet = {
@@ -374,6 +407,21 @@ return require("packer").startup(function()
 					{ name = "nvim_lua" },
 					{ name = "nvim_lsp_signature_help" },
 				}, {}),
+				formatting = {
+					format = function(entry, vim_item)
+						-- Kind icons
+						vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+						-- Source
+						-- vim_item.menu = ({
+						-- 	buffer = "[Buffer]",
+						-- 	nvim_lsp = "[LSP]",
+						-- 	luasnip = "[LuaSnip]",
+						-- 	nvim_lua = "[Lua]",
+						-- 	latex_symbols = "[LaTeX]",
+						-- })[entry.source.name]
+						return vim_item
+					end,
+				},
 			})
 
 			-- Completions for command mode
@@ -475,23 +523,44 @@ return require("packer").startup(function()
 				automatic_installation = true,
 			})
 
+			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+			--
 			local lsp = require("lspconfig")
-			lsp.pyright.setup({
+			lsp.pyright.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.tsserver.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.angularls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.bashls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.ccls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.cmake.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.cssls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.dockerls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.eslint.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.gopls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.graphql.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.html.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.texlab.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.vimls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.yamlls.setup({
 				on_attach = on_attach,
 				flags = lsp_flags,
-			})
-			lsp.tsserver.setup({
-				on_attach = on_attach,
-				flags = lsp_flags,
-			})
-			lsp.rust_analyzer.setup({
-				on_attach = on_attach,
-				flags = lsp_flags,
-				-- Server-specific settings...
+
 				settings = {
-					["rust-analyzer"] = {},
+					yaml = {
+						schemas = {
+							["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.22.0-standalone-strict/all.json"] = "/*.k8s.yaml",
+							-- ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+						},
+					},
 				},
 			})
+			-- lsp.rust_analyzer.setup({
+			-- 	on_attach = on_attach,
+			-- 	flags = lsp_flags,
+			-- 	-- Server-specific settings...
+			-- 	settings = {
+			-- 		["rust-analyzer"] = {},
+			-- 	},
+			-- })
 		end,
 	})
 	-- Vimscript plugins
