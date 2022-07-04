@@ -270,11 +270,8 @@ return require("packer").startup(function()
 			vim.g.gruvbox_baby_telescope_theme = 1
 			vim.g.gruvbox_baby_highlights = {
 				Visual = { bg = "#444455" },
-				-- CocGitAddedSign = { fg = colors.soft_green },
-				-- CocGitChangedSign = { fg = colors.soft_yellow },
-				-- CocGitRemovedSign = { fg = colors.red },
-				-- CocGitTopRemovedSign = { fg = colors.red },
-				-- CocGitChangeRemovedSign = { fg = colors.red },
+				Search = { bg = colors.soft_yellow },
+				Pmenu = { bg = colors.medium_gray, blend = 0.7 },
 			}
 			vim.cmd([[colorscheme gruvbox-baby]])
 		end,
@@ -404,7 +401,7 @@ return require("packer").startup(function()
 			local kind_icons = {
 				Text = "",
 				Method = "",
-				Function = "�����������������������������",
+				Function = "",
 				Constructor = "",
 				Field = "",
 				Variable = "",

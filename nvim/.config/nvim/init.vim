@@ -420,11 +420,6 @@ syntax enable
 highlight clear SignColumn
 highlight FoldColumn guifg=#e4e4e4
 " highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
-" highlight link CocErrorSign GruvboxRed
-" highlight link CocWarningSign GruvboxYellow
-" highlight link CocInfoSign GruvboxBlue
-" highlight link CocHintSign GruvboxGreen
-highlight PmenuSel blend=0
 highlight link IndentBlanklineContextChar GruvboxYellow
 
 
