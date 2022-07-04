@@ -280,11 +280,77 @@ return require("packer").startup(function()
 		end,
 	})
 	use({
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup({
+				current_line_blame = true,
+				on_attach = function(bufnr)
+					local gs = package.loaded.gitsigns
+
+					local function map(mode, l, r, opts)
+						opts = opts or {}
+						opts.buffer = bufnr
+						vim.keymap.set(mode, l, r, opts)
+					end
+
+					-- Navigation
+					map("n", "]c", function()
+						if vim.wo.diff then
+							return "]c"
+						end
+						vim.schedule(function()
+							gs.next_hunk()
+						end)
+						return "<Ignore>"
+					end, {
+						expr = true,
+						desc = "Next change",
+					})
+
+					map("n", "[c", function()
+						if vim.wo.diff then
+							return "[c"
+						end
+						vim.schedule(function()
+							gs.prev_hunk()
+						end)
+						return "<Ignore>"
+					end, {
+						expr = true,
+						desc = "Prev change",
+					})
+
+					-- Actions
+					map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>", { desc = "Stage hunk" })
+					map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>", { desc = "Reset hunk" })
+					map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage buffer" })
+					map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
+					map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset buffer" })
+					map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
+					map("n", "<leader>hb", function()
+						gs.blame_line({ full = true })
+					end, {
+						desc = "Blame line",
+					})
+					map("n", "<leader>hB", gs.toggle_current_line_blame, { desc = "Toggle current line blame" })
+					map("n", "<leader>hd", gs.diffthis, { desc = "Diffthis" })
+					map("n", "<leader>hD", function()
+						gs.diffthis("~")
+					end, { desc = "Diffthis ~" })
+					map("n", "<leader>hdd", gs.toggle_deleted, { desc = "Toggle deleted" })
+
+					-- Text object
+					map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
+				end,
+			})
+		end,
+	})
+	use({
 		"karb94/neoscroll.nvim",
 		config = function()
 			require("neoscroll").setup({
 				-- All these keys will be mapped to their corresponding default scrolling animation
-				mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
+				-- mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
 				hide_cursor = true, -- Hide cursor while scrolling
 				stop_eof = true, -- Stop at <EOF> when scrolling downwards
 				use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
@@ -293,8 +359,22 @@ return require("packer").startup(function()
 				-- easing_function = nil, -- Default easing function
 				-- pre_hook = nil, -- Function to run before the scrolling animation starts
 				-- post_hook = nil, -- Function to run after the scrolling animation ends
-				-- performance_mode = false, -- Disable "Performance Mode" on all buffers.
+				-- performance_mode = true, -- Disable "Performance Mode" on all buffers.
 			})
+
+			local t = {}
+			-- Syntax: t[keys] = {function, {function arguments}}
+			t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "50" } }
+			t["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "50" } }
+			t["<C-b>"] = { "scroll", { "-vim.api.nvim_win_get_height(0)", "true", "50" } }
+			t["<C-f>"] = { "scroll", { "vim.api.nvim_win_get_height(0)", "true", "50" } }
+			t["<C-y>"] = { "scroll", { "-0.10", "false", "50" } }
+			t["<C-e>"] = { "scroll", { "0.10", "false", "50" } }
+			t["zt"] = { "zt", { "50" } }
+			t["zz"] = { "zz", { "50" } }
+			t["zb"] = { "zb", { "50" } }
+
+			require("neoscroll.config").set_mappings(t)
 		end,
 	})
 	use({
@@ -324,7 +404,7 @@ return require("packer").startup(function()
 			local kind_icons = {
 				Text = "",
 				Method = "",
-				Function = "�������������",
+				Function = "�����������������������������",
 				Constructor = "",
 				Field = "",
 				Variable = "",
@@ -549,6 +629,155 @@ return require("packer").startup(function()
 						schemas = {
 							["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.22.0-standalone-strict/all.json"] = "/*.k8s.yaml",
 							-- ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+						},
+					},
+				},
+			})
+			-- https://github.com/iamcco/diagnostic-languageserver
+			lsp.diagnosticls.setup({
+				on_attach = on_attach,
+				flags = lsp_flags,
+
+				formatFiletypes = { "python" },
+				filetypes = { "python" },
+				init_options = {
+					filetypes = {
+						-- filetype: linterName, * for all types
+						python = { "flake8", "mypy", "pydocstyle" },
+					},
+					linters = {
+						pydocstyle = {
+							sourceName = "pydocstyle",
+							command = "pydocstyle",
+							args = {
+								"%file",
+							},
+							-- file.py:162 in public function `check_or_get_default_project`:
+							-- D103: Missing docstring in public function
+							formatPattern = {
+								"^(.+\\.py):(\\d+)(\\s)([^\\n]+)\n\\s+(.+)$",
+								{
+									line = 2,
+									security = 3,
+									message = { 5 },
+								},
+							},
+							rootPatterns = { "pyproject.toml", "setup.py", "setup.cfg", ".git" },
+							securities = {
+								[" "] = "hint",
+							},
+							offsetColumn = 0,
+							formatLines = 2,
+						},
+						mypy = {
+							sourceName = "mypy",
+							command = "mypy",
+							args = {
+								"--follow-imports",
+								"silent",
+								"--no-site-packages",
+								"--show-column-numbers",
+								"--show-error-codes",
+								"--no-color-output",
+								"%file",
+							},
+							-- file.py:68:1: error: Cannot assign to a type
+							formatPattern = {
+								"^(.+\\.py):(\\d+):(\\d+): (error|note|\\w+): (.+)$",
+								{
+									line = 2,
+									column = 3,
+									security = 4,
+									message = { 5, " - mypy" },
+								},
+							},
+							rootPatterns = { "pyproject.toml", "setup.py", "setup.cfg", ".git" },
+							securities = {
+								error = "error",
+								note = "hint",
+							},
+							offsetColumn = 0,
+							formatLines = 1,
+						},
+						flake8 = {
+							sourceName = "flake8",
+							command = "flake8",
+							args = {
+								"%file",
+							},
+							-- file.py:12:1: E402 description
+							formatPattern = {
+								"^(.+\\.py):(\\d+):(\\d+): (I|W|E|F)(\\d+) (.+)$",
+								{
+									line = 2,
+									column = 3,
+									security = 4,
+									message = { 6, " - ", 4, 5 },
+								},
+							},
+							rootPatterns = { "pyproject.toml", "setup.py", "setup.cfg", ".git" },
+							securities = {
+								E = "warning",
+								W = "warning",
+								I = "info",
+								F = "error",
+							},
+							requiredFiles = {
+								".flake8",
+								"setup.cfg",
+							},
+							offsetColumn = 0,
+							formatLines = 1,
+						},
+						-- https://github.com/iamcco/diagnostic-languageserver/issues/28
+						eslint = {
+							sourceName = "eslint",
+							command = "./node_modules/.bin/eslint",
+							rootPatterns = { ".git" },
+							debounce = 100,
+							args = {
+								"--stdin",
+								"--stdin-filename",
+								"%filepath",
+								"--format",
+								"json",
+							},
+							parseJson = {
+								errorsRoot = "[0].messages",
+								line = "line",
+								column = "column",
+								endLine = "endLine",
+								endColumn = "endColumn",
+								message = "${message} [${ruleId}]",
+								security = "severity",
+							},
+							securities = {
+								[2] = "error",
+								[1] = "warning",
+							},
+						},
+					},
+					formatFiletypes = {
+						-- filetype: formatterName, * for all types
+						python = { "isort", "black" },
+					},
+					formatters = {
+						-- FIXME: Not working
+						isort = {
+							command = "isort",
+							rootPatterns = { "setup.cfg", "pyproject.toml", "setup.py", ".git/" },
+						},
+						black = {
+							command = "black",
+							args = {
+								"--line-length",
+								"80",
+								"--target-version",
+								"py36",
+								"--quiet",
+								"-",
+							},
+							rootPatterns = { "setup.cfg", "pyproject.toml", "setup.py", ".git/" },
 						},
 					},
 				},
