@@ -2,6 +2,9 @@ return require("packer").startup(function()
 	use({ "wbthomason/packer.nvim" })
 	use({
 		"nvim-treesitter/nvim-treesitter",
+		requires = {
+			{ "nvim-treesitter/nvim-treesitter-textobjects" },
+		},
 		run = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter.configs").setup({
@@ -51,6 +54,56 @@ return require("packer").startup(function()
 					},
 					textobjects = {
 						enable = true,
+					},
+				},
+				textobjects = {
+					select = {
+						enable = true,
+						-- Automatically jump forward to textobj, similar to targets.vim
+						lookahead = true,
+						keymaps = {
+							["af"] = "@function.outer",
+							["if"] = "@function.inner",
+							["ac"] = "@class.outer",
+							["ic"] = "@class.inner",
+						},
+					},
+					swap = {
+						enable = true,
+						swap_next = {
+							["<leader>wp"] = "@parameter.inner",
+						},
+						swap_previous = {
+							["<leader>wP"] = "@parameter.inner",
+						},
+					},
+					move = {
+						enable = true,
+						set_jumps = true, -- whether to set jumps in the jumplist
+						goto_next_start = {
+							["]m"] = "@function.outer",
+							["]]"] = "@class.outer",
+						},
+						goto_next_end = {
+							["]M"] = "@function.outer",
+							["]["] = "@class.outer",
+						},
+						goto_previous_start = {
+							["[m"] = "@function.outer",
+							["[["] = "@class.outer",
+						},
+						goto_previous_end = {
+							["[M"] = "@function.outer",
+							["[]"] = "@class.outer",
+						},
+					},
+					lsp_interop = {
+						enable = true,
+						-- border = 'none',
+						peek_definition_code = {
+							["<leader>df"] = "@function.outer",
+							["<leader>dF"] = "@class.outer",
+						},
 					},
 				},
 			})
@@ -270,7 +323,7 @@ return require("packer").startup(function()
 			vim.g.gruvbox_baby_telescope_theme = 1
 			vim.g.gruvbox_baby_highlights = {
 				Visual = { bg = "#444455" },
-				Search = { bg = colors.soft_yellow },
+				Search = { bg = colors.bright_yellow, fg = colors.dark },
 				Pmenu = { bg = colors.medium_gray, blend = 0.7 },
 			}
 			vim.cmd([[colorscheme gruvbox-baby]])
@@ -375,6 +428,21 @@ return require("packer").startup(function()
 		end,
 	})
 	use({
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup({
+				enable_check_bracket_line = false,
+				ignored_next_char = "[%w%.]", -- will ignore alphanumeric and `.` symbol
+			})
+		end,
+	})
+	use({
+		"mfussenegger/nvim-dap",
+		config = function()
+			-- require("dap").setup({})
+		end,
+	})
+	use({
 		"L3MON4D3/LuaSnip",
 		after = "nvim-cmp",
 		config = function()
@@ -440,49 +508,45 @@ return require("packer").startup(function()
 				mapping = cmp.mapping.preset.insert({
 					["<C-b>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+					["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
 					["<C-e>"] = cmp.mapping.abort(),
 					-- Accept currently selected item.
 					-- Set `select` to `false` to only confirm explicitly selected items.
-					["<CR>"] = cmp.mapping.confirm({
-						behavior = cmp.ConfirmBehavior.Replace,
-						select = true,
+					["<c-y>"] = cmp.mapping(
+						cmp.mapping.confirm({
+							-- behavior = cmp.ConfirmBehavior.Replace,
+							behavior = cmp.ConfirmBehavior.Insert,
+							select = true,
+						}),
+						{ "i", "c" }
+					),
+					["<c-space>"] = cmp.mapping({
+						i = cmp.mapping.complete(),
+						c = function(
+							_ --[[fallback]]
+						)
+							if cmp.visible() then
+								if not cmp.confirm({ select = true }) then
+									return
+								end
+							else
+								cmp.complete()
+							end
+						end,
 					}),
-					["<Tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_next_item()
-						elseif luasnip.expand_or_jumpable() then
-							luasnip.expand_or_jump()
-						else
-							fallback()
-						end
-					end, {
-						"i",
-						"s",
-					}),
-					["<S-Tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item()
-						elseif luasnip.jumpable(-1) then
-							luasnip.jump(-1)
-						else
-							fallback()
-						end
-					end, {
-						"i",
-						"s",
-					}),
+					["<tab>"] = cmp.config.disable,
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
+					{ name = "nvim_lsp_signature_help" },
 					{ name = "luasnip" },
-					{ name = "buffer" },
 					{ name = "calc" },
-					{ name = "spell" },
 					{ name = "path" },
 					{ name = "emoji" },
 					{ name = "nvim_lua" },
-					{ name = "nvim_lsp_signature_help" },
+					{ name = "spell" },
+					{ name = "buffer" },
 				}, {}),
 				formatting = {
 					format = function(entry, vim_item)
@@ -555,6 +619,7 @@ return require("packer").startup(function()
 		"neovim/nvim-lspconfig",
 		requires = {
 			{ "williamboman/nvim-lsp-installer" },
+			{ "creativenull/diagnosticls-configs-nvim" },
 		},
 		config = function()
 			-- Mappings.
@@ -578,7 +643,7 @@ return require("packer").startup(function()
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
 				vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-				vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
+				vim.keymap.set("n", "<space>k", vim.lsp.buf.signature_help, bufopts)
 				vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
 				vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
 				vim.keymap.set("n", "<space>wl", function()
@@ -603,19 +668,23 @@ return require("packer").startup(function()
 			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 			--
 			local lsp = require("lspconfig")
-			lsp.pyright.setup({ on_attach = on_attach, flags = lsp_flags })
-			lsp.tsserver.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.angularls.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.bashls.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.ccls.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.cmake.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.cssls.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.dockerls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.diagnosticls.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.eslint.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.gopls.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.graphql.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.html.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.jsonls.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.pyright.setup({ on_attach = on_attach, flags = lsp_flags })
+			-- lsp.taplo.setup({ on_attach = on_attach, flags = lsp_flags })  -- TOML
+			lsp.terraformls.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.texlab.setup({ on_attach = on_attach, flags = lsp_flags })
+			lsp.tsserver.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.vimls.setup({ on_attach = on_attach, flags = lsp_flags })
 			lsp.yamlls.setup({
 				on_attach = on_attach,
@@ -630,13 +699,31 @@ return require("packer").startup(function()
 					},
 				},
 			})
+			lsp.zk.setup({ on_attach = on_attach, flags = lsp_flags })
+
+			-- local prettier = require("diagnosticls-configs.formatters.prettier")
+			-- local eslint = require("diagnosticls-configs.linters.eslint")
+			-- local stylua = require("diagnosticls-configs.formatters.stylua")
+			-- local luacheck = require("diagnosticls-configs.linters.luacheck")
+			-- require("diagnosticls-configs").setup({
+			-- 	["lua"] = {
+			-- 		linter = luacheck,
+			-- 		formatter = stylua,
+			-- 	},
+			-- 	["json"] = {
+			-- 		formatter = prettier,
+			-- 	},
+			-- 	["javascript"] = {
+			-- 		linter = eslint,
+			-- 		formatter = prettier,
+			-- 	},
+			-- })
 			-- https://github.com/iamcco/diagnostic-languageserver
 			lsp.diagnosticls.setup({
 				on_attach = on_attach,
 				flags = lsp_flags,
 
-				formatFiletypes = { "python" },
-				filetypes = { "python" },
+				filetypes = { "python", "json" },
 				init_options = {
 					filetypes = {
 						-- filetype: linterName, * for all types
@@ -757,12 +844,32 @@ return require("packer").startup(function()
 					formatFiletypes = {
 						-- filetype: formatterName, * for all types
 						python = { "isort", "black" },
+						json = { "prettier" },
 					},
 					formatters = {
 						-- FIXME: Not working
 						isort = {
 							command = "isort",
-							rootPatterns = { "setup.cfg", "pyproject.toml", "setup.py", ".git/" },
+							args = { "--quiet", "--stdout", "-" },
+							rootPatterns = { ".isort.cfg", "pyproject.toml", ".git" },
+						},
+						prettier = {
+							command = "prettier",
+							args = { "--stdin", "--stdin-filepath", "%filepath" },
+							rootPatterns = {
+								".prettierrc",
+								".prettierrc.json",
+								".prettierrc.toml",
+								".prettierrc.json",
+								".prettierrc.yml",
+								".prettierrc.yaml",
+								".prettierrc.json5",
+								".prettierrc.js",
+								".prettierrc.cjs",
+								"prettier.config.js",
+								"prettier.config.cjs",
+								".git",
+							},
 						},
 						black = {
 							command = "black",
@@ -789,6 +896,9 @@ return require("packer").startup(function()
 			-- })
 		end,
 	})
+	use({ "rcarriga/nvim-notify" })
+	use({ "lewis6991/impatient.nvim" })
+
 	-- Vimscript plugins
 	-- use({ "flazz/vim-colorschemes" })
 	-- use({

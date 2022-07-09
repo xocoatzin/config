@@ -1,5 +1,10 @@
 let g:python3_host_prog = '~/.venv/nvim/bin/python3'
 
+let mapleader = ","
+let g:mapleader = ","
+
+lua require('impatient')
+
 let &packpath = &runtimepath
 
 augroup packer_user_config
@@ -14,8 +19,6 @@ lua require('config')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
-let mapleader = ","
-let g:mapleader = ","
 
 filetype plugin on " Enable filetype plugins
 filetype indent on
@@ -102,11 +105,6 @@ nnoremap <leader>tf <cmd>Telescope file_browser<cr>
 
 nmap <leader>s <Plug>Lightspeed_s
 nmap <leader>S <Plug>Lightspeed_S
-
-
-" Copilot, accept with C-J
-imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
-let g:copilot_no_tab_map = v:true
 
 " Vim Abolish
 " Usage: :Subvert/address{,es}/reference{,s}/g
