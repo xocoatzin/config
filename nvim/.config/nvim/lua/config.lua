@@ -14,6 +14,8 @@ vim.o.termguicolors = true
 vim.o.guifont='FiraCode Nerd Font:h14'
 -- Highlight the screen line of the cursor with CursorLine
 vim.o.cursorline = true
+-- Global Statusline
+vim.o.laststatus = 3
 -- Use system clipboard
 vim.o.clipboard='unnamedplus'
 -- Enable folding

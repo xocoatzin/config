@@ -17,6 +17,7 @@ return require("packer").startup(function()
 					"dockerfile",
 					"fish",
 					"go",
+					"gotmpl",
 					"graphql",
 					"hcl",
 					"html",
@@ -218,6 +219,7 @@ return require("packer").startup(function()
 			{ "nvim-telescope/telescope-fzf-native.nvim" },
 			{ "nvim-telescope/telescope-file-browser.nvim" },
 			{ "nvim-telescope/telescope-frecency.nvim" },
+			{ "nvim-telescope/telescope-dap.nvim" },
 		},
 		config = function()
 			local actions = require("telescope.actions")
@@ -284,6 +286,7 @@ return require("packer").startup(function()
 			require("telescope").load_extension("file_browser")
 			require("telescope").load_extension("frecency")
 			require("telescope").load_extension("gh")
+			require("telescope").load_extension("dap")
 		end,
 	})
 	use({
@@ -325,8 +328,32 @@ return require("packer").startup(function()
 				Visual = { bg = "#444455" },
 				Search = { bg = colors.bright_yellow, fg = colors.dark },
 				Pmenu = { bg = colors.medium_gray, blend = 0.7 },
+				-- DAP
+				DapBreakpointLine = { bg = colors.dark },
+				DapBreakpoint = { fg = colors.red },
+				DapBreakpointCondition = { fg = colors.orange },
+				DapBreakpointRejected = { fg = colors.error_red },
+				DapLogPoint = { fg = colors.blue_gray },
+				DapStopped = { fg = colors.bright_yellow },
 			}
 			vim.cmd([[colorscheme gruvbox-baby]])
+		end,
+	})
+	use({
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup({
+				-- RGB      = true;         -- #RGB hex codes
+				-- RRGGBB   = true;         -- #RRGGBB hex codes
+				-- names    = true;         -- "Name" codes like Blue
+				-- RRGGBBAA = false;        -- #RRGGBBAA hex codes
+				-- rgb_fn   = false;        -- CSS rgb() and rgba() functions
+				-- hsl_fn   = false;        -- CSS hsl() and hsla() functions
+				-- css      = false;        -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+				-- css_fn   = false;        -- Enable all CSS *functions*: rgb_fn, hsl_fn
+				-- Available modes: foreground, background
+				-- mode     = 'background'; -- Set the display mode.
+			})
 		end,
 	})
 	use({
@@ -434,12 +461,6 @@ return require("packer").startup(function()
 				enable_check_bracket_line = false,
 				ignored_next_char = "[%w%.]", -- will ignore alphanumeric and `.` symbol
 			})
-		end,
-	})
-	use({
-		"mfussenegger/nvim-dap",
-		config = function()
-			-- require("dap").setup({})
 		end,
 	})
 	use({
@@ -620,6 +641,7 @@ return require("packer").startup(function()
 		requires = {
 			{ "williamboman/nvim-lsp-installer" },
 			{ "creativenull/diagnosticls-configs-nvim" },
+			-- { "jose-elias-alvarez/null-ls.nvim" },
 		},
 		config = function()
 			-- Mappings.
@@ -719,17 +741,52 @@ return require("packer").startup(function()
 			-- 	},
 			-- })
 			-- https://github.com/iamcco/diagnostic-languageserver
+			-- https://github.com/creativenull/diagnosticls-configs-nvim
 			lsp.diagnosticls.setup({
 				on_attach = on_attach,
 				flags = lsp_flags,
 
-				filetypes = { "python", "json" },
+				filetypes = {
+					"bash",
+					"css",
+					"html",
+					"js",
+					"json",
+					"lua",
+					"python",
+					"sh",
+					"ts",
+				},
 				init_options = {
 					filetypes = {
 						-- filetype: linterName, * for all types
 						python = { "flake8", "mypy", "pydocstyle" },
+						bash = { "shellcheck" },
+						sh = { "shellcheck" },
 					},
 					linters = {
+						shellcheck = {
+							sourceName = "shellcheck",
+							command = "shellcheck",
+							debounce = 100,
+							args = { "--format", "json1", "-" },
+							parseJson = {
+								errorsRoot = "comments",
+								sourceName = "file",
+								line = "line",
+								column = "column",
+								endLine = "endLine",
+								endColumn = "endColumn",
+								security = "level",
+								message = "[shellcheck] ${message} [SC${code}]",
+							},
+							securities = {
+								error = "error",
+								warning = "warning",
+								info = "info",
+								style = "hint",
+							},
+						},
 						pydocstyle = {
 							sourceName = "pydocstyle",
 							command = "pydocstyle",
@@ -845,6 +902,11 @@ return require("packer").startup(function()
 						-- filetype: formatterName, * for all types
 						python = { "isort", "black" },
 						json = { "prettier" },
+						ts = { "prettier" },
+						js = { "prettier" },
+						html = { "prettier" },
+						css = { "prettier" },
+						lua = { "stylua" },
 					},
 					formatters = {
 						-- FIXME: Not working
@@ -883,17 +945,134 @@ return require("packer").startup(function()
 							},
 							rootPatterns = { "setup.cfg", "pyproject.toml", "setup.py", ".git/" },
 						},
+						stylua = {
+							command = "stylua",
+							args = { "--color", "Never", "-" },
+							-- requiredFiles = { 'stylua.toml', '.stylua.toml' },
+							rootPatterns = { "stylua.toml", ".stylua.toml" },
+						},
 					},
 				},
 			})
-			-- lsp.rust_analyzer.setup({
-			-- 	on_attach = on_attach,
-			-- 	flags = lsp_flags,
-			-- 	-- Server-specific settings...
-			-- 	settings = {
-			-- 		["rust-analyzer"] = {},
+
+			-- require("null-ls").setup({
+			-- 	sources = {
+			-- 		require("null-ls").builtins.completion.spell,
 			-- 	},
 			-- })
+		end,
+	})
+	use({
+		"mfussenegger/nvim-dap",
+		requires = {
+			{ "mfussenegger/nvim-dap-python" },
+			{ "theHamsta/nvim-dap-virtual-text" },
+			{ "rcarriga/nvim-dap-ui" },
+		},
+		config = function()
+			require("dap-python").setup("python3")
+
+			local dap = require("dap")
+
+			vim.fn.sign_define(
+				"DapBreakpoint",
+				{ text = "", texthl = "DapBreakpoint", linehl = "DapBreakpointLine", numhl = "DapBreakpointLine" }
+			)
+			vim.fn.sign_define("DapBreakpointCondition", {
+				text = "ﳁ",
+				texthl = "DapBreakpointCondition",
+				linehl = "DapBreakpointLine",
+				numhl = "DapBreakpointLine",
+			})
+			vim.fn.sign_define("DapBreakpointRejected", {
+				text = "",
+				texthl = "DapBreakpointRejected",
+				linehl = "DapBreakpointLine",
+				numhl = "DapBreakpointLine",
+			})
+			vim.fn.sign_define(
+				"DapLogPoint",
+				{ text = "", texthl = "DapLogPoint", linehl = "DapLogPointLine", numhl = "DapLogPointLine" }
+			)
+			vim.fn.sign_define(
+				"DapStopped",
+				{ text = "", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "DapStoppedLine" }
+			)
+			-- dap.adapters.python = {
+			-- 	type = "executable",
+			-- 	command = ".venv3/bin/python",
+			-- 	args = { "-m", "debugpy.adapter" },
+			-- }
+
+			vim.keymap.set("n", "<F1>", require("dap").step_back, { desc = "[DAP] Step Back" })
+			vim.keymap.set("n", "<F2>", require("dap").step_into, { desc = "[DAP] Step Into" })
+			vim.keymap.set("n", "<F3>", require("dap").step_over, { desc = "[DAP] Step Over" })
+			vim.keymap.set("n", "<F4>", require("dap").step_out, { desc = "[DAP] Step Out" })
+			vim.keymap.set("n", "<F5>", require("dap").continue, { desc = "[DAP] Continue" })
+			vim.keymap.set("n", "<leader>dr", require("dap").repl.open, { desc = "[DAP] Open repl" })
+			vim.keymap.set("n", "<leader>db", require("dap").toggle_breakpoint, { desc = "[DAP] Toggle Breakpoint" })
+			vim.keymap.set("n", "<leader>dB", function()
+				require("dap").set_breakpoint(vim.fn.input("[DAP] Condition > "))
+			end, {
+				desc = "[DAP] Toggle Breakpoint (cond.)",
+			})
+			vim.keymap.set("n", "<leader>dL", function()
+				require("dap").set_breakpoint(nil, nil, vim.fn.input("[DAP] Log Message > "))
+			end, {
+				desc = "[DAP] Add Log Point Message",
+			})
+
+			-- map("<leader>de", require("dapui").eval)
+			-- map("<leader>dE", function()
+			-- 	require("dapui").eval(vim.fn.input("[DAP] Expression > "))
+			-- end)
+			--
+			require("nvim-dap-virtual-text").setup({
+				commented = true,
+			})
+
+			local dapui = require("dapui")
+			dapui.setup()
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
+		end,
+	})
+
+	-- use({ "ggandor/lightspeed.nvim" })
+	use({
+		"ggandor/leap.nvim",
+		config = function()
+			require("leap").setup({
+				case_sensitive = true,
+			})
+			require("leap").set_default_keymaps()
+		end,
+	})
+	use({
+		"kylechui/nvim-surround",
+		config = function()
+			require("nvim-surround").setup({
+				keymaps = { -- vim-surround style keymaps
+					insert = "ys",
+					insert_line = "yss",
+					visual = "S",
+					delete = "ds",
+					change = "cs",
+				},
+			})
+		end,
+	})
+	use({
+		"lewis6991/spellsitter.nvim",
+		config = function()
+			require("spellsitter").setup()
 		end,
 	})
 	use({ "rcarriga/nvim-notify" })
@@ -907,10 +1086,9 @@ return require("packer").startup(function()
 	-- 	run = "yarn install --frozen-lockfile",
 	-- })
 	use({ "flwyd/vim-conjoin" })
-	use({ "ggandor/lightspeed.nvim" })
 	use({ "github/copilot.vim", disable = true })
 	use({ "junegunn/vim-easy-align" })
-	use({ "machakann/vim-sandwich" })
+	-- use({ "machakann/vim-sandwich" })
 	use({ "nelstrom/vim-visual-star-search" })
 	use({ "qpkorr/vim-bufkill" })
 	use({ "scrooloose/nerdtree" })
