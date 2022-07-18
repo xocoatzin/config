@@ -28,6 +28,16 @@ local date = function(format)
 	return today
 end
 
+
+local random = math.random
+local function uuid()
+    local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    return string.gsub(template, '[xy]', function (c)
+        local v = (c == 'x') and random(0, 0xf) or random(8, 0xb)
+        return string.format('%x', v)
+    end)
+end
+
 ls.add_snippets(nil, {
 	all = {
 		snippet(
@@ -41,6 +51,17 @@ ls.add_snippets(nil, {
 				func(date("%Y-%m-%dT%H:%M:%S"), {}),
 				func(date("!%Y-%m-%dT%H:%M:%S+00:00"), {}),
 				func(date(), {}),
+			})
+		),
+		snippet(
+			{
+				trig = "@uuid",
+				namr = "UUID",
+				dscr = "Generate a random UUID",
+			},
+			choice(1, {
+				func(uuid, {}),
+				text('00000000-0000-4000-0000-000000000000'),
 			})
 		),
 	},
