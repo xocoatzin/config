@@ -346,6 +346,7 @@ return require("packer").startup(function()
 				DapStopped = { fg = colors.bright_yellow },
 				TelescopeBorder = { bg = colors.dark, fg = colors.dark },
 				TelescopeNormal = { bg = colors.dark },
+				VertSplit = { fg = colors.medium_gray },
 			}
 			vim.cmd([[colorscheme gruvbox-baby]])
 		end,
