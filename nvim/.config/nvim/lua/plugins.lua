@@ -210,14 +210,14 @@ return require("packer").startup(function()
 			})
 		end,
 	})
-	use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 	use({
 		"nvim-telescope/telescope.nvim",
 		requires = {
 			{ "tami5/sqlite.lua" },
 			{ "nvim-lua/plenary.nvim" },
 			{ "nvim-telescope/telescope-github.nvim" },
-			{ "nvim-telescope/telescope-fzf-native.nvim", run = 'make' },
+			{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
 			{ "nvim-telescope/telescope-file-browser.nvim" },
 			{ "nvim-telescope/telescope-frecency.nvim" },
 			{ "nvim-telescope/telescope-dap.nvim" },
@@ -263,7 +263,7 @@ return require("packer").startup(function()
 				pickers = {
 					find_files = {
 						-- apt install fd-find
-						find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+						find_command = { "fd", "--hidden", "--type", "f", "--strip-cwd-prefix" },
 					},
 				},
 				extensions = {
@@ -344,6 +344,8 @@ return require("packer").startup(function()
 				DapBreakpointRejected = { fg = colors.error_red },
 				DapLogPoint = { fg = colors.blue_gray },
 				DapStopped = { fg = colors.bright_yellow },
+				TelescopeBorder = { bg = colors.dark, fg = colors.dark },
+				TelescopeNormal = { bg = colors.dark },
 			}
 			vim.cmd([[colorscheme gruvbox-baby]])
 		end,
@@ -684,7 +686,7 @@ return require("packer").startup(function()
 				vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 				vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
 				vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-				vim.keymap.set("n", "<space>f", vim.lsp.buf.formating, bufopts)
+				vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, bufopts)
 			end
 
 			local lsp_flags = {
