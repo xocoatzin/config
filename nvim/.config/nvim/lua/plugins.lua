@@ -210,13 +210,14 @@ return require("packer").startup(function()
 			})
 		end,
 	})
+	use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 	use({
 		"nvim-telescope/telescope.nvim",
 		requires = {
 			{ "tami5/sqlite.lua" },
 			{ "nvim-lua/plenary.nvim" },
 			{ "nvim-telescope/telescope-github.nvim" },
-			{ "nvim-telescope/telescope-fzf-native.nvim" },
+			{ "nvim-telescope/telescope-fzf-native.nvim", run = 'make' },
 			{ "nvim-telescope/telescope-file-browser.nvim" },
 			{ "nvim-telescope/telescope-frecency.nvim" },
 			{ "nvim-telescope/telescope-dap.nvim" },
@@ -261,6 +262,7 @@ return require("packer").startup(function()
 				},
 				pickers = {
 					find_files = {
+						-- apt install fd-find
 						find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
 					},
 				},
@@ -284,6 +286,7 @@ return require("packer").startup(function()
 			})
 			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("file_browser")
+			-- sudo apt install sqlite3
 			require("telescope").load_extension("frecency")
 			require("telescope").load_extension("gh")
 			require("telescope").load_extension("dap")
@@ -324,6 +327,12 @@ return require("packer").startup(function()
 
 			-- vim.g.gruvbox_baby_background_color = "dark"
 			vim.g.gruvbox_baby_telescope_theme = 1
+			-- TODO: Only if set: WEZTERM_UNIX_SOCKET
+			if os.getenv("TERM_PROGRAM") == "WezTerm" then
+				vim.g.gruvbox_baby_transparent_mode = 1
+			else
+				vim.g.gruvbox_baby_transparent_mode = 0
+			end
 			vim.g.gruvbox_baby_highlights = {
 				Visual = { bg = "#444455" },
 				Search = { bg = colors.bright_yellow, fg = colors.dark },
@@ -675,7 +684,7 @@ return require("packer").startup(function()
 				vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 				vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
 				vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-				vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, bufopts)
+				vim.keymap.set("n", "<space>f", vim.lsp.buf.formating, bufopts)
 			end
 
 			local lsp_flags = {

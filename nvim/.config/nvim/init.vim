@@ -1,4 +1,5 @@
-let g:python3_host_prog = '~/.venv/nvim/bin/python3'
+" let g:python3_host_prog = '~/.venv/nvim/bin/python3'
+let g:python3_host_prog = 'python3'
 
 let mapleader = ","
 let g:mapleader = ","
