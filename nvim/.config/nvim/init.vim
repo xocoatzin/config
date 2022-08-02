@@ -14,12 +14,14 @@ augroup packer_user_config
 augroup end
 
 lua require('plugins')
-lua require('config')
+lua require('cfg')
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
+
+set colorcolumn=80,120
 
 filetype plugin on " Enable filetype plugins
 filetype indent on
@@ -209,24 +211,6 @@ nmap ga <Plug>(EasyAlign)
 "        sd{deletion} -> Delete surrounding
 "        sr{deletion}{addition} -> replace surrounding
 
-" Fzf
-" Commands: 
-"     :Files       :Buffers        :Colors       :Ag
-"     :Lines       :Snippets       :Commits      :Commands
-" CTRL-T -> Open in tab 
-" CTRL-X -> Open in split
-" CTRL-V -> Open in vertical split
-"let $FZF_DEFAULT_COMMAND='ag -l --nocolor --hidden -g ""'
-"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-"map <C-P> :Files<CR>
-"map <Leader>ag :Ag<CR>
-"nnoremap <silent> <Leader>ga :Ag <C-R><C-W><CR>
-
-" Fzf Checkout
-" let g:fzf_checkout_track_key = 'ctrl-t'
-" let g:fzf_checkout_create_key = 'ctrl-n'
-" let g:fzf_checkout_delete_key = 'ctrl-d'
-
 nmap <Leader>j :cnext<CR>
 nmap <Leader>k :cprevious<CR>
 
@@ -278,33 +262,6 @@ set foldexpr=nvim_treesitter#foldexpr()
 "" position. Coc only does snippet and additional edit on confirm.
 "inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 "
-"" Use `[g` and `]g` to navigate diagnostics
-"" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-"nmap <silent> [g <Plug>(coc-diagnostic-prev)
-"nmap <silent> ]g <Plug>(coc-diagnostic-next)
-"
-"" GoTo code navigation.
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-"
-"" Use K to show documentation in preview window.
-"nnoremap <silent> K :call <SID>show_documentation()<CR>
-"
-"function! s:show_documentation()
-"  if (index(['vim','help'], &filetype) >= 0)
-"    execute 'h '.expand('<cword>')
-"  else
-"    call CocAction('doHover')
-"  endif
-"endfunction
-"
-"" Highlight the symbol and its references when holding the cursor.
-"augroup mygroup_1
-"  autocmd!
-"  autocmd CursorHold * silent call CocActionAsync('highlight')
-"augroup end
 "
 "" Symbol renaming.
 "nmap <leader>rn <Plug>(coc-rename)

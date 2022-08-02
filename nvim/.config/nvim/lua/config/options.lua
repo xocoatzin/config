@@ -7,8 +7,6 @@ vim.o.history = 500
 -- Enable mouse support (resize splits, select in visual mode, etc)
 vim.o.mouse = 'a'
 
-
-
 -- Enables 24-bit RGB color (and use "gui" highlights)
 vim.o.termguicolors = true
 vim.o.guifont='FiraCode Nerd Font:h14'
@@ -147,3 +145,4 @@ end
 vim.o.switchbuf='useopen,usetab,uselast'
 -- Show tabline always
 vim.o.showtabline=2
+

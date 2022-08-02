@@ -1,3 +1,5 @@
+require("config.snippets")
+
 local ls = require("luasnip")
 local snippet = ls.snippet
 local sn = ls.snippet_node
@@ -28,14 +30,13 @@ local date = function(format)
 	return today
 end
 
-
 local random = math.random
 local function uuid()
-    local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-    return string.gsub(template, '[xy]', function (c)
-        local v = (c == 'x') and random(0, 0xf) or random(8, 0xb)
-        return string.format('%x', v)
-    end)
+	local template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+	return string.gsub(template, "[xy]", function(c)
+		local v = (c == "x") and random(0, 0xf) or random(8, 0xb)
+		return string.format("%x", v)
+	end)
 end
 
 ls.add_snippets(nil, {
@@ -61,7 +62,7 @@ ls.add_snippets(nil, {
 			},
 			choice(1, {
 				func(uuid, {}),
-				text('00000000-0000-4000-0000-000000000000'),
+				text("00000000-0000-4000-0000-000000000000"),
 			})
 		),
 	},
