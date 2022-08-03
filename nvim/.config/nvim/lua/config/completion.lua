@@ -143,7 +143,32 @@ cmp.setup.cmdline(":", {
 -- Setup lspconfig.
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
--- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
--- require("lspconfig")["<YOUR_LSP_SERVER>"].setup({
--- 	capabilities = capabilities,
--- })
+-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+local servers = {
+	"angularls",
+	"bashls",
+	"ccls",
+	"cmake",
+	"cssls",
+	"dockerls",
+	"eslint",
+	"gopls",
+	"graphql",
+	"html",
+	"jsonls",
+	"terraformls",
+	"texlab",
+	"vimls",
+	"yamlls",
+	"zk",
+	"rust_analyzer",
+	"pyright",
+	"tsserver",
+}
+local lspconfig = require("lspconfig")
+for _, lsp in ipairs(servers) do
+	lspconfig[lsp].setup({
+		-- on_attach = my_custom_on_attach,
+		capabilities = capabilities,
+	})
+end

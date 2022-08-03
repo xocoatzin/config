@@ -10,7 +10,7 @@ return require("packer").startup(function()
 	use({ "numToStr/Comment.nvim" })
 	use({ "akinsho/nvim-bufferline.lua" })
 	use({ "lukas-reineke/indent-blankline.nvim" })
-	use({ "luukvbaal/stabilize.nvim", })
+	use({ "luukvbaal/stabilize.nvim" })
 	use({
 		"glepnir/galaxyline.nvim",
 		branch = "main",
@@ -19,7 +19,7 @@ return require("packer").startup(function()
 			opt = true,
 		},
 	})
-	use({ "romgrk/nvim-treesitter-context", })
+	use({ "romgrk/nvim-treesitter-context" })
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 	use({
 		"nvim-telescope/telescope.nvim",
@@ -33,12 +33,12 @@ return require("packer").startup(function()
 			{ "nvim-telescope/telescope-dap.nvim" },
 		},
 	})
-	use({ "folke/which-key.nvim", })
-	use({ "luisiacc/gruvbox-baby", })
-	use({ "norcalli/nvim-colorizer.lua", })
-	use({ "lewis6991/gitsigns.nvim", })
-	use({ "karb94/neoscroll.nvim", })
-	use({ "windwp/nvim-autopairs", })
+	use({ "folke/which-key.nvim" })
+	use({ "luisiacc/gruvbox-baby" })
+	use({ "norcalli/nvim-colorizer.lua" })
+	use({ "lewis6991/gitsigns.nvim" })
+	use({ "karb94/neoscroll.nvim" })
+	use({ "windwp/nvim-autopairs" })
 	use({
 		"L3MON4D3/LuaSnip",
 		after = "nvim-cmp",
@@ -74,12 +74,13 @@ return require("packer").startup(function()
 			{ "rcarriga/nvim-dap-ui" },
 		},
 	})
+	use({ "simrat39/rust-tools.nvim" })
 
 	-- use({ "ggandor/lightspeed.nvim" })
-	use({ "andythigpen/nvim-coverage", })
-	use({ "ggandor/leap.nvim", })
-	use({ "kylechui/nvim-surround", })
-	use({ "lewis6991/spellsitter.nvim", })
+	use({ "andythigpen/nvim-coverage" })
+	use({ "ggandor/leap.nvim" })
+	use({ "kylechui/nvim-surround" })
+	use({ "lewis6991/spellsitter.nvim" })
 	use({ "rcarriga/nvim-notify" })
 	use({ "lewis6991/impatient.nvim" })
 

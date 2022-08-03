@@ -1,10 +1,32 @@
+
+local border = {
+	{ "╭", "FloatBorder" },
+	{ "─", "FloatBorder" },
+	{ "╮", "FloatBorder" },
+	{ "│", "FloatBorder" },
+	{ "╯", "FloatBorder" },
+	{ "─", "FloatBorder" },
+	{ "╰", "FloatBorder" },
+	{ "│", "FloatBorder" },
+}
+
+-- To instead override globally
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = opts.border or border
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
+
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap = true, silent = true }
-vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
+local opts = function(desc)
+	return { noremap = true, silent = true, desc = "[LSP] " .. desc }
+end
+vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts("Open Float"))
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts("Go to Prev"))
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts("Go to Next"))
+vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts("Set Loc List"))
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -14,22 +36,27 @@ local on_attach = function(client, bufnr)
 
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	local bufopts = { noremap = true, silent = true, buffer = bufnr }
-	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set("n", "<space>k", vim.lsp.buf.signature_help, bufopts)
-	vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-	vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
+	local buffopts = function(desc)
+		return { noremap = true, silent = true, buffer = bufnr, desc = "[LSP] " .. desc }
+	end
+
+	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, buffopts("Go to Declaration"))
+	vim.keymap.set("n", "gd", vim.lsp.buf.definition, buffopts("Go to Definition"))
+	vim.keymap.set("n", "K", vim.lsp.buf.hover, buffopts("Hover"))
+	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, buffopts("Go to Implementation"))
+	vim.keymap.set("n", "<space>k", vim.lsp.buf.signature_help, buffopts("Signature Help"))
+	vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, buffopts("Add Workspace Folder"))
+	vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, buffopts("Remove Workspace Folder"))
 	vim.keymap.set("n", "<space>wl", function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
-	vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, bufopts)
-	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
-	vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-	vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, bufopts)
+	end, buffopts("List Workspace Folders"))
+	vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, buffopts("Type Definition"))
+	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, buffopts("Rename"))
+	vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, buffopts("Code Action"))
+	vim.keymap.set("n", "gr", vim.lsp.buf.references, buffopts("References"))
+	vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, buffopts("Formatting"))
+
+	vim.notify("LSP attached", "info", {})
 end
 
 local lsp_flags = {
@@ -37,8 +64,76 @@ local lsp_flags = {
 	debounce_text_changes = 150,
 }
 
-require("nvim-lsp-installer").setup({
-	automatic_installation = true,
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+	local hl = "DiagnosticSign" .. type
+	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
+-- vim.api.nvim_create_autocmd("CursorHold", {
+-- 	buffer = bufnr,
+-- 	callback = function()
+-- 		local opts = {
+-- 			focusable = false,
+-- 			close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+-- 			border = "rounded",
+-- 			source = "always",
+-- 			prefix = " ",
+-- 			scope = "cursor",
+-- 		}
+-- 		vim.diagnostic.open_float(nil, opts)
+-- 	end,
+-- })
+
+vim.api.nvim_create_augroup("lsp_document_highlight", {
+	clear = false,
+})
+vim.api.nvim_clear_autocmds({
+	buffer = bufnr,
+	group = "lsp_document_highlight",
+})
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+	group = "lsp_document_highlight",
+	buffer = bufnr,
+	callback = function()
+		local client = vim.lsp.get_active_clients()[1]
+		if client and client.server_capabilities.documentHighlightProvider then
+			vim.lsp.buf.document_highlight()
+		end
+	end,
+})
+vim.api.nvim_create_autocmd("CursorMoved", {
+	group = "lsp_document_highlight",
+	buffer = bufnr,
+	callback = vim.lsp.buf.clear_references,
+})
+
+-- Notifications
+vim.lsp.handlers["window/showMessage"] = function(_, result, ctx)
+	local client = vim.lsp.get_client_by_id(ctx.client_id)
+	local lvl = ({ "ERROR", "WARN", "INFO", "DEBUG" })[result.type]
+	notify({ result.message }, lvl, {
+		title = "LSP | " .. client.name,
+		timeout = 10000,
+		keep = function()
+			return lvl == "ERROR" or lvl == "WARN"
+		end,
+	})
+end
+
+local extension_path = vim.env.HOME .. "/.config/nvim/vscode-ext/vadimcn.vscode-lldb-1.7.3.vsix/"
+local codelldb_path = extension_path .. "adapter/codelldb"
+local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+
+require("rust-tools").setup({
+	server = {
+		on_attach = on_attach,
+		flags = lsp_flags,
+	},
+	tools = {},
+	dap = {
+		adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
+	},
 })
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
@@ -71,7 +166,7 @@ lsp.pyright.setup({
 	-- },
 })
 -- lsp.taplo.setup({ on_attach = on_attach, flags = lsp_flags })  -- TOML
-lsp.rust_analyzer.setup({ on_attach = on_attach, flags = lsp_flags })
+-- lsp.rust_analyzer.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.terraformls.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.texlab.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.tsserver.setup({ on_attach = on_attach, flags = lsp_flags })
@@ -301,6 +396,7 @@ lsp.diagnosticls.setup({
 					".git",
 				},
 			},
+
 			black = {
 				command = "black",
 				args = {

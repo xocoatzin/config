@@ -1,5 +1,3 @@
-require("config.snippets")
-
 local ls = require("luasnip")
 local snippet = ls.snippet
 local sn = ls.snippet_node
