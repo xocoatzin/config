@@ -1,3 +1,29 @@
+require("mason").setup()
+require("mason-lspconfig").setup({
+	ensure_installed = {
+		"angularls",
+		-- "arduino_language_server",
+		"bashls",
+		"clangd",
+		"cssls",
+		"cmake",
+		"diagnosticls",
+		"dockerls",
+		"eslint",
+		"gopls",
+		"graphql",
+		"html",
+		"jsonls",
+		"sumneko_lua",
+		"pyright",
+		"terraformls",
+		"tsserver",
+		"vimls",
+		"yamlls",
+		"zk",
+		"rust_analyzer"
+},
+})
 
 local border = {
 	{ "╭", "FloatBorder" },
@@ -144,8 +170,8 @@ lsp.bashls.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.ccls.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.cmake.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.cssls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.dockerls.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.diagnosticls.setup({ on_attach = on_attach, flags = lsp_flags })
+lsp.dockerls.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.eslint.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.gopls.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.graphql.setup({ on_attach = on_attach, flags = lsp_flags })

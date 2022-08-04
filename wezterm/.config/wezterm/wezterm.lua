@@ -149,7 +149,7 @@ local colors = {
 
 return {
 	-- font = wezterm.font("FiraCode Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" }),
-	font_size = 16,
+	font_size = 13,
 	color_scheme = "Gruvbox Dark",
 	colors = colors,
 	window_frame = window_frame,
