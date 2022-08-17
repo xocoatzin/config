@@ -21,8 +21,9 @@ require("mason-lspconfig").setup({
 		"vimls",
 		"yamlls",
 		"zk",
-		"rust_analyzer"
-},
+		"rust_analyzer",
+	},
+	automatic_installation = false,
 })
 
 local border = {
@@ -147,11 +148,19 @@ vim.lsp.handlers["window/showMessage"] = function(_, result, ctx)
 	})
 end
 
+-- Folding
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.foldingRange = {
+	dynamicRegistration = false,
+	lineFoldingOnly = true,
+}
+
 local extension_path = vim.env.HOME .. "/.config/nvim/vscode-ext/vadimcn.vscode-lldb-1.7.3.vsix/"
 local codelldb_path = extension_path .. "adapter/codelldb"
 local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 
 require("rust-tools").setup({
+	capabilities = capabilities,
 	server = {
 		on_attach = on_attach,
 		flags = lsp_flags,
@@ -165,40 +174,53 @@ require("rust-tools").setup({
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 --
 local lsp = require("lspconfig")
-lsp.angularls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.bashls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.ccls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.cmake.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.cssls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.diagnosticls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.dockerls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.eslint.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.gopls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.graphql.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.html.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.jsonls.setup({ on_attach = on_attach, flags = lsp_flags })
+
+local language_servers = {
+	"angularls",
+	"bashls",
+	"ccls",
+	"cmake",
+	"cssls",
+	"diagnosticls",
+	"dockerls",
+	"eslint",
+	"gopls",
+	"graphql",
+	"html",
+	"jsonls",
+	-- 'taplo',
+	-- 'rust_analyzer',
+	"terraformls",
+	"texlab",
+	"tsserver",
+	"vimls",
+	"zk",
+}
+for _, ls in ipairs(language_servers) do
+	lsp[ls].setup({
+		capabilities = capabilities,
+		on_attach = on_attach,
+		flags = lsp_flags,
+	})
+end
 lsp.pyright.setup({
 	on_attach = on_attach,
+	capabilities = capabilities,
 	flags = lsp_flags,
-	-- settings = {
-	-- 	python = {
-	-- 		analysis = {
-	-- 			reportUnusedVariable = false
-	-- autoSearchPaths = true,
-	-- useLibraryCodeForTypes = true,
-	-- diagnosticMode = "workspace",
-	-- 		},
-	-- 	},
-	-- },
+	settings = {
+		python = {
+			analysis = {
+				reportUnusedVariable = false,
+				autoSearchPaths = true,
+				useLibraryCodeForTypes = true,
+				diagnosticMode = "workspace",
+			},
+		},
+	},
 })
--- lsp.taplo.setup({ on_attach = on_attach, flags = lsp_flags })  -- TOML
--- lsp.rust_analyzer.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.terraformls.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.texlab.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.tsserver.setup({ on_attach = on_attach, flags = lsp_flags })
-lsp.vimls.setup({ on_attach = on_attach, flags = lsp_flags })
 lsp.yamlls.setup({
 	on_attach = on_attach,
+	capabilities = capabilities,
 	flags = lsp_flags,
 
 	settings = {
@@ -210,7 +232,6 @@ lsp.yamlls.setup({
 		},
 	},
 })
-lsp.zk.setup({ on_attach = on_attach, flags = lsp_flags })
 
 -- local prettier = require("diagnosticls-configs.formatters.prettier")
 -- local eslint = require("diagnosticls-configs.linters.eslint")

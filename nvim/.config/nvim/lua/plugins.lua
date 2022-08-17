@@ -31,8 +31,19 @@ return require("packer").startup(function()
 			{ "nvim-telescope/telescope-file-browser.nvim" },
 			{ "nvim-telescope/telescope-frecency.nvim" },
 			{ "nvim-telescope/telescope-dap.nvim" },
+			{ "kelly-lin/telescope-ag" },
 		},
 	})
+	-- use({
+	-- 	"ThePrimeagen/refactoring.nvim",
+	-- 	requires = {
+	-- 		{ "nvim-lua/plenary.nvim" },
+	-- 		{ "nvim-treesitter/nvim-treesitter" },
+	-- 	},
+	-- })
+	use({ "ThePrimeagen/git-worktree.nvim" })
+	use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
+	use({ "monaqa/dial.nvim" })
 	use({ "folke/which-key.nvim" })
 	use({ "luisiacc/gruvbox-baby" })
 	use({ "norcalli/nvim-colorizer.lua" })
@@ -84,6 +95,7 @@ return require("packer").startup(function()
 	use({ "lewis6991/spellsitter.nvim" })
 	use({ "rcarriga/nvim-notify" })
 	use({ "lewis6991/impatient.nvim" })
+	use({ "akinsho/toggleterm.nvim", tag = "v2.*" })
 
 	-- Vimscript plugins
 	-- use({ "flazz/vim-colorschemes" })

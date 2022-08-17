@@ -95,14 +95,6 @@ xnoremap P "+P
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" {{{
 
-nnoremap <C-p> <cmd>Telescope find_files<cr>
-nnoremap <leader>tt <cmd>Telescope<cr>
-nnoremap <leader>tg <cmd>Telescope live_grep<cr>
-nnoremap <leader>tl <cmd>Telescope frecency<cr>
-nnoremap <leader>tb <cmd>Telescope buffers<cr>
-nnoremap <leader>tf <cmd>Telescope file_browser<cr>
-" nnoremap <leader>tf <cmd>Telescope find_files<cr>
-
 
 " Lightspeed
 
@@ -228,8 +220,8 @@ nmap <Leader>k :cprevious<CR>
 " cru 	coerce to SNAKE_UPPERCASE
 " cr- 	coerce to dash-case
 
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
 
 " echo nvim_treesitter#statusline(90)  " 90 can be any length
 " module->expression_statement->call->identifier
@@ -374,7 +366,7 @@ syntax enable
 
 " Set git gutter colors (after config. colors so they don't get overwritten
 highlight clear SignColumn
-highlight FoldColumn guifg=#e4e4e4
+" highlight FoldColumn guifg=#e4e4e4
 " highlight Normal guibg=NONE ctermbg=NONE  " Transparent background
 highlight link IndentBlanklineContextChar GruvboxYellow
 

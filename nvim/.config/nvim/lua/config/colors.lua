@@ -38,6 +38,8 @@ vim.g.gruvbox_baby_highlights = {
 	TelescopeNormal = { bg = colors.dark },
 	VertSplit = { fg = colors.medium_gray },
 	ColorColumn = { bg = colors.medium_gray },
+	FoldColumn = { fg = colors.comment },
+
 	-- LSP
 	LspReferenceRead = { bg = colors.medium_gray, style = "bold" },
 	LspReferenceText = { bg = colors.medium_gray, style = "bold" },

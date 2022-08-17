@@ -16,11 +16,6 @@ vim.o.cursorline = true
 vim.o.laststatus = 3
 -- Use system clipboard
 vim.o.clipboard='unnamedplus'
--- Enable folding
-vim.o.foldmethod='indent'
-vim.o.foldlevel=99
--- Add a bit extra margin to the left
-vim.o.foldcolumn='1'
 -- Diff options
 vim.o.diffopt=vim.o.diffopt .. ',vertical'
 -- Height of the command bar
@@ -121,6 +116,7 @@ vim.o.list = true
 -- Appearance
 --------------------------------------------------------------------------------
 -- vim.o.fillchars=vim.o.fillchars .. 'vert:│'
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.o.background='dark'
 -- Transparent floating windows
 vim.o.pumblend=15

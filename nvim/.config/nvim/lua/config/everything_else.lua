@@ -128,21 +128,131 @@ require("leap").set_default_keymaps()
 
 require("nvim-surround").setup({
 	keymaps = { -- vim-surround style keymaps
-        insert = "<C-g>s",
-        insert_line = "<C-g>S",
-        normal = "ys",
-        normal_cur = "yss",
-        normal_line = "yS",
-        normal_cur_line = "ySS",
-        visual = "S",
-        visual_line = "gS",
-        delete = "ds",
-        change = "cs",
+		insert = "<C-g>s",
+		insert_line = "<C-g>S",
+		normal = "ys",
+		normal_cur = "yss",
+		normal_line = "yS",
+		normal_cur_line = "ySS",
+		visual = "S",
+		visual_line = "gS",
+		delete = "ds",
+		change = "cs",
 	},
-    highlight_motion = {
-        duration = 1000,
-    },
+	highlight_motion = {
+		duration = 1000,
+	},
 })
+
+-- UFO
+vim.o.foldcolumn = "1"
+vim.o.foldnestmax = 1
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.keymap.set("n", "zR", require("ufo").openAllFolds)
+vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
+require("ufo").setup()
+
+-- DIAL
+vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), { noremap = true, desc = "Increment" })
+vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), { noremap = true, desc = "Decrement" })
+vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), { noremap = true, desc = "Increment" })
+vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), { noremap = true, desc = "Decrement" })
+vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), { noremap = true, desc = "Increment" })
+vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), { noremap = true, desc = "Decrement" })
+
+-- TOGGLETERM
+require("toggleterm").setup({
+	open_mapping = [[<c-\><c-\>]],
+	hide_numbers = true,
+	highlights = {
+		Normal = {
+			link = "TelescopeNormal",
+		},
+		NormalFloat = {
+			link = "TelescopeNormal",
+		},
+		FloatBorder = {
+			link = "TelescopeNormal",
+		},
+	},
+	direction = "float", -- 'vertical' | 'horizontal' | 'tab' | 'float'
+	float_opts = {
+		border = "curved", -- 'single' | 'double' | 'shadow' | 'curved' | 'none' ... :h nvim_open_win()
+		-- winblend = 3,
+	},
+	shell = "fish",
+	on_open = function(terminal) end,
+	on_close = function(terminal) end,
+	on_exit = function(terminal, job, exit_code, name)
+		vim.notify("Terminal " .. job .. " exited with code " .. exit_code, "info", {})
+	end,
+})
+
+-- GIT-WORKTREE
+local Worktree = require("git-worktree")
+Worktree.setup({})
+Worktree.on_tree_change(function(op, metadata)
+	if op == Worktree.Operations.Switch then
+		vim.notify("Switched from " .. metadata.prev_path .. " to " .. metadata.path)
+	end
+	if op == Worktree.Operations.Create then
+		vim.notify("Created " .. metadata.branch .. " in " .. metadata.path)
+	end
+	if op == Worktree.Operations.Delete then
+		vim.notify("Deleted " .. metadata.path)
+	end
+end)
+
+-- require("refactoring").setup({})
+-- -- Remaps for the refactoring operations currently offered by the plugin
+-- vim.api.nvim_set_keymap(
+-- 	"v",
+-- 	"<leader>re",
+-- 	[[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
+-- 	{ noremap = true, silent = true, expr = false, desc = "Extract Function" }
+-- )
+-- vim.api.nvim_set_keymap(
+-- 	"v",
+-- 	"<leader>rf",
+-- 	[[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]],
+-- 	{ noremap = true, silent = true, expr = false, desc = "Extract Function To File" }
+-- )
+-- vim.api.nvim_set_keymap(
+-- 	"v",
+-- 	"<leader>rv",
+-- 	[[ <Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>]],
+-- 	{ noremap = true, silent = true, expr = false, desc = "Extract Variable" }
+-- )
+-- vim.api.nvim_set_keymap(
+-- 	"v",
+-- 	"<leader>ri",
+-- 	[[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
+-- 	{ noremap = true, silent = true, expr = false, desc = "Inline Variable" }
+-- )
+--
+-- -- Extract block doesn't need visual mode
+-- vim.api.nvim_set_keymap(
+-- 	"n",
+-- 	"<leader>rb",
+-- 	[[ <Cmd>lua require('refactoring').refactor('Extract Block')<CR>]],
+-- 	{ noremap = true, silent = true, expr = false, desc = "Extract Block" }
+-- )
+-- vim.api.nvim_set_keymap(
+-- 	"n",
+-- 	"<leader>rbf",
+-- 	[[ <Cmd>lua require('refactoring').refactor('Extract Block To File')<CR>]],
+-- 	{ noremap = true, silent = true, expr = false, desc = "Extract Block To File" }
+-- )
+--
+-- -- Inline variable can also pick up the identifier currently under the cursor without visual mode
+-- vim.api.nvim_set_keymap(
+-- 	"n",
+-- 	"<leader>ri",
+-- 	[[ <Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
+-- 	{ noremap = true, silent = true, expr = false, desc = "Inline Variable" }
+-- )
 
 require("spellsitter").setup()
 require("stabilize").setup()

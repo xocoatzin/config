@@ -166,13 +166,13 @@ gls.left[1] = {
     ViMode = {
         provider = function()
             local aliases = {
-                [110] = 'NORMAL',
-                [105] = 'INSERT',
-                [99] = 'COMMAND',
-                [116] = 'TERMINAL',
-                [118] = 'VISUAL',
-                [22] = 'V-BLOCK',
-                [86] = 'V-LINE',
+                [110] = 'N',
+                [105] = 'I',
+                [99] = 'C',
+                [116] = 'T',
+                [118] = 'V',
+                [22] = 'VB',
+                [86] = 'VL',
                 [82] = 'REPLACE',
                 [115] = 'SELECT',
                 [83] = 'S-LINE'
@@ -273,47 +273,47 @@ local function lsp_status(status)
     return shorter_stat
 end
 
-local function get_coc_lsp()
-  local status = vim.fn['coc#status']()
-  if not status or status == '' then
-      return ''
-  end
-  return lsp_status(status)
-end
+-- local function get_coc_lsp()
+--   local status = vim.fn['coc#status']()
+--   if not status or status == '' then
+--       return ''
+--   end
+--   return lsp_status(status)
+-- end
+--
+-- function get_diagnostic_info()
+--   if vim.fn.exists('*coc#rpc#start_server') == 1 then
+--     return get_coc_lsp()
+--     end
+--   return ''
+-- end
+--
+-- CocStatus = get_diagnostic_info
+--
+-- gls.right[1] = {
+--     CocStatus = {
+--      provider = CocStatus,
+--      highlight = {colors.fg, colors.bg},
+--      -- icon = ' COC: '
+--     }
+-- }
 
-function get_diagnostic_info()
-  if vim.fn.exists('*coc#rpc#start_server') == 1 then
-    return get_coc_lsp()
-    end
-  return ''
-end
-
-CocStatus = get_diagnostic_info
-
-gls.right[1] = {
-    CocStatus = {
-     provider = CocStatus,
-     highlight = {colors.fg, colors.bg},
-     -- icon = ' COC: '
-    }
-}
-
-local function get_current_func()
-  local has_func, func_name = pcall(vim.fn.nvim_buf_get_var,0,'coc_current_function')
-  if not has_func then
-    return
-  end
-  return func_name
-end
-CocFunc = get_current_func
-
-gls.right[2] = {
-  CocFunc = {
-    provider = CocFunc,
-    icon = '  λ ',
-    highlight = {colors.fg, colors.bg},
-  }
-}
+-- local function get_current_func()
+--   local has_func, func_name = pcall(vim.fn.nvim_buf_get_var,0,'coc_current_function')
+--   if not has_func then
+--     return
+--   end
+--   return func_name
+-- end
+-- CocFunc = get_current_func
+--
+-- gls.right[2] = {
+--   CocFunc = {
+--     provider = CocFunc,
+--     icon = '  λ ',
+--     highlight = {colors.fg, colors.bg},
+--   }
+-- }
 
 -- Right side
 gls.right[3] = {
