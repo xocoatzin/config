@@ -120,6 +120,7 @@ vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.o.background='dark'
 -- Transparent floating windows
 vim.o.pumblend=15
+-- vim.o.winbar=[[%=%m %f]]
 
 -- Enable 256 colors palette in Gnome Terminal
 -- iTerm is `truecolor`
