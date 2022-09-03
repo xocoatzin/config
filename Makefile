@@ -3,7 +3,7 @@
 	# @stow -D ${folder} && stow ${folder}
 	# 
 	#
-SUBDIRS = nvim ag python wezterm
+SUBDIRS = nvim ag python wezterm fish
 
 .PHONY: all $(SUBDIRS)
 
@@ -13,6 +13,3 @@ all:
 $(SUBDIRS):
 	@echo Installing $@
 	@stow -D $@ && stow --target=${HOME} $@
-
-
-
