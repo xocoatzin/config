@@ -1,55 +1,58 @@
 local wezterm = require("wezterm")
 
-local window_background_gradient = {
-	-- Can be "Vertical" or "Horizontal".  Specifies the direction
-	-- in which the color gradient varies.  The default is "Horizontal",
-	-- with the gradient going from left-to-right.
-	-- Linear and Radial gradients are also supported; see the other
-	-- examples below
-	orientation = { Linear = { angle = -70.0 } },
+local bg = function()
+	local hue = math.random(180, 220)
+	return {
+		-- Can be "Vertical" or "Horizontal".  Specifies the direction
+		-- in which the color gradient varies.  The default is "Horizontal",
+		-- with the gradient going from left-to-right.
+		-- Linear and Radial gradients are also supported; see the other
+		-- examples below
+		orientation = { Linear = { angle = -70.0 } },
 
-	-- Specifies the set of colors that are interpolated in the gradient.
-	-- Accepts CSS style color specs, from named colors, through rgb
-	-- strings and more
-	colors = {
-		-- "#32302f",
-		"hsv(160deg, 15%, 17%)",
-		"hsv(160deg, 10%, 5%)",
-	},
+		-- Specifies the set of colors that are interpolated in the gradient.
+		-- Accepts CSS style color specs, from named colors, through rgb
+		-- strings and more
+		colors = {
+			-- "#32302f",
+			"hsl(" .. hue .. ", 15%, 18%)",
+			"hsl(" .. hue .. ", 10%, 5%)",
+		},
 
-	-- Instead of specifying `colors`, you can use one of a number of
-	-- predefined, preset gradients.
-	-- A list of presets is shown in a section below.
-	-- preset = "Warm",
+		-- Instead of specifying `colors`, you can use one of a number of
+		-- predefined, preset gradients.
+		-- A list of presets is shown in a section below.
+		-- preset = "Warm",
 
-	-- Specifies the interpolation style to be used.
-	-- "Linear", "Basis" and "CatmullRom" as supported.
-	-- The default is "Linear".
-	interpolation = "Linear",
+		-- Specifies the interpolation style to be used.
+		-- "Linear", "Basis" and "CatmullRom" as supported.
+		-- The default is "Linear".
+		interpolation = "Basis",
 
-	-- How the colors are blended in the gradient.
-	-- "Rgb", "LinearRgb", "Hsv" and "Oklab" are supported.
-	-- The default is "Rgb".
-	blend = "Rgb",
+		-- How the colors are blended in the gradient.
+		-- "Rgb", "LinearRgb", "Hsv" and "Oklab" are supported.
+		-- The default is "Rgb".
+		blend = "Hsv",
 
-	-- To avoid vertical color banding for horizontal gradients, the
-	-- gradient position is randomly shifted by up to the `noise` value
-	-- for each pixel.
-	-- Smaller values, or 0, will make bands more prominent.
-	-- The default value is 64 which gives decent looking results
-	-- on a retina macbook pro display.
-	-- noise = 64,
+		-- To avoid vertical color banding for horizontal gradients, the
+		-- gradient position is randomly shifted by up to the `noise` value
+		-- for each pixel.
+		-- Smaller values, or 0, will make bands more prominent.
+		-- The default value is 64 which gives decent looking results
+		-- on a retina macbook pro display.
+		noise = 300,
 
-	-- By default, the gradient smoothly transitions between the colors.
-	-- You can adjust the sharpness by specifying the segment_size and
-	-- segment_smoothness parameters.
-	-- segment_size configures how many segments are present.
-	-- segment_smoothness is how hard the edge is; 0.0 is a hard edge,
-	-- 1.0 is a soft edge.
+		-- By default, the gradient smoothly transitions between the colors.
+		-- You can adjust the sharpness by specifying the segment_size and
+		-- segment_smoothness parameters.
+		-- segment_size configures how many segments are present.
+		-- segment_smoothness is how hard the edge is; 0.0 is a hard edge,
+		-- 1.0 is a soft edge.
 
-	-- segment_size = 11,
-	-- segment_smoothness = 0.0,
-}
+		-- segment_size = 11,
+		-- segment_smoothness = 0.0,
+	}
+end
 
 local window_frame = {
 	-- The font used in the tab bar.
@@ -153,8 +156,8 @@ return {
 	color_scheme = "Gruvbox Dark",
 	colors = colors,
 	window_frame = window_frame,
-	window_background_gradient = window_background_gradient,
-	default_prog = { "/usr/local/bin/fish", "-l" },
+	window_background_gradient = bg(),
+	default_prog = { "/usr/bin/fish", "-l" },
 	use_dead_keys = false,
 	inactive_pane_hsb = {
 		saturation = 0.9,
