@@ -4,7 +4,13 @@
 --   require("plenary.reload").reload_module(dir)
 -- end
 
-vim.notify = require("notify")
+local notify = require("notify")
+notify.setup({
+	background_colour = "#000000",
+	stages = "slide",
+	timeout = 5000,
+})
+vim.notify = notify
 
 require("config.options")
 require("config.telescope")
@@ -17,3 +23,5 @@ require("config.dap")
 require("config.snippets")
 require("config.everything_else")
 require("config.colors")
+
+require("config.my_meta")

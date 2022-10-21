@@ -1,7 +1,3 @@
-require("notify").setup({
-	background_colour = "#000000",
-})
-
 require("Comment").setup({
 	toggler = {
 		---Line-comment toggle keymap
@@ -139,7 +135,7 @@ require("nvim-surround").setup({
 		delete = "ds",
 		change = "cs",
 	},
-	highlight_motion = {
+	highlight = {
 		duration = 1000,
 	},
 })

@@ -1,3 +1,16 @@
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
 return require("packer").startup(function()
 	use({ "wbthomason/packer.nvim" })
 	use({
@@ -6,7 +19,7 @@ return require("packer").startup(function()
 			{ "nvim-treesitter/nvim-treesitter-textobjects" },
 			{ "nvim-treesitter/playground" },
 		},
-		run = ":TSUpdate",
+        run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
 	})
 	use({ "numToStr/Comment.nvim" })
 	use({ "akinsho/nvim-bufferline.lua" })
@@ -49,6 +62,7 @@ return require("packer").startup(function()
 	use({ "luisiacc/gruvbox-baby" })
 	use({ "norcalli/nvim-colorizer.lua" })
 	use({ "lewis6991/gitsigns.nvim" })
+	use({ "mhinz/vim-signify" })
 	use({ "karb94/neoscroll.nvim" })
 	use({ "windwp/nvim-autopairs" })
 	use({
@@ -76,7 +90,7 @@ return require("packer").startup(function()
 			{ "williamboman/mason.nvim" },
 			{ "williamboman/mason-lspconfig.nvim" },
 			{ "creativenull/diagnosticls-configs-nvim" },
-			-- { "jose-elias-alvarez/null-ls.nvim" },
+			{ "jose-elias-alvarez/null-ls.nvim" },
 		},
 	})
 	use({
@@ -112,7 +126,14 @@ return require("packer").startup(function()
 	use({ "tpope/vim-fugitive" })
 	use({ "tpope/vim-sleuth" })
 
+	-- Meta
+	use { "~/fb-editor-support/nvim", as = "meta.nvim" }
+
 	-- use 'SirVer/ultisnips'
 	-- use 'honza/vim-snippets'
 	-- use 'tmhedberg/SimpylFold'
+
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)

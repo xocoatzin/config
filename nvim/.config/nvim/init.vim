@@ -1,5 +1,11 @@
 " let g:python3_host_prog = '~/.venv/nvim/bin/python3'
-let g:python3_host_prog = 'python3'
+lua << EOF
+if vim.fn.executable "/usr/bin/python3" > 0 then
+  vim.g.python3_host_prog = '/usr/bin/python3'
+else
+  vim.g.python3_host_prog = 'python3'
+end
+EOF
 
 let mapleader = ","
 let g:mapleader = ","
