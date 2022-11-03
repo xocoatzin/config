@@ -3,7 +3,7 @@
 	# @stow -D ${folder} && stow ${folder}
 	# 
 	#
-SUBDIRS = nvim ag python wezterm fish
+SUBDIRS = nvim ag python wezterm fish starship
 
 .PHONY: all $(SUBDIRS)
 

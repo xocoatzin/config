@@ -1,3 +1,30 @@
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  sync_root_with_cwd = true,
+  disable_netrw = true,
+  view = {
+    adaptive_size = true,
+    mappings = {
+      list = {
+        { key = "u", action = "dir_up" },
+      },
+    },
+  },
+  renderer = {
+    group_empty = true,
+    special_files = {
+      "Makefile",
+      "README.md",
+      "BUCK",
+    }
+  },
+  filters = {
+    dotfiles = true,
+    exclude = { ".config", ".gitignore" },
+  },
+})
+vim.keymap.set("n", [[<c-n>]], "<Cmd>NvimTreeFindFileToggle<CR>", { buffer = bufnr, silent = true, desc = "[Tree] Toggle" })
+
 require("Comment").setup({
 	toggler = {
 		---Line-comment toggle keymap

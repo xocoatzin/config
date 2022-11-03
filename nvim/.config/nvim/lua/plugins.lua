@@ -111,7 +111,13 @@ return require("packer").startup(function()
 	use({ "rcarriga/nvim-notify" })
 	use({ "lewis6991/impatient.nvim" })
 	use({ "akinsho/toggleterm.nvim", tag = "v2.*" })
-
+	use({
+	  'nvim-tree/nvim-tree.lua',
+	  requires = {
+	    'nvim-tree/nvim-web-devicons',
+	  },
+	  tag = 'nightly',
+	})
 	-- Vimscript plugins
 	-- use({ "flazz/vim-colorschemes" })
 	use({ "flwyd/vim-conjoin" })
@@ -120,8 +126,8 @@ return require("packer").startup(function()
 	-- use({ "machakann/vim-sandwich" })
 	use({ "nelstrom/vim-visual-star-search" })
 	use({ "qpkorr/vim-bufkill" })
-	use({ "scrooloose/nerdtree" })
-	use({ "tiagofumo/vim-nerdtree-syntax-highlight" })
+	-- use({ "scrooloose/nerdtree" })
+	-- use({ "tiagofumo/vim-nerdtree-syntax-highlight" })
 	use({ "tpope/vim-abolish" })
 	use({ "tpope/vim-fugitive" })
 	use({ "tpope/vim-sleuth" })

@@ -40,7 +40,7 @@ local bg = function()
 		-- Smaller values, or 0, will make bands more prominent.
 		-- The default value is 64 which gives decent looking results
 		-- on a retina macbook pro display.
-		noise = 300,
+		noise = 100,
 
 		-- By default, the gradient smoothly transitions between the colors.
 		-- You can adjust the sharpness by specifying the segment_size and
@@ -65,7 +65,7 @@ local window_frame = {
 
 	-- The size of the font in the tab bar.
 	-- Default to 10. on Windows but 12.0 on other systems
-	font_size = 13.0,
+	font_size = 14.0,
 
 	-- The overall background color of the tab bar when
 	-- the window is focused
@@ -157,7 +157,7 @@ return {
 	colors = colors,
 	window_frame = window_frame,
 	window_background_gradient = bg(),
-	default_prog = { "/usr/bin/fish", "-l" },
+--	default_prog = { "fish", "-l" },
 	use_dead_keys = false,
 	inactive_pane_hsb = {
 		saturation = 0.9,

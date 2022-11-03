@@ -104,8 +104,8 @@ xnoremap P "+P
 
 " Lightspeed
 
-nmap <leader>s <Plug>Lightspeed_s
-nmap <leader>S <Plug>Lightspeed_S
+" nmap <leader>s <Plug>Lightspeed_s
+" nmap <leader>S <Plug>Lightspeed_S
 
 " Vim Abolish
 " Usage: :Subvert/address{,es}/reference{,s}/g
@@ -114,20 +114,20 @@ nmap <leader>S <Plug>Lightspeed_S
 "        :Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or}  {despe,sepa}rat{}
 
 " Ignore files in NERDTree
-let g:NERDTreeIgnore=['\.pyc$', '\~$']
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
-
-let g:webdevicons_conceal_nerdtree_brackets = 1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 0
-
-" Close VIM if NT is the only window open
-augroup GroupNerd
-    autocmd!
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
-" Toggle NerdTree
-map <C-N> :NERDTreeToggle<CR>
+" let g:NERDTreeIgnore=['\.pyc$', '\~$']
+" let g:NERDTreeDirArrowExpandable = ''
+" let g:NERDTreeDirArrowCollapsible = ''
+"
+" let g:webdevicons_conceal_nerdtree_brackets = 1
+" let g:WebDevIconsUnicodeDecorateFolderNodes = 0
+"
+" " Close VIM if NT is the only window open
+" augroup GroupNerd
+"     autocmd!
+"     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" augroup END
+" " Toggle NerdTree
+" map <C-N> :NERDTreeToggle<CR>
 
 " ChadTree
 "

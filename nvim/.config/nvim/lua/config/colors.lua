@@ -34,11 +34,18 @@ vim.g.gruvbox_baby_highlights = {
 	Visual = { bg = "#444455" },
 	Search = { bg = colors.bright_yellow, fg = colors.dark },
 	Pmenu = { bg = colors.medium_gray, blend = 0.7 },
-	TelescopeBorder = { bg = colors.dark, fg = colors.dark },
-	TelescopeNormal = { bg = colors.dark },
 	VertSplit = { fg = colors.medium_gray },
 	ColorColumn = { bg = colors.medium_gray },
 	FoldColumn = { fg = colors.comment },
+
+	-- Telescope
+	TelescopeBorder = { bg = colors.dark, fg = colors.dark },
+	TelescopeNormal = { bg = colors.dark },
+
+	-- NvimTree
+	NvimTreeWinSeparator = { bg = colors.dark, fg = colors.dark },
+	NvimTreeNormal = { bg = colors.dark },
+	NvimTreeNormalNC = { bg = colors.dark },
 
 	-- LSP
 	LspReferenceRead = { bg = colors.medium_gray, style = "bold" },

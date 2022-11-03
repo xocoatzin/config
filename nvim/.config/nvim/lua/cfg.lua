@@ -4,6 +4,10 @@
 --   require("plenary.reload").reload_module(dir)
 -- end
 
+-- Disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 local notify = require("notify")
 notify.setup({
 	background_colour = "#000000",

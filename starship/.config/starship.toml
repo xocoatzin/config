@@ -1,0 +1,9 @@
+[battery]
+format = "[$symbol]($style)"
+
+[[battery.display]]
+threshold = 100
+style = "bold green"
+
+[hg_branch]
+disabled = false

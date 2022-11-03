@@ -9,7 +9,8 @@ vim.o.mouse = 'a'
 
 -- Enables 24-bit RGB color (and use "gui" highlights)
 vim.o.termguicolors = true
-vim.o.guifont='FiraCode Nerd Font:h14'
+vim.o.guifont='JetBrainsMono Nerd Font:h14'
+-- vim.o.guifont='FiraCode Nerd Font:h14'
 -- Highlight the screen line of the cursor with CursorLine
 vim.o.cursorline = true
 -- Global Statusline
@@ -120,7 +121,7 @@ vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.o.background='dark'
 -- Transparent floating windows
 vim.o.pumblend=15
--- vim.o.winbar=[[%=%m %f]]
+vim.o.winbar=[[%=%m %f]]
 
 -- Enable 256 colors palette in Gnome Terminal
 -- iTerm is `truecolor`

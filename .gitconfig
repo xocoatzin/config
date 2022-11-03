@@ -1,7 +1,6 @@
 [user]
 	name = Alan Torres
-	email = atorresgomez@magicleap.com
-	signingkey = D81CEC3B92CB0851
+	email = ator@fb.com
 [gpg]
 	program = gpg
 [commit]
@@ -10,3 +9,7 @@
 	editor = nvim
 [push]
 	default = current
+[http]
+  proxy=https://fwdproxy:8082
+  proxySSLCert=/var/facebook/credentials/$USER/x509/$USER.pem
+  proxySSLKey=/var/facebook/credentials/$USER/x509/$USER.pem
