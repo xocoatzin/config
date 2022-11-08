@@ -15,6 +15,7 @@ require("nvim-tree").setup({
     special_files = {
       "Makefile",
       "README.md",
+      "readme.md",
       "BUCK",
     }
   },
