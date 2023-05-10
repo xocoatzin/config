@@ -17,6 +17,7 @@ vim.o.cursorline = true
 vim.o.laststatus = 3
 -- Use system clipboard
 vim.o.clipboard='unnamedplus'
+-- vim.g.clipboard=vim.o.clipboard
 -- Diff options
 vim.o.diffopt=vim.o.diffopt .. ',vertical'
 -- Height of the command bar
@@ -105,6 +106,7 @@ vim.o.wrap=true
 --------------------------------------------------------------------------------
 -- Spell checking
 --------------------------------------------------------------------------------
+vim.o.spell=true
 vim.o.spelllang='en_us'
 
 

@@ -45,6 +45,7 @@ return require("packer").startup(function()
 			{ "nvim-telescope/telescope-file-browser.nvim" },
 			{ "nvim-telescope/telescope-frecency.nvim" },
 			{ "nvim-telescope/telescope-dap.nvim" },
+			{ "nvim-telescope/telescope-ui-select.nvim" },
 			{ "kelly-lin/telescope-ag" },
 		},
 	})
@@ -107,7 +108,7 @@ return require("packer").startup(function()
 	use({ "andythigpen/nvim-coverage" })
 	use({ "ggandor/leap.nvim" })
 	use({ "kylechui/nvim-surround" })
-	use({ "lewis6991/spellsitter.nvim" })
+	-- use({ "lewis6991/spellsitter.nvim" })  -- Bug after updating to .9
 	use({ "rcarriga/nvim-notify" })
 	use({ "lewis6991/impatient.nvim" })
 	use({ "akinsho/toggleterm.nvim", tag = "v2.*" })
@@ -118,6 +119,13 @@ return require("packer").startup(function()
 	  },
 	  tag = 'nightly',
 	})
+	-- use({
+	--   "giusgad/pets.nvim",
+	--   requires = {
+	--     "giusgad/hologram.nvim",
+	--     "MunifTanjim/nui.nvim",
+	--   }
+	-- })
 	-- Vimscript plugins
 	-- use({ "flazz/vim-colorschemes" })
 	use({ "flwyd/vim-conjoin" })
@@ -131,6 +139,7 @@ return require("packer").startup(function()
 	use({ "tpope/vim-abolish" })
 	use({ "tpope/vim-fugitive" })
 	use({ "tpope/vim-sleuth" })
+	use({ "mbbill/undotree" })
 
 	-- Meta
 	use { "~/fb-editor-support/nvim", as = "meta.nvim" }

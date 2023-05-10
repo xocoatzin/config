@@ -322,11 +322,6 @@ _G.packer_plugins = {
     path = "/Users/ator/.local/share/nvim/site/pack/packer/start/rust-tools.nvim",
     url = "https://github.com/simrat39/rust-tools.nvim"
   },
-  ["spellsitter.nvim"] = {
-    loaded = true,
-    path = "/Users/ator/.local/share/nvim/site/pack/packer/start/spellsitter.nvim",
-    url = "https://github.com/lewis6991/spellsitter.nvim"
-  },
   ["sqlite.lua"] = {
     loaded = true,
     path = "/Users/ator/.local/share/nvim/site/pack/packer/start/sqlite.lua",
@@ -367,6 +362,11 @@ _G.packer_plugins = {
     path = "/Users/ator/.local/share/nvim/site/pack/packer/start/telescope-github.nvim",
     url = "https://github.com/nvim-telescope/telescope-github.nvim"
   },
+  ["telescope-ui-select.nvim"] = {
+    loaded = true,
+    path = "/Users/ator/.local/share/nvim/site/pack/packer/start/telescope-ui-select.nvim",
+    url = "https://github.com/nvim-telescope/telescope-ui-select.nvim"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/ator/.local/share/nvim/site/pack/packer/start/telescope.nvim",
@@ -376,6 +376,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/ator/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
     url = "https://github.com/akinsho/toggleterm.nvim"
+  },
+  undotree = {
+    loaded = true,
+    path = "/Users/ator/.local/share/nvim/site/pack/packer/start/undotree",
+    url = "https://github.com/mbbill/undotree"
   },
   ["vim-abolish"] = {
     loaded = true,

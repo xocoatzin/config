@@ -10,11 +10,11 @@ require("mason-lspconfig").setup({
 		"diagnosticls",
 		"dockerls",
 		"eslint",
-		"gopls",
+		-- "gopls",
 		"graphql",
 		"html",
 		"jsonls",
-		"sumneko_lua",
+		-- "sumneko_lua",
 		"pyright",
 		"terraformls",
 		"tsserver",
@@ -194,11 +194,10 @@ if require("config.my_meta").is_meta then
 		"vimls",
 		"zk",
 		"hhvm",
-		"rusty@meta",
+		-- "rusty@meta",
+		"wasabi@meta",
 		"pyls@meta",
-		-- "wasabi@meta",
-		"pyre@meta",
-		"cppls@meta",
+		-- "cppls@meta",
 		"buckls@meta",
 		"prettier@meta",
 	}
@@ -209,7 +208,7 @@ if require("config.my_meta").is_meta then
 		sources = {
 			-- null_ls.builtins.completion.spell,
 			meta.null_ls.diagnostics.arclint,
-			meta.null_ls.formatting.arclint,
+			-- meta.null_ls.formatting.arclint,
 			null_ls.builtins.formatting.trim_whitespace
 		},
 	})
