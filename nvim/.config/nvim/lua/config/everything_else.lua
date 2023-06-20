@@ -364,3 +364,5 @@ require("which-key").setup({})
 --     -- doesn't work for you then set this to true and the popup will use hl and will be spawned above the statusline (hopefully)
 --   }
 -- })
+
+vim.cmd [[ autocmd BufRead,BufNewFile *.bxl,BUCK,TARGETS set filetype=bzl ]]

@@ -188,6 +188,7 @@ if require("config.my_meta").is_meta then
 	local null_ls = require("null-ls")
 
 	local language_servers = {
+		"buck2",
 		"bashls",
 		-- "diagnosticls",
 		"jsonls",

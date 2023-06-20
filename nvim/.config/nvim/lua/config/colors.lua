@@ -30,6 +30,11 @@ if os.getenv("TERM_PROGRAM") == "WezTerm" then
 else
 	vim.g.gruvbox_baby_transparent_mode = 0
 end
+
+if vim.g.neovide then
+	vim.g.gruvbox_baby_transparent_mode = 0
+end
+
 vim.g.gruvbox_baby_highlights = {
 	Visual = { bg = "#444455" },
 	Search = { bg = colors.bright_yellow, fg = colors.dark },
