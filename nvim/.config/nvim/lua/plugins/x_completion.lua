@@ -1,4 +1,5 @@
 return {
+
   {
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
@@ -54,10 +55,12 @@ return {
         { name = "emoji" },
         { name = "nvim_lua" },
         { name = "spell" },
+        { name = "natdat" },
         { name = "buffer" },
       })
     end,
   },
+
   -- CMP
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/cmp-buffer" },
@@ -69,4 +72,6 @@ return {
   { "hrsh7th/cmp-nvim-lsp-signature-help" },
   { "f3fora/cmp-spell" },
   { "saadparwaiz1/cmp_luasnip" },
+  -- @date auto complete:
+  { "Gelio/cmp-natdat", config = true },
 }

@@ -10,19 +10,19 @@ return {
         sync_install = false,
         auto_install = true,
         indent = { enable = true },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            -- init_selection = "<C-space>",
-            -- node_incremental = "<C-space>",
-            -- scope_incremental = false,
-            -- node_decremental = "<bs>",
-            init_selection = "gnn",
-            node_incremcntal = "grn",
-            scope_incremental = "grc",
-            node_decremental = "grm",
-          },
-        },
+        -- incremental_selection = {
+        --   enable = true,
+        --   keymaps = {
+        --     -- init_selection = "<C-space>",
+        --     -- node_incremental = "<C-space>",
+        --     -- scope_incremental = false,
+        --     -- node_decremental = "<bs>",
+        --     init_selection = "gnn",
+        --     node_incremcntal = "grn",
+        --     scope_incremental = "grc",
+        --     node_decremental = "grm",
+        --   },
+        -- },
         highlight = {
           enable = true,
           disable = function(lang, buf)

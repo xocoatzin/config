@@ -158,7 +158,7 @@ return {
 	colors = colors,
 	window_frame = window_frame,
 	window_background_gradient = bg(),
-	window_background_opacity = 0.9,
+	window_background_opacity = 0.97,
 	macos_window_background_blur = 1000,
 	default_prog = { "/usr/local/bin/fish", "-l" },
 	use_dead_keys = false,

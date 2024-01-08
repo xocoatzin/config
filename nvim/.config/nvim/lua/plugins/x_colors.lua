@@ -33,7 +33,7 @@ return {
       vim.g.gruvbox_baby_telescope_theme = 1
       -- TODO: Only if set: WEZTERM_UNIX_SOCKET
       if os.getenv("TERM_PROGRAM") == "WezTerm" then
-        vim.g.gruvbox_baby_transparent_mode = 1
+        vim.g.gruvbox_baby_transparent_mode = 0
       else
         vim.g.gruvbox_baby_transparent_mode = 0
       end

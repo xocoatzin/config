@@ -13,8 +13,9 @@ function berry -a mode -a project -d 'Run the verification tests for a project'
       set -g envv ''
       if string match -qr 'fbsource-daco-web' $project
           set -g target daco_web_.0
-          set -g flavor 'ar_slam_web:ar_slam_web -- -v web --port 8080 --host 0.0.0.0'
-          set -g envv 'DACO_PREFLIGHT_CHECKS=DISABLE DACO_DB_DIR=~/daco'
+          set -g flavor 'ar_slam_web:ar_slam_web -- -v --config=config:///flavors/dragonfly.yaml web --port 8080 --host 0.0.0.0'
+          set -g envv 'DACO_DB_DIR=~/daco'
+          # set -g envv 'DACO_PREFLIGHT_CHECKS=DISABLE DACO_DB_DIR=~/daco'
       end
 
       tmux send-keys -t $target C-c C-c
@@ -25,7 +26,7 @@ function berry -a mode -a project -d 'Run the verification tests for a project'
           tmux send-keys -t $target 'pyre -l flavors/ar_slam_web; '
           tmux send-keys -t $target 'buck test @arvr/mode/mac/rosetta/opt //arvr/python/daco/flavors/ar_slam_web/... --always-exclude --exclude slow; '
       else if string match -q 'run' $mode
-          tmux send-keys -t $target "$envv DACO_MOCK_DEVICE_ACCESS=yes buck run @arvr/mode/mac/rosetta/opt //arvr/python/daco/flavors/$flavor; "
+          tmux send-keys -t $target "$envv buck run @arvr/mode/mac/rosetta/opt //arvr/python/daco/flavors/$flavor; "
       end
       tmux send-keys -t $target ENTER 
       set -e target

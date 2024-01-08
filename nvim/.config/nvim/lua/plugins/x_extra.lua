@@ -1,4 +1,66 @@
 return {
+
+  {
+    "folke/flash.nvim",
+    opts = {
+      search = {
+        multi_window = false,
+        incremental = true,
+      },
+      modes = {
+        search = {
+          enabled = false,
+        },
+        -- for some reason, f, F, t, T not working as advertised
+        char = {
+          enabled = false,
+        },
+      },
+    },
+    keys = {
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
+    },
+  },
+
   {
     "rcarriga/nvim-notify",
     opts = function(_, opts)
@@ -29,10 +91,12 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     opts = function(_, opts)
-      local icons = require("lazyvim.config").icons
-      local Util = require("lazyvim.util")
-
       opts.options.section_separators = { left = "", right = "" }
+      opts.sections.lualine_a = {
+        function()
+          return string.upper(vim.api.nvim_get_mode()["mode"])
+        end,
+      }
     end,
   },
 
@@ -40,32 +104,15 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = function(_, opts)
-      opts.space_char_blankline = " "
-      opts.use_treesitter = true
-      opts.show_current_context = true
-      opts.show_current_context_start = false
-      opts.show_end_of_line = true
-      opts.context_patterns = { ".*" }
-      opts.show_first_indent_level = false
-      opts.filetype_exclude = {}
-      opts.buftype_exclude = { "terminal" }
-    end,
-  },
-  { "echasnovski/mini.indentscope", enabled = false },
-
-  {
-    "folke/noice.nvim",
-    enabled = false,
-    opts = function(_, opts)
-      -- opts.cmdline = { view = "cmdline" }
-    end,
-  },
-
-  {
-    "goolord/alpha-nvim",
-    event = "VimEnter",
-    opts = function(_, opts)
-      opts.section.header.val = ""
+      -- opts.space_char_blankline = " "
+      -- opts.use_treesitter = true
+      -- opts.show_current_context = true
+      -- opts.show_current_context_start = false
+      -- opts.show_end_of_line = true
+      -- opts.context_patterns = { ".*" }
+      -- opts.show_first_indent_level = false
+      -- opts.filetype_exclude = {}
+      -- opts.buftype_exclude = { "terminal" }
     end,
   },
 
@@ -89,7 +136,7 @@ return {
     end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
       table.insert(opts.sources, nls.builtins.formatting.prettierd)
@@ -122,6 +169,7 @@ return {
   --   },
   -- },
 
+  { "Bekaboo/deadcolumn.nvim" },
   { "jose-elias-alvarez/typescript.nvim" },
 
   -- Vimscript

@@ -11,7 +11,8 @@ return {
         -- { "<leader>tg", Util.telescope("live_grep"), desc = "[Telescope] Live Grep" },
         -- { "<leader>tr", Util.telescope("reloader"), desc = "[Telescope] Reloader" },
         { "<leader>tb", Util.telescope("buffers"), desc = "Switch Buffer" },
-        { "<c-p>", Util.telescope("find_files"), desc = "Find Files (root dir)" },
+        { "<c-p>", Util.telescope("find_files", { cwd = false }), desc = "Find Files" },
+        { "<leader><c-p>", Util.telescope("find_files", { cwd = false }), desc = "Find Files (root dir)" },
         {
           "<leader>tm",
           function()
@@ -20,12 +21,23 @@ return {
           end,
           desc = "[Telescope] Myles",
         },
+        { "<leader>tu", "<cmd>Telescope undo<cr>", desc = "Undo Tree" },
         -- Lazy
         { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
         { "<leader>/", Util.telescope("live_grep"), desc = "Grep (root dir)" },
         { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
         { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
         -- find
+        {
+          "<leader>tf",
+          function()
+            require("telescope").extensions.frecency.frecency({
+              sorter = require("telescope").extensions.fzf.native_fzf_sorter(),
+              workspace = "CWD",
+            })
+          end,
+          desc = "Buffers",
+        },
         -- { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
         -- { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
         -- { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
@@ -42,8 +54,8 @@ return {
         -- { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
         -- { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
         -- { "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
-        { "<leader>tg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-        { "<leader>tG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+        { "<leader>tG", Util.telescope("live_grep"), desc = "Grep (root dir)" },
+        { "<leader>tg", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
         -- { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
         -- { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
         -- { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
@@ -126,14 +138,25 @@ return {
     -- },
     -- },
     opts = function(_, opts)
+      local telescope = require("telescope")
+      telescope.load_extension("fzf")
+      telescope.load_extension("undo")
+      -- telescope.load_extension("ag")
+      -- telescope.load_extension("file_browser")
+      -- telescope.load_extension("git_worktree")
+      telescope.load_extension("frecency")
+      -- telescope.load_extension("gh")
+      -- telescope.load_extension("dap")
+      -- telescope.load_extension("notify")
+      -- telescope.load_extension("ui-select")
+      --
       local actions = require("telescope.actions")
+      local find_files = {}
       if vim.fn.executable("fd") == 1 then
         -- apt install fd-find
-        local find_files = {
+        find_files = {
           find_command = { "fd", "--hidden", "--type=f", "--strip-cwd-prefix", "--exclude=.git/*" },
         }
-      else
-        local find_files = {}
       end
       return {
         defaults = {
@@ -179,26 +202,16 @@ return {
           file_browser = {
             hijack_netwr = true,
           },
+          undo = {},
         },
       }
     end,
+    -- config = function()
+    -- end,
     dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      build = "make",
-      config = function()
-        telescope = require("telescope")
-        telescope.load_extension("fzf")
-        -- telescope.load_extension("ag")
-        -- telescope.load_extension("fzf")
-        -- telescope.load_extension("file_browser")
-        -- telescope.load_extension("git_worktree")
-        -- sudo apt install sqlite3
-        --telescope.load_extension("frecency")
-        -- telescope.load_extension("gh")
-        -- telescope.load_extension("dap")
-        -- telescope.load_extension("notify")
-        -- telescope.load_extension("ui-select")
-      end,
+      { "debugloop/telescope-undo.nvim" },
+      { "nvim-telescope/telescope-frecency.nvim" },
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
   },
 }

@@ -1,15 +1,16 @@
 return {
-  {
-    "kosayoda/nvim-lightbulb",
-    opts = {
-      autocmd = { enabled = true },
-    },
-  },
+  -- {
+  --   "kosayoda/nvim-lightbulb",
+  --   opts = {
+  --     autocmd = { enabled = true },
+  --   },
+  -- },
 
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
-      opts.autoformat = true
+      vim.g.autoformat = true
+      -- opts.autoformat = true
       opts.servers.pyright = {}
       opts.servers.ruff_lsp = {}
       opts.servers.lua_ls = {
@@ -82,6 +83,11 @@ return {
             completeFunctionCalls = true,
           },
         },
+      }
+      local clangd_capabilities = vim.lsp.protocol.make_client_capabilities()
+      clangd_capabilities.offsetEncoding = { "utf-16" }
+      opts.servers.clangd = {
+        capabilities = clangd_capabilities,
       }
       opts.setup.tsserver = function(_, _opts)
         require("typescript").setup({ server = _opts })
