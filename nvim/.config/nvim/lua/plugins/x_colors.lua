@@ -43,6 +43,9 @@ return {
       end
 
       vim.g.gruvbox_baby_highlights = {
+        WinBar = { bg = colors.blue_gray },
+        WinBarNC = { bg = colors.background },
+
         -- Visual = { bg = "#444455" },
         Search = { bg = colors.bright_yellow, fg = colors.dark },
         Pmenu = { bg = colors.medium_gray, blend = 0.7 },

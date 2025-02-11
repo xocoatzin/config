@@ -35,6 +35,7 @@
         "/Users/ator/.local/share/nvim/lazy/cmp-nvim-lsp/after",
         "/Users/ator/.local/share/nvim/lazy/gruvbox-baby/after",
         "/Users/ator/config/nvim/.config/nvim/lua",
-        "${3rd}/luassert/library"
+        "${3rd}/luassert/library",
+        "${3rd}/luv/library"
     ]
 }

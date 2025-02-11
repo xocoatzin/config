@@ -25,6 +25,10 @@ return {
           end,
         },
       },
+      format = {
+        -- `arc lint` can take a bit to run.
+        timeout_ms = 2500,
+      },
     },
   },
 }

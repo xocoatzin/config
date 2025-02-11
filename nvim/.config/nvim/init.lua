@@ -23,21 +23,21 @@ require("lazy").setup({
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- add Neovim@Meta and import the language service configuration
-    {
-      dir = meta_plugin_dir,
-      name = "meta.nvim",
-      import = "meta.lazyvim",
-    },
+    -- {
+    --   dir = meta_plugin_dir,
+    --   name = "meta.nvim",
+    --   import = "meta.lazyvim",
+    -- },
     -- TODO: Figure a way to add this from the user section
-    { import = "lazyvim.plugins.extras.formatting.prettier" },
-    { import = "lazyvim.plugins.extras.lang.json" },
-    { import = "lazyvim.plugins.extras.lang.python" },
-    { import = "lazyvim.plugins.extras.lang.typescript" },
-    { import = "lazyvim.plugins.extras.lsp.none-ls" },
+    -- { import = "lazyvim.plugins.extras.formatting.prettier" },
+    -- { import = "lazyvim.plugins.extras.lang.json" },
+    -- { import = "lazyvim.plugins.extras.lang.python" },
+    -- { import = "lazyvim.plugins.extras.lang.typescript" },
+    -- { import = "lazyvim.plugins.extras.lsp.none-ls" },
     -- { import = "lazyvim.plugins.extras.lang.yaml" },
     -- import/override with your plugins in `~/.config/nvim/lua/plugins`
     -- this can overwrite configurations from all of the above
-    { import = "plugins" },
+    -- { import = "plugins" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins
@@ -71,7 +71,7 @@ require("lazy").setup({
 })
 
 -- TODO: Find a better place for this
-require("meta.metamate").init({
+-- require("meta.metamate").init({
   -- // change the keymap used for accepting completion. defaults to <C-l>
   -- completionKeymap = "<C-m>",
 
@@ -80,4 +80,4 @@ require("meta.metamate").init({
 
   -- // change the languages to target. defaults to php, python, rust
   -- filetypes = { "php", "python", "rust", "cpp" },
-})
+-- })

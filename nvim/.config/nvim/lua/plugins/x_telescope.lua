@@ -3,16 +3,16 @@ return {
     "nvim-telescope/telescope.nvim",
     -- replace all Telescope keymaps with only one mapping
     keys = function()
-      local telescope = require("telescope")
-      local builtin = require("telescope.builtin")
-      local Util = require("lazyvim.util")
+      -- local telescope = require("telescope")
+      -- local builtin = require("telescope.builtin")
+      -- local Util = require("lazyvim.util")
       return {
         { "<leader>tt", require("telescope.command").load_command, desc = "[Telescope] Open" },
         -- { "<leader>tg", Util.telescope("live_grep"), desc = "[Telescope] Live Grep" },
         -- { "<leader>tr", Util.telescope("reloader"), desc = "[Telescope] Reloader" },
-        { "<leader>tb", Util.telescope("buffers"), desc = "Switch Buffer" },
-        { "<c-p>", Util.telescope("find_files", { cwd = false }), desc = "Find Files" },
-        { "<leader><c-p>", Util.telescope("find_files", { cwd = false }), desc = "Find Files (root dir)" },
+        -- { "<leader>tb", Util.telescope("buffers"), desc = "Switch Buffer" },
+        -- { "<c-p>", Util.telescope("find_files", { cwd = false }), desc = "Find Files" },
+        -- { "<leader><c-p>", Util.telescope("find_files", { cwd = false }), desc = "Find Files (root dir)" },
         {
           "<leader>tm",
           function()
@@ -23,13 +23,14 @@ return {
         },
         { "<leader>tu", "<cmd>Telescope undo<cr>", desc = "Undo Tree" },
         -- Lazy
-        { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
-        { "<leader>/", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-        { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-        { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
+        -- { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
+        -- { "<leader>/", Util.telescope("live_grep"), desc = "Grep (root dir)" },
+        -- { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+        -- { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
         -- find
         {
-          "<leader>tf",
+          "<c-p>",
+          -- "<leader>tf",
           function()
             require("telescope").extensions.frecency.frecency({
               sorter = require("telescope").extensions.fzf.native_fzf_sorter(),
@@ -54,8 +55,8 @@ return {
         -- { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
         -- { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
         -- { "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
-        { "<leader>tG", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-        { "<leader>tg", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+        -- { "<leader>tG", Util.telescope("live_grep"), desc = "Grep (root dir)" },
+        -- { "<leader>tg", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
         -- { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
         -- { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
         -- { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
@@ -63,55 +64,55 @@ return {
         -- { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
         -- { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
         -- { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
-        { "<leader>tw", Util.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },
-        {
-          "<leader>tW",
-          Util.telescope("grep_string", { cwd = false, word_match = "-w" }),
-          desc = "Word (cwd)",
-        },
-        { "<leader>tw", Util.telescope("grep_string"), mode = "v", desc = "Selection (root dir)" },
-        { "<leader>tW", Util.telescope("grep_string", { cwd = false }), mode = "v", desc = "Selection (cwd)" },
+        -- { "<leader>tw", Util.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },
+        -- {
+        --   "<leader>tW",
+        --   Util.telescope("grep_string", { cwd = false, word_match = "-w" }),
+        --   desc = "Word (cwd)",
+        -- },
+        -- { "<leader>tw", Util.telescope("grep_string"), mode = "v", desc = "Selection (root dir)" },
+        -- { "<leader>tW", Util.telescope("grep_string", { cwd = false }), mode = "v", desc = "Selection (cwd)" },
         -- {
         -- 	"<leader>uC",
         -- 	Util.telescope("colorscheme", { enable_preview = true }),
         -- 	desc = "Colorscheme with preview",
         -- },
-        {
-          "<leader>ts",
-          Util.telescope("lsp_document_symbols", {
-            symbols = {
-              "Class",
-              "Function",
-              "Method",
-              "Constructor",
-              "Interface",
-              "Module",
-              "Struct",
-              "Trait",
-              "Field",
-              "Property",
-            },
-          }),
-          desc = "Goto Symbol",
-        },
-        {
-          "<leader>tS",
-          Util.telescope("lsp_dynamic_workspace_symbols", {
-            symbols = {
-              "Class",
-              "Function",
-              "Method",
-              "Constructor",
-              "Interface",
-              "Module",
-              "Struct",
-              "Trait",
-              "Field",
-              "Property",
-            },
-          }),
-          desc = "Goto Symbol (Workspace)",
-        },
+        -- {
+        --   "<leader>ts",
+        --   Util.telescope("lsp_document_symbols", {
+        --     symbols = {
+        --       "Class",
+        --       "Function",
+        --       "Method",
+        --       "Constructor",
+        --       "Interface",
+        --       "Module",
+        --       "Struct",
+        --       "Trait",
+        --       "Field",
+        --       "Property",
+        --     },
+        --   }),
+        --   desc = "Goto Symbol",
+        -- },
+        -- {
+        --   "<leader>tS",
+        --   Util.telescope("lsp_dynamic_workspace_symbols", {
+        --     symbols = {
+        --       "Class",
+        --       "Function",
+        --       "Method",
+        --       "Constructor",
+        --       "Interface",
+        --       "Module",
+        --       "Struct",
+        --       "Trait",
+        --       "Field",
+        --       "Property",
+        --     },
+        --   }),
+        --   desc = "Goto Symbol (Workspace)",
+        -- },
         -- { "<leader>tw", telescope.extensions.git_worktree.git_worktrees, desc = "[Telescope] Worktrees" },
         -- {
         -- 	"<leader>wt",
@@ -121,22 +122,6 @@ return {
         -- { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
       }
     end,
-    -- keys = {
-    -- {
-    -- 	"<leader>p",
-    -- 	function()
-    -- 		local in_meta_project = require("meta.util").arc.get_project_root(vim.loop.cwd()) ~= nil
-    --
-    -- 		if in_meta_project then
-    -- 			require("telescope").load_extension("myles")
-    -- 			vim.cmd("Telescope myles")
-    -- 		else
-    -- 			require("lazyvim.util").telescope("files")()
-    -- 		end
-    -- 	end,
-    -- 	desc = "Find Files",
-    -- },
-    -- },
     opts = function(_, opts)
       local telescope = require("telescope")
       telescope.load_extension("fzf")
@@ -144,7 +129,7 @@ return {
       -- telescope.load_extension("ag")
       -- telescope.load_extension("file_browser")
       -- telescope.load_extension("git_worktree")
-      telescope.load_extension("frecency")
+      -- telescope.load_extension("frecency")
       -- telescope.load_extension("gh")
       -- telescope.load_extension("dap")
       -- telescope.load_extension("notify")
@@ -203,6 +188,9 @@ return {
             hijack_netwr = true,
           },
           undo = {},
+          frecency = {
+            db_safe_mode = false, -- disable prompt to delete entries
+          },
         },
       }
     end,

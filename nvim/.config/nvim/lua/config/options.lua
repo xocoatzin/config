@@ -23,7 +23,10 @@ opt.joinspaces = false -- join lines without two spaces
 opt.wildmode = "full"
 
 -------------------------------------------------------------------------------
+vim.g.lazyvim_blink_main = true
 
+-- Search case insensitive unless upercase is used
+vim.o.smartcase = true
 -- Search down into subfolders, with auto-complete
 vim.o.path = vim.o.path .. "**"
 -- Sets how many lines of history VIM has to remember
